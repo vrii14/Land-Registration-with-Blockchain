@@ -98,7 +98,7 @@ App = {
           var location = land[2];
           var owner = land[3];
           var status = land[4];
-          var image = land[5];
+          // var image = land[5];
 
           // Render candidate Result
           var landTemplate = "<tr><th>" + id + "</th><td>" + area + "</td><td>" + location + "</td><td>" + owner + "</td><td>" + status + "</td></tr>"
@@ -179,7 +179,6 @@ App = {
 
   add_land: function(){
     var _area = $("#area").val();
-    var _owner = $("#owner").val();
     var _location = $("#location").val();
 
     if (_area == '' || _owner == '' || _location == '') {
@@ -187,7 +186,7 @@ App = {
     } else {
       console.log("Adding Land..");
       App.contracts.Land.deployed().then(function (instance) {
-        instance.addLand(_area, _location, _owner, {from: App.account});
+        instance.addLand(_area, _location, {from: App.account});
       }).then(function(result) {
         console.log(result);
         $("#content").hide();

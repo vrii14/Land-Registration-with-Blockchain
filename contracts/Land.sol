@@ -1,11 +1,12 @@
 pragma solidity >= 0.5.2;
+pragma experimental ABIEncoderV2;
 
 contract Land {
     struct Landreg {
         uint id;
         uint area;
         string location;
-        string owner; //-->this should be the seller 
+        // address owner; //-->this should be the seller 
         bool verificationStatus;
         // string landImg;
     }
@@ -18,7 +19,6 @@ contract Land {
         string state;
         string aadharNumber;
         string panNumber;
-        bool isVerified;
     }
 
     struct Seller{
@@ -27,7 +27,6 @@ contract Land {
         uint age;
         string aadharNumber;
         string panNumber;
-        bool isVerified;
         string landsOwned;
     }
 
@@ -38,13 +37,28 @@ contract Land {
         string designation;
     }
 
+    struct LandRequest{
+        address sellerId;
+        address buyerId;
+        uint landId;
+        bool requestStatus;
+    }
+
     //key value pairs
     mapping(uint => Landreg) public lands;
     mapping(uint => LandInspector) public InspectorMapping;
     mapping(address => Seller) public SellerMapping;
     mapping(address => Buyer) public BuyerMapping;
+    // mapping(address => LandRequest) public RequestsMapping;
 
     mapping(address => bool) public RegisteredAddressMapping;
+    mapping(address => bool) public RegisteredSellerMapping;
+    mapping(address => bool) public RegisteredBuyerMapping;
+    mapping(address => bool) public SellerVerification;
+    mapping(address => bool) public BuyerVerification;
+    mapping(uint => address) public LandOwner;
+
+    LandRequest[] public RequestsMapping;
 
     uint public landsCount;
     uint public inspectorsCount;
@@ -52,26 +66,69 @@ contract Land {
     uint public buyersCount;
 
     event Registration(address _registrationId);
-    event AddingLand(uint _landId);
+    event AddingLand(uint indexed _landId);
+    event Landrequested(address _sellerId);
+    event requestApproved(address _buyerId);
+    event Verified(address _id);
 
     constructor() public{
-        addLand(450, "Pune", "Owner 1");
-        addLand(650, "Akola", "Owner 2");
-        addLand(500, "Mumbai", "Owner 3");
+        // addLand(450, "Pune");
+        // addLand(650, "Akola");
+        // addLand(500, "Mumbai");
         addLandInspector("Inspector 1", 45, "Tehsil Manager");
     }
 
-    function addLand(uint _area, string memory _location, string memory _owner) public {
-        // let landImg = "https://images.unsplash.com/photo-1597843736176-23c29f7187f7?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1489&q=80";
-        landsCount++;
-        lands[landsCount] = Landreg(landsCount, _area, _location, _owner, false);
-        //emit AddingLand(landsCount);
-    }
 
     //already present
     function addLandInspector(string memory _name, uint _age, string memory _designation) private {
         inspectorsCount++;
         InspectorMapping[inspectorsCount] = LandInspector(inspectorsCount, _name, _age, _designation);
+    }
+
+    // function isLadIspector() private{
+    //     if(msg.sender == "")
+    //         return true;
+    // }
+
+    function verifySeller(address _sellerId) public{
+        require(0x6F888D6aeaF7300A207adE052fC51C5bf73a6cF5 == msg.sender);
+
+        SellerVerification[_sellerId] = true;
+        emit Verified(_sellerId);
+    }
+
+    function verifyBuyer(address _buyerId) public{
+        require(0x6F888D6aeaF7300A207adE052fC51C5bf73a6cF5 == msg.sender);
+
+        BuyerVerification[_buyerId] = true;
+        emit Verified(_buyerId);
+    }
+
+    function isVerified(address _id) public view returns (bool) {
+        if(SellerVerification[_id] || BuyerVerification[_id]){
+            return true;
+        }
+    }
+
+    function isSeller(address _id) public view returns (bool) {
+        if(RegisteredSellerMapping[_id]){
+            return true;
+        }
+    }
+
+    function isBuyer(address _id) public view returns (bool) {
+        if(RegisteredBuyerMapping[_id]){
+            return true;
+        }
+    }
+
+    function addLand(uint _area, string memory _location) public {
+        // let landImg = "https://images.unsplash.com/photo-1597843736176-23c29f7187f7?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1489&q=80";
+        require((isSeller(msg.sender)) && (isVerified(msg.sender)));
+        landsCount++;
+        lands[landsCount] = Landreg(landsCount, _area, _location, false);
+        LandOwner[landsCount] = msg.sender;
+        // emit AddingLand(landsCount);
     }
 
     //registration of seller
@@ -80,8 +137,9 @@ contract Land {
         require(!RegisteredAddressMapping[msg.sender]);
 
         RegisteredAddressMapping[msg.sender] = true;
+        RegisteredSellerMapping[msg.sender] = true ;
         sellersCount++;
-        SellerMapping[msg.sender] = Seller(msg.sender, _name, _age, _aadharNumber,_panNumber, false, _landsOwned);
+        SellerMapping[msg.sender] = Seller(msg.sender, _name, _age, _aadharNumber,_panNumber, _landsOwned);
 
         emit Registration(msg.sender);
     }
@@ -91,19 +149,40 @@ contract Land {
         require(!RegisteredAddressMapping[msg.sender]);
 
         RegisteredAddressMapping[msg.sender] = true;
+        RegisteredBuyerMapping[msg.sender] = true ;
         buyersCount++;
-        BuyerMapping[msg.sender] = Buyer(msg.sender, _name, _age, _city, _state, _aadharNumber, _panNumber, false);
+        BuyerMapping[msg.sender] = Buyer(msg.sender, _name, _age, _city, _state, _aadharNumber, _panNumber);
     
         emit Registration(msg.sender);
     }
 
-    //update
-    // function updateLand(uint _id, uint _area, string memory _location, string memory _owner, bool _verificationStatus, string memory _landImg) private{
-    //     lands(_id).then(function(instance){land = instance});
-    //     land[1] = _area;     
-    // }
-    //verify ? 
-    //delete
+    function requestLand(address _sellerId, uint _landId) public{
+        require(isBuyer(msg.sender) && isVerified(msg.sender));
+        
+        LandRequest memory newReq =  LandRequest({
+            sellerId: _sellerId,
+            buyerId: msg.sender,
+            landId: _landId,
+            requestStatus: false});
+    
+        RequestsMapping.push(newReq);
 
+        emit Landrequested(_sellerId);
+        // RequestsMapping[msg.sender] = LandRequest(_sellerId, _landId, false);
+    }
+
+    function approveRequest(LandRequest memory req) public {
+        require((isSeller(msg.sender)) && (isVerified(msg.sender)));
+
+        req.requestStatus = true;
+
+        emit requestApproved(req.buyerId);
+    }
+
+    function LandOwnershipTransfer(uint _landId, address _newOwner) public{
+        require(0x6F888D6aeaF7300A207adE052fC51C5bf73a6cF5 == msg.sender);
+
+        LandOwner[_landId] = _newOwner;
+    }
 
 }
