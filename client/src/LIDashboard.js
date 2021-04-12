@@ -21,6 +21,8 @@ const drizzleOptions = {
 
 // var buyers = 0;
 // var sellers = 0;
+var sellerTable = [];
+var buyerTable = [];
 
 class LIDashboard extends Component {
     constructor(props){
@@ -32,6 +34,7 @@ class LIDashboard extends Component {
             web3: null,
             buyers: 0,
             sellers: 0,
+            verified: '',
         }
     }
 
@@ -59,24 +62,37 @@ class LIDashboard extends Component {
 
             this.setState({ LandInstance: instance, web3: web3, account: accounts[0] });
 
-            var buyers = await this.state.LandInstance.methods.getBuyersCount().call();
-            //this.setState({buyers:buyers});
-            //console.log(this.state.buyers);
-            console.log(buyers);
 
-            var sellers = await this.state.LandInstance.methods.getSellersCount().call();
-            console.log(sellers);
-            
+            var sellersCount = await this.state.LandInstance.methods.getSellersCount().call();
+            console.log(typeof(sellersCount));
+            var buyersCount = await this.state.LandInstance.methods.getBuyersCount().call();
+            console.log(typeof(buyersCount));
+
             var sellersMap = [];
             var buyersMap = [];
-            var account;
+            sellersMap = await this.state.LandInstance.methods.getSeller().call();
+            console.log(sellersMap);
+            buyersMap = await this.state.LandInstance.methods.getBuyer().call();
+            console.log(buyersMap);
 
-            for(let i = 0; i<10; i++){
-                //account = accounts[i];
-                //var isSeller = await this.state.LandInstance.methods.isSeller(account).call();
-                console.log(accounts[i]);
+
+            if(0x8B1CFEeCe1DFe91eef626357c29C0e19C989131e == currentAddress){
+                this.setState({verified: true});
+            }else{
+                this.setState({verified: false});              
             }
-            console.log(accounts);
+            
+            for(let i = 0; i<sellersCount; i++){
+                var seller = await this.state.LandInstance.methods.getSellerDetails(sellersMap[i]).call();
+                console.log(seller);
+                sellerTable.push(<tr><td>{i+1}</td><td>{seller[0]}</td><td>{seller[1]}</td><td>{seller[2]}</td><td>{seller[3]}</td><td>{seller[4]}</td></tr>)
+            }
+            for(let i = 0; i<buyersCount; i++){
+                var buyer = await this.state.LandInstance.methods.getBuyerDetails(buyersMap[i]).call();
+                console.log(buyer);
+                buyerTable.push(<tr><td>{i+1}</td><td>{buyer[0]}</td><td>{buyer[1]}</td><td>{buyer[2]}</td><td>{buyer[3]}</td><td>{buyer[4]}</td><td>{buyer[5]}</td></tr>)
+
+            }
             // await new Promise(r => setTimeout(r, 5000));
             // console.log(accounts[1]);
         }catch (error) {
@@ -107,16 +123,59 @@ class LIDashboard extends Component {
           );
         }
 
+        if (!this.state.verified) {
+            return (
+              <div>
+                <div>
+                  <h1>
+                  You are not verified to view this page
+                  </h1>
+                </div>
+                
+              </div>
+            );
+          }
+
         return (
             <DrizzleProvider options={drizzleOptions}>
             <LoadingContainer>
-                <div>
-                    <h5>Land Info</h5>
-                    <AccountData accountIndex={0} units={"ether"} precision={2} />
-                    <h5>Current greeting:</h5> 
-                    <ContractData contract="Land" method="getLandsCount" /> 
-                    <br />
-                     
+                <div >
+                    <h5>Sellers Info</h5>
+                    <Table striped bordered hover >
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>Aadhar Number</th>
+                                <th>Pan Number</th>
+                                <th>Owned Lands</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {sellerTable}
+                        </tbody>
+                        
+                    </Table>
+                    <h5>Buyers Info</h5>
+
+                    <Table striped bordered hover >
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>City</th>
+                                <th>State</th>
+                                <th>Aadhar Number</th>
+                                <th>Pan Number</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {buyerTable}
+                        </tbody>
+                        
+                    </Table>
 
                 </div>
             </LoadingContainer>

@@ -60,6 +60,8 @@ contract Land {
     mapping(uint => address) public LandOwner;
 
     LandRequest[] public RequestsMapping;
+    address[] public sellers;
+    address[] public buyers;
 
     uint public landsCount;
     uint public inspectorsCount;
@@ -163,8 +165,16 @@ contract Land {
         RegisteredSellerMapping[msg.sender] = true ;
         sellersCount++;
         SellerMapping[msg.sender] = Seller(msg.sender, _name, _age, _aadharNumber,_panNumber, _landsOwned);
-
+        sellers.push(msg.sender);
         emit Registration(msg.sender);
+    }
+
+    function getSeller() public view returns( address [] memory ){
+        return(sellers);
+    }
+
+    function getSellerDetails(address i) public view returns (string memory, uint, string memory, string memory, string memory) {
+        return (SellerMapping[i].name, SellerMapping[i].age, SellerMapping[i].aadharNumber, SellerMapping[i].panNumber, SellerMapping[i].landsOwned);
     }
 
     function registerBuyer(string memory _name, uint _age, string memory _city, string memory _state, string memory _aadharNumber, string memory _panNumber) public {
@@ -175,8 +185,17 @@ contract Land {
         RegisteredBuyerMapping[msg.sender] = true ;
         buyersCount++;
         BuyerMapping[msg.sender] = Buyer(msg.sender, _name, _age, _city, _state, _aadharNumber, _panNumber);
-    
+        buyers.push(msg.sender);
+
         emit Registration(msg.sender);
+    }
+
+    function getBuyer() public view returns( address [] memory ){
+        return(buyers);
+    }
+
+    function getBuyerDetails(address i) public view returns (string memory, uint, string memory, string memory, string memory, string memory) {
+        return (BuyerMapping[i].name, BuyerMapping[i].age,BuyerMapping[i].city,BuyerMapping[i].state,  BuyerMapping[i].aadharNumber, BuyerMapping[i].panNumber);
     }
 
     function requestLand(address _sellerId, uint _landId) public{
