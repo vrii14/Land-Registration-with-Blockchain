@@ -3,7 +3,7 @@ import LandContract from "./artifacts/Land.json"
 import getWeb3 from "./getWeb3"
 
 import { Button, Spinner} from 'react-bootstrap'
-
+var verified;
 class RegisterSeller extends Component {
     constructor(props){
         super(props)
@@ -13,6 +13,7 @@ class RegisterSeller extends Component {
             account: null,
             web3: null,
             flag: null, 
+            verified: '',
         }
     }
 
@@ -28,16 +29,22 @@ class RegisterSeller extends Component {
             const web3 = await getWeb3();
 
             const accounts = await web3.eth.getAccounts();
-
+            
             const networkId = await web3.eth.net.getId();
             const deployedNetwork = LandContract.networks[networkId];
             const instance = new web3.eth.Contract(
                 LandContract.abi,
                 deployedNetwork && deployedNetwork.address,
             );
-
+            
+            const currentAddress = await web3.currentProvider.selectedAddress;
+            console.log(currentAddress);
             this.setState({ LandInstance: instance, web3: web3, account: accounts[0] });
-
+            verified = await this.state.LandInstance.methods.isVerified(currentAddress).call();
+            console.log(verified);
+            this.setState({verified: verified});
+            // verified = verified.toString();
+            // console.log(verified);
             
         }catch (error) {
             // Catch any errors for any of the above operations.
@@ -73,7 +80,7 @@ class RegisterSeller extends Component {
               </div>
                 
               <div className="form">
-                  <Button href="/AddLand" className="button-vote">
+                  <Button href="/AddLand" disabled={!this.state.verified} className="button-vote">
                       Add Land
                   </Button>
               </div>

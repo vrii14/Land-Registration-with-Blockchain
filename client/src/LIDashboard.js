@@ -48,6 +48,8 @@ class LIDashboard extends Component {
 
             const accounts = await web3.eth.getAccounts();
 
+            const currentAddress = await web3.currentProvider.selectedAddress;
+            console.log(currentAddress);
             const networkId = await web3.eth.net.getId();
             const deployedNetwork = Land.networks[networkId];
             const instance = new web3.eth.Contract(
@@ -65,6 +67,18 @@ class LIDashboard extends Component {
             var sellers = await this.state.LandInstance.methods.getSellersCount().call();
             console.log(sellers);
             
+            var sellersMap = [];
+            var buyersMap = [];
+            var account;
+
+            for(let i = 0; i<10; i++){
+                //account = accounts[i];
+                //var isSeller = await this.state.LandInstance.methods.isSeller(account).call();
+                console.log(accounts[i]);
+            }
+            console.log(accounts);
+            // await new Promise(r => setTimeout(r, 5000));
+            // console.log(accounts[1]);
         }catch (error) {
             // Catch any errors for any of the above operations.
             alert(
@@ -73,6 +87,10 @@ class LIDashboard extends Component {
             console.error(error);
           }
     };
+
+    // sleep = (ms) => {
+    //     return new Promise(resolve => setTimeout(resolve, ms));
+    // };
 
     
     render() {

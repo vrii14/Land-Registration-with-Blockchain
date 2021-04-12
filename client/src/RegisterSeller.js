@@ -65,6 +65,8 @@ class RegisterSeller extends Component {
             .send({
                 from : this.state.account,
                 gas : 2100000
+            }).then(response => {
+                this.props.history.push("/SellerDashboard");
             });
 
         //Reload

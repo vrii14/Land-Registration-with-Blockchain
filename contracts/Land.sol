@@ -114,14 +114,14 @@ contract Land {
     }
 
     function verifySeller(address _sellerId) public{
-        require(0x3F72feE6cF188bB31C10676EC063d49Ca3dab8b0 == msg.sender);
+        require(0x8B1CFEeCe1DFe91eef626357c29C0e19C989131e == msg.sender);
 
         SellerVerification[_sellerId] = true;
         emit Verified(_sellerId);
     }
 
     function verifyBuyer(address _buyerId) public{
-        require(0x3F72feE6cF188bB31C10676EC063d49Ca3dab8b0 == msg.sender);
+        require(0x8B1CFEeCe1DFe91eef626357c29C0e19C989131e == msg.sender);
 
         BuyerVerification[_buyerId] = true;
         emit Verified(_buyerId);
@@ -203,7 +203,7 @@ contract Land {
     }
 
     function LandOwnershipTransfer(uint _landId, address _newOwner) public{
-        require(0x3F72feE6cF188bB31C10676EC063d49Ca3dab8b0 == msg.sender);
+        require(0x8B1CFEeCe1DFe91eef626357c29C0e19C989131e == msg.sender);
 
         LandOwner[_landId] = _newOwner;
     }

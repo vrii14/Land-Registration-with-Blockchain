@@ -10,7 +10,6 @@ export default class Login extends Component {
         this.state = {
             role: null,
             redirect: null,
-            flag: null
         }
         this.handleInputChange = this.handleInputChange.bind(this);
     }
@@ -21,15 +20,12 @@ export default class Login extends Component {
         });
     }
     submit() {
-        this.setState({
-            flag: "true"
-        });
+        this.props.history.push(this.state.redirect);
+        window.location.reload(false);
+
     }
 
     render() {
-        if (this.state.flag) {
-            return <Redirect to={this.state.redirect} />
-        }
         return (
             <div>
                 <h1 style={{letterSpacing: "3px",fontWeight:500}}>Welcome !</h1>
