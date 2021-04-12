@@ -14,6 +14,7 @@ class RegisterSeller extends Component {
             web3: null,
             flag: null, 
             verified: '',
+            registered: '',
         }
     }
 
@@ -43,6 +44,9 @@ class RegisterSeller extends Component {
             verified = await this.state.LandInstance.methods.isVerified(currentAddress).call();
             console.log(verified);
             this.setState({verified: verified});
+            var registered = await this.state.LandInstance.methods.isSeller(currentAddress).call();
+            console.log(registered);
+            this.setState({registered: registered});
             // verified = verified.toString();
             // console.log(verified);
             
@@ -69,6 +73,19 @@ class RegisterSeller extends Component {
           );
         }
 
+        if (!this.state.registered) {
+          return (
+            <div>
+              <div>
+                <h1>
+                You are not authorized to view this page.
+                </h1>
+              </div>
+              
+            </div>
+          );
+        }
+        
         return (
             <div className="App">  
               <div>

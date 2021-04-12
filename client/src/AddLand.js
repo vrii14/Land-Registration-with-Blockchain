@@ -19,6 +19,8 @@ class AddLand extends Component {
             price: '',
             lands: null,
             verficationStatus: false,
+            verified: '',
+            registered: '',
         }
     }
 
@@ -43,6 +45,15 @@ class AddLand extends Component {
             );
 
             this.setState({ LandInstance: instance, web3: web3, account: accounts[0] });
+            const currentAddress = await web3.currentProvider.selectedAddress;
+            console.log(currentAddress);
+            this.setState({ LandInstance: instance, web3: web3, account: accounts[0] });
+            var verified = await this.state.LandInstance.methods.isVerified(currentAddress).call();
+            console.log(verified);
+            this.setState({verified: verified});
+            var registered = await this.state.LandInstance.methods.isSeller(currentAddress).call();
+            console.log(registered);
+            this.setState({registered: registered});
 
             
         }catch (error) {
@@ -62,6 +73,8 @@ class AddLand extends Component {
             .send({
                 from : this.state.account,
                 gas : 210000
+            }).then(response => {
+                this.props.history.push("/ShowLand");
             });
 
         //Reload
@@ -91,6 +104,19 @@ class AddLand extends Component {
             </div>
           );
         }
+
+        if (!this.state.registered) {
+            return (
+              <div>
+                <div>
+                  <h1>
+                  You are not authorized to view this page.
+                  </h1>
+                </div>
+                
+              </div>
+            );
+          }
 
         return (
             <div className="App">

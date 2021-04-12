@@ -23,6 +23,7 @@ const drizzleOptions = {
 // var sellers = 0;
 var sellerTable = [];
 var buyerTable = [];
+var landTable = [];
 
 class LIDashboard extends Component {
     constructor(props){
@@ -67,6 +68,23 @@ class LIDashboard extends Component {
             console.log(typeof(sellersCount));
             var buyersCount = await this.state.LandInstance.methods.getBuyersCount().call();
             console.log(typeof(buyersCount));
+            var count = await this.state.LandInstance.methods.getLandsCount().call();
+            count = parseInt(count);
+            var rowsArea = [];
+            var rowsLoc = [];
+            var rowsSt = [];
+            var rowsPrice = [];
+
+            for (var i = 1; i < count+1; i++) {
+                rowsArea.push(<ContractData contract="Land" method="getArea" methodArgs={[i, { from: accounts[1] }]} />);
+                rowsLoc.push(<ContractData contract="Land" method="getLocation" methodArgs={[i, { from: accounts[1] }]} />);
+                rowsSt.push(<ContractData contract="Land" method="getStatus" methodArgs={[i, { from: accounts[1] }]} />);
+                rowsPrice.push(<ContractData contract="Land" method="getPrice" methodArgs={[i, { from: accounts[1] }]} />);   
+            }
+            for (var i = 0; i < count; i++) {
+                landTable.push(<tr><td>{i+1}</td><td>{rowsArea[i]}</td><td>{rowsLoc[i]}</td><td>{rowsPrice[i]}</td><td>{rowsSt[i]}</td></tr>)
+
+            }
 
             var sellersMap = [];
             var buyersMap = [];
@@ -74,27 +92,29 @@ class LIDashboard extends Component {
             console.log(sellersMap);
             buyersMap = await this.state.LandInstance.methods.getBuyer().call();
             console.log(buyersMap);
+           
+            var verified = await this.state.LandInstance.methods.isLandInspector(currentAddress).call();
+            console.log(verified);
+            this.setState({verified: verified});
 
-
-            if(0x8B1CFEeCe1DFe91eef626357c29C0e19C989131e == currentAddress){
-                this.setState({verified: true});
-            }else{
-                this.setState({verified: false});              
-            }
+            // if(0x8B1CFEeCe1DFe91eef626357c29C0e19C989131e == currentAddress){
+            //     this.setState({verified: true});
+            // }else{
+            //     this.setState({verified: false});              
+            // }
             
             for(let i = 0; i<sellersCount; i++){
                 var seller = await this.state.LandInstance.methods.getSellerDetails(sellersMap[i]).call();
                 console.log(seller);
-                sellerTable.push(<tr><td>{i+1}</td><td>{seller[0]}</td><td>{seller[1]}</td><td>{seller[2]}</td><td>{seller[3]}</td><td>{seller[4]}</td></tr>)
+                sellerTable.push(<tr><td>{i+1}</td><td>{sellersMap[i]}</td><td>{seller[0]}</td><td>{seller[1]}</td><td>{seller[2]}</td><td>{seller[3]}</td><td>{seller[4]}</td></tr>)
             }
             for(let i = 0; i<buyersCount; i++){
                 var buyer = await this.state.LandInstance.methods.getBuyerDetails(buyersMap[i]).call();
                 console.log(buyer);
-                buyerTable.push(<tr><td>{i+1}</td><td>{buyer[0]}</td><td>{buyer[1]}</td><td>{buyer[2]}</td><td>{buyer[3]}</td><td>{buyer[4]}</td><td>{buyer[5]}</td></tr>)
+                buyerTable.push(<tr><td>{i+1}</td><td>{buyersMap[i]}</td><td>{buyer[0]}</td><td>{buyer[1]}</td><td>{buyer[2]}</td><td>{buyer[3]}</td><td>{buyer[4]}</td><td>{buyer[5]}</td></tr>)
 
             }
-            // await new Promise(r => setTimeout(r, 5000));
-            // console.log(accounts[1]);
+           
         }catch (error) {
             // Catch any errors for any of the above operations.
             alert(
@@ -104,11 +124,7 @@ class LIDashboard extends Component {
           }
     };
 
-    // sleep = (ms) => {
-    //     return new Promise(resolve => setTimeout(resolve, ms));
-    // };
-
-    
+   
     render() {
         if (!this.state.web3) {
           return (
@@ -145,6 +161,7 @@ class LIDashboard extends Component {
                         <thead>
                             <tr>
                                 <th>#</th>
+                                <th>Account Address</th>
                                 <th>Name</th>
                                 <th>Age</th>
                                 <th>Aadhar Number</th>
@@ -163,6 +180,7 @@ class LIDashboard extends Component {
                         <thead>
                             <tr>
                                 <th>ID</th>
+                                <th>Account Address</th>
                                 <th>Name</th>
                                 <th>Age</th>
                                 <th>City</th>
@@ -173,6 +191,23 @@ class LIDashboard extends Component {
                         </thead>
                         <tbody>
                             {buyerTable}
+                        </tbody>
+                        
+                    </Table>
+                    <h5>Lands Info</h5>
+
+                    <Table striped bordered hover >
+                        <thead>
+                            <tr>
+                            <th>#</th>
+                            <th>Area</th>
+                            <th>Location</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {landTable}
                         </tbody>
                         
                     </Table>

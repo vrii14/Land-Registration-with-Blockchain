@@ -116,14 +116,14 @@ contract Land {
     }
 
     function verifySeller(address _sellerId) public{
-        require(0x8B1CFEeCe1DFe91eef626357c29C0e19C989131e == msg.sender);
+        require(isLandInspector(msg.sender));
 
         SellerVerification[_sellerId] = true;
         emit Verified(_sellerId);
     }
 
     function verifyBuyer(address _buyerId) public{
-        require(0x8B1CFEeCe1DFe91eef626357c29C0e19C989131e == msg.sender);
+        require(isLandInspector(msg.sender));
 
         BuyerVerification[_buyerId] = true;
         emit Verified(_buyerId);
@@ -141,8 +141,21 @@ contract Land {
         }
     }
 
+    function isLandInspector(address _id) public view returns (bool) {
+        if(0x7f15c607508F25cb4Ed7E46c3102Cf67440f7bE6 == _id){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     function isBuyer(address _id) public view returns (bool) {
         if(RegisteredBuyerMapping[_id]){
+            return true;
+        }
+    }
+    function isRegistered(address _id) public view returns (bool) {
+        if(RegisteredAddressMapping[_id]){
             return true;
         }
     }
@@ -222,7 +235,7 @@ contract Land {
     }
 
     function LandOwnershipTransfer(uint _landId, address _newOwner) public{
-        require(0x8B1CFEeCe1DFe91eef626357c29C0e19C989131e == msg.sender);
+        require(isLandInspector(msg.sender));
 
         LandOwner[_landId] = _newOwner;
     }
