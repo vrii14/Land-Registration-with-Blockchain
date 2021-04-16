@@ -145,6 +145,9 @@ class SellerDashboard extends Component {
                         <Button href="/AddLand" disabled={!this.state.verified} className="button-vote">
                               Add Land
                         </Button>
+                        <Button href="/ApproveRequest" disabled={!this.state.verified} className="button-vote">
+                              View all Land Requests
+                        </Button>
                     </div>
                 <h5>Land Info</h5>
                     <Table striped bordered hover>

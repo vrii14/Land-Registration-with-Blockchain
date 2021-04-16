@@ -23,6 +23,7 @@ const drizzleOptions = {
 
 var row = [];
 var landOwner = [];
+// var requested = false;
 
 class ShowLand extends Component {
     constructor(props){
@@ -33,6 +34,7 @@ class ShowLand extends Component {
             account: null,
             web3: null,
             count: 0,
+            requested: false,
         }
     }
 
@@ -40,7 +42,8 @@ class ShowLand extends Component {
        
         console.log(seller_address);
         console.log(land_id);
-
+        // this.setState({requested: true});
+        // requested = true;
         await this.state.LandInstance.methods.requestLand(
             seller_address,
             land_id
@@ -48,6 +51,7 @@ class ShowLand extends Component {
             from : this.state.account,
             gas : 2100000
         });
+        // console.log(this.state.requested);
 
         //Reload
         window.location.reload(false);
@@ -75,12 +79,17 @@ class ShowLand extends Component {
             );
 
             this.setState({ LandInstance: instance, web3: web3, account: accounts[0] });
-
+            
+            const currentAddress = await web3.currentProvider.selectedAddress;
+            console.log(currentAddress);
+            var registered = await this.state.LandInstance.methods.isBuyer(currentAddress).call();
+            console.log(registered);
+            this.setState({registered: registered});
             var count = await this.state.LandInstance.methods.getLandsCount().call();
             count = parseInt(count);
             console.log(typeof(count));
             console.log(count);
-
+            
             // for(var i=1; i<count+1;i++){
             //     var address = await this.state.LandInstance.methods.getLandOwner(i).call();
             //     landOwner[i-1] = address;
@@ -99,9 +108,13 @@ class ShowLand extends Component {
             for(var i=1; i<count+1;i++){
                 var address = await this.state.LandInstance.methods.getLandOwner(i).call();
                 dict[i] = address;
+                // var requested = await this.state.LandInstance.methods.getRequestStatus(i).call();
+               
+                // this.setState({requested: requested});
+                // console.log(this.state.requested);
             }
 
-            console.log(dict);
+            console.log(dict[1]);
 
 
             for (var i = 1; i < count+1; i++) {
@@ -125,9 +138,11 @@ class ShowLand extends Component {
 
             //console.log(rowsArea);
             for (var i = 0; i < count; i++) {
+                var requested = await this.state.LandInstance.methods.isRequested(i+1).call();
+                console.log(requested);
                 row.push(<tr><td>{i+1}</td><td>{rowsArea[i]}</td><td>{rowsLoc[i]}</td><td>{rowsPrice[i]}</td><td>{rowsSt[i]}</td>
                 <td>
-                    <Button onClick={this.requestLand(dict[i], i)} className="button-vote">
+                    <Button onClick={this.requestLand(dict[i+1], i+1)} disabled={requested} className="button-vote">
                          Request Land
                     </Button>
                 </td>
@@ -163,6 +178,19 @@ class ShowLand extends Component {
             </div>
           );
         }
+
+        if (!this.state.registered) {
+            return (
+              <div>
+                <div>
+                  <h1>
+                  You are not authorized to view this page.
+                  </h1>
+                </div>
+                
+              </div>
+            );
+          }
 
         return (
             <DrizzleProvider options={drizzleOptions}>

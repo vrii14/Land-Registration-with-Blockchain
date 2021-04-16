@@ -118,7 +118,8 @@ class LIDashboard extends Component {
                 rowsPrice.push(<ContractData contract="Land" method="getPrice" methodArgs={[i, { from: accounts[1] }]} />);   
             }
             for (var i = 0; i < count; i++) {
-                landTable.push(<tr><td>{i+1}</td><td>{rowsArea[i]}</td><td>{rowsLoc[i]}</td><td>{rowsPrice[i]}</td><td>{rowsSt[i]}</td></tr>)
+                var owner = await this.state.LandInstance.methods.getLandOwner(i+1).call();
+                landTable.push(<tr><td>{i+1}</td><td>{owner}</td><td>{rowsArea[i]}</td><td>{rowsLoc[i]}</td><td>{rowsPrice[i]}</td><td>{rowsSt[i]}</td></tr>)
 
             }
 
@@ -258,6 +259,7 @@ class LIDashboard extends Component {
                         <thead>
                             <tr>
                             <th>#</th>
+                            <th>Land Owner</th>
                             <th>Area</th>
                             <th>Location</th>
                             <th>Price</th>

@@ -15,6 +15,7 @@ import LIDashboard from "./LIDashboard";
 import SellerDashboard from "./SellerDashboard";
 import sellerProfile from "./sellerProfile";
 import buyerProfile from "./buyerProfile";
+import ApproveRequest from "./ApproveRequest";
 
 ReactDOM.render(
   // <React.StrictMode>
@@ -40,7 +41,7 @@ ReactDOM.render(
                 <Route path="/SellerDashboard" component={SellerDashboard} /> 
                 <Route path="/sellerProfile" component={sellerProfile} /> 
                 <Route path="/buyerProfile" component={buyerProfile} /> 
-
+                <Route path="/ApproveRequest" component={ApproveRequest} /> 
               </Switch>
             </div>
           </div>
