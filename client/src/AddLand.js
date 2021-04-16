@@ -47,7 +47,7 @@ class AddLand extends Component {
             this.setState({ LandInstance: instance, web3: web3, account: accounts[0] });
             const currentAddress = await web3.currentProvider.selectedAddress;
             console.log(currentAddress);
-            this.setState({ LandInstance: instance, web3: web3, account: accounts[0] });
+            //this.setState({ LandInstance: instance, web3: web3, account: accounts[0] });
             var verified = await this.state.LandInstance.methods.isVerified(currentAddress).call();
             console.log(verified);
             this.setState({verified: verified});
@@ -66,19 +66,25 @@ class AddLand extends Component {
     };
 
     addLand = async () => {
-        await this.state.LandInstance.methods.addLand(
-            this.state.area,
-            this.state.location,
-            this.state.price)
-            .send({
-                from : this.state.account,
-                gas : 210000
-            }).then(response => {
-                this.props.history.push("/ShowLand");
-            });
-
-        //Reload
-        window.location.reload(false);
+        if (this.state.area == '' || this.state.location == '' || this.state.price == '') {
+            alert("All the fields are compulsory!");
+        } else if ((!Number(this.state.area)) || (!Number(this.state.price))) {
+            alert("Land area and Price of Land must be a number!");
+        } else {
+            await this.state.LandInstance.methods.addLand(
+                this.state.area,
+                this.state.location,
+                this.state.price)
+                .send({
+                    from : this.state.account,
+                    gas : 210000
+                }).then(response => {
+                    this.props.history.push("/SellerDashboard");
+                });
+    
+            //Reload
+            window.location.reload(false);
+        }
     }
 
     updateArea = event => (
@@ -105,7 +111,7 @@ class AddLand extends Component {
           );
         }
 
-        if (!this.state.registered) {
+        if (!this.state.registered || !this.state.verified) {
             return (
               <div>
                 <div>
@@ -134,7 +140,7 @@ class AddLand extends Component {
               <div className="form">
                   <FormGroup>
                       <div className="form-label">
-                          Enter Area --
+                            Enter Area (in sqm.)--
                       </div>
                       <div className="form-input">
                           <FormControl

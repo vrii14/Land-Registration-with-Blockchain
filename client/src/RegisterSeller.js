@@ -56,21 +56,31 @@ class RegisterSeller extends Component {
     };
 
     registerSeller = async () => {
-        await this.state.LandInstance.methods.registerSeller(
-            this.state.name,
-            this.state.age,
-            this.state.aadharNumber,
-            this.state.panNumber,
-            this.state.landsOwned)
-            .send({
-                from : this.state.account,
-                gas : 2100000
-            }).then(response => {
-                this.props.history.push("/SellerDashboard");
-            });
-
-        //Reload
-        window.location.reload(false);
+        if (this.state.name == '' || this.state.age == '' || this.state.aadharNumber == '' || this.state.panNumber == '' || this.state.landsOwned == '') {
+            alert("All the fields are compulsory!");
+        } else if(this.state.aadharNumber.length != 12){
+            alert("Aadhar Number should be 12 digits long!");
+        } else if(this.state.panNumber.length != 10){
+            alert("Pan Number should be a 10 digit unique number!");
+        } else if (!Number(this.state.age)) {
+            alert("Your age must be a number");
+        } else{
+            await this.state.LandInstance.methods.registerSeller(
+                this.state.name,
+                this.state.age,
+                this.state.aadharNumber,
+                this.state.panNumber,
+                this.state.landsOwned)
+                .send({
+                    from : this.state.account,
+                    gas : 2100000
+                }).then(response => {
+                    this.props.history.push("/SellerDashboard");
+                });
+    
+            //Reload
+            window.location.reload(false);
+        }
     }
 
     updateName = event => (

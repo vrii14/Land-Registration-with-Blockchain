@@ -22,7 +22,7 @@ const drizzleOptions = {
 
 
 var row = [];
-
+var landOwner = [];
 
 class ShowLand extends Component {
     constructor(props){
@@ -36,9 +36,24 @@ class ShowLand extends Component {
         }
     }
 
-    // componentWillMount = () => {
-    //     this.LandDetails();
-    // }
+    requestLand = (seller_address, land_id) => async () => {
+       
+        console.log(seller_address);
+        console.log(land_id);
+
+        await this.state.LandInstance.methods.requestLand(
+            seller_address,
+            land_id
+        ).send({
+            from : this.state.account,
+            gas : 2100000
+        });
+
+        //Reload
+        window.location.reload(false);
+
+    }
+
     componentDidMount = async () => {
         //For refreshing page only once
         if(!window.location.hash){
@@ -65,12 +80,29 @@ class ShowLand extends Component {
             count = parseInt(count);
             console.log(typeof(count));
             console.log(count);
+
+            // for(var i=1; i<count+1;i++){
+            //     var address = await this.state.LandInstance.methods.getLandOwner(i).call();
+            //     landOwner[i-1] = address;
+            //     console.log(landOwner[i-1]);
+            // }
+            
             //this.setState({count:count});
 
             var rowsArea = [];
             var rowsLoc = [];
             var rowsSt = [];
             var rowsPrice = [];
+
+
+            var dict = {}
+            for(var i=1; i<count+1;i++){
+                var address = await this.state.LandInstance.methods.getLandOwner(i).call();
+                dict[i] = address;
+            }
+
+            console.log(dict);
+
 
             for (var i = 1; i < count+1; i++) {
                 // note: we are adding a key prop here to allow react to uniquely identify each
@@ -79,15 +111,30 @@ class ShowLand extends Component {
                 rowsLoc.push(<ContractData contract="Land" method="getLocation" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
                 rowsSt.push(<ContractData contract="Land" method="getStatus" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
                 rowsPrice.push(<ContractData contract="Land" method="getPrice" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
+                // var address = await this.state.LandInstance.methods.getLandOwner(i).call();
+                // landOwner[i] = address;
+            }
+            //console.log(landOwner);
+
+            // for(var i=1; i< count+1; i++){
+            //     var address = await this.state.LandInstance.methods.getLandOwner(i).call();
                 
-            }
+            //     landOwner[i] = address;
+            //     console.log(landOwner[i]);
+            // }
 
-            console.log(rowsArea);
+            //console.log(rowsArea);
             for (var i = 0; i < count; i++) {
-                row.push(<tr><td>{i+1}</td><td>{rowsArea[i]}</td><td>{rowsLoc[i]}</td><td>{rowsPrice[i]}</td><td>{rowsSt[i]}</td></tr>)
+                row.push(<tr><td>{i+1}</td><td>{rowsArea[i]}</td><td>{rowsLoc[i]}</td><td>{rowsPrice[i]}</td><td>{rowsSt[i]}</td>
+                <td>
+                    <Button onClick={this.requestLand(dict[i], i)} className="button-vote">
+                         Request Land
+                    </Button>
+                </td>
+                </tr>)
 
             }
-            console.log(row);
+            //console.log(row);
 
             
 
@@ -121,9 +168,13 @@ class ShowLand extends Component {
             <DrizzleProvider options={drizzleOptions}>
             <LoadingContainer>
                  <div>
-                    <h5>Land Info</h5>
                     
-             
+                    <div>
+                        <Button href="/buyerProfile" className="button-vote">
+                                View Profile
+                        </Button>
+                    </div>
+                    <h5>Land Info</h5>
                     <Table striped bordered hover>
                         <thead>
                             <tr>
@@ -140,9 +191,11 @@ class ShowLand extends Component {
                         
                     </Table>
 
-        </div>
-    </LoadingContainer>
-    </DrizzleProvider>
+                </div>
+
+        
+            </LoadingContainer>
+            </DrizzleProvider>
         );
         
     }

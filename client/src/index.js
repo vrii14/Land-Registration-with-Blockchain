@@ -13,6 +13,8 @@ import AddLand from "./AddLand";
 import ShowLand from "./ShowLand2";
 import LIDashboard from "./LIDashboard";
 import SellerDashboard from "./SellerDashboard";
+import sellerProfile from "./sellerProfile";
+import buyerProfile from "./buyerProfile";
 
 ReactDOM.render(
   // <React.StrictMode>
@@ -36,6 +38,8 @@ ReactDOM.render(
                 <Route path="/ShowLand" component={ShowLand} /> 
                 <Route path="/LIDashboard" component={LIDashboard} /> 
                 <Route path="/SellerDashboard" component={SellerDashboard} /> 
+                <Route path="/sellerProfile" component={sellerProfile} /> 
+                <Route path="/buyerProfile" component={buyerProfile} /> 
 
               </Switch>
             </div>
