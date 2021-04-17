@@ -39,10 +39,12 @@ contract Land {
     }
 
     struct LandRequest{
+        uint reqId;
         address sellerId;
         address buyerId;
         uint landId;
-        bool requestStatus;
+        // bool requestStatus;
+        // bool requested;
     }
 
     //key value pairs
@@ -50,7 +52,7 @@ contract Land {
     mapping(uint => LandInspector) public InspectorMapping;
     mapping(address => Seller) public SellerMapping;
     mapping(address => Buyer) public BuyerMapping;
-    // mapping(address => LandRequest) public RequestsMapping;
+    mapping(uint => LandRequest) public RequestsMapping;
 
     mapping(address => bool) public RegisteredAddressMapping;
     mapping(address => bool) public RegisteredSellerMapping;
@@ -58,8 +60,16 @@ contract Land {
     mapping(address => bool) public SellerVerification;
     mapping(address => bool) public BuyerVerification;
     mapping(uint => address) public LandOwner;
+    mapping(uint => bool) public RequestStatus;
+    mapping(uint => bool) public RequestedLands;
+    // mapping(uint => bool) public requestedLand;
 
-    LandRequest[] public RequestsMapping;
+
+    // mapping(address => address) public BuyertoSellerMapping;
+    // mapping(address => uint) public BuyertoLandMapping;
+    // mapping(address => bool) public BuyertoStatusMapping;
+
+    // LandRequest[] public RequestsMapping;
     address[] public sellers;
     address[] public buyers;
 
@@ -67,6 +77,7 @@ contract Land {
     uint public inspectorsCount;
     uint public sellersCount;
     uint public buyersCount;
+    uint public requestsCount;
 
     event Registration(address _registrationId);
     event AddingLand(uint indexed _landId);
@@ -97,7 +108,14 @@ contract Land {
     function getSellersCount() public view returns (uint) {
         return sellersCount;
     }
-    
+
+    function getRequestsCount() public view returns (uint) {
+        return requestsCount;
+    }
+    // function getRequestStatus(uint id) public payable returns (bool) {
+    //     return 
+    // }
+
     function getArea(uint i) public view returns (uint) {
         return lands[i].area;
     }
@@ -211,27 +229,59 @@ contract Land {
         return (BuyerMapping[i].name, BuyerMapping[i].age,BuyerMapping[i].city,BuyerMapping[i].state,  BuyerMapping[i].aadharNumber, BuyerMapping[i].panNumber);
     }
 
+    // function getAllRequests() public view returns (LandRequest[] memory){
+    //     return RequestsMapping;
+    // }
+
     function requestLand(address _sellerId, uint _landId) public{
         require(isBuyer(msg.sender) && isVerified(msg.sender));
         
-        LandRequest memory newReq =  LandRequest({
-            sellerId: _sellerId,
-            buyerId: msg.sender,
-            landId: _landId,
-            requestStatus: false});
+        // LandRequest memory newReq =  LandRequest({
+        //     sellerId: _sellerId,
+        //     buyerId: msg.sender,
+        //     landId: _landId,
+        //     requestStatus: false, 
+        //     requested: true});
     
-        RequestsMapping.push(newReq);
+        // RequestsMapping.push(newReq);
+        // BuyertoSellerMapping[msg.sender] = _sellerId;
+        // BuyertoLandMapping[msg.sender] = _landId;
+        // BuyertoStatusMapping[msg.sender] = false;
+        requestsCount++;
+        RequestsMapping[requestsCount] = LandRequest(requestsCount, _sellerId, msg.sender, _landId);
+        RequestStatus[requestsCount] = false;
+        RequestedLands[requestsCount] = true;
 
         emit Landrequested(_sellerId);
         // RequestsMapping[msg.sender] = LandRequest(_sellerId, _landId, false);
     }
 
-    function approveRequest(LandRequest memory req) public {
+    function getRequestDetails (uint i) public view returns (address, address, uint, bool) {
+        return(RequestsMapping[i].sellerId, RequestsMapping[i].buyerId, RequestsMapping[i].landId, RequestStatus[i]);
+    }
+
+    function isRequested(uint _id) public view returns (bool) {
+        if(RequestedLands[_id]){
+            return true;
+        }
+    }
+
+    function isApproved(uint _id) public view returns (bool) {
+        if(RequestStatus[_id]){
+            return true;
+        }
+    }
+
+    function approveRequest(uint _reqId) public {
         require((isSeller(msg.sender)) && (isVerified(msg.sender)));
 
-        req.requestStatus = true;
+        // // req.requestStatus = true;
+        // if((BuyertoSellerMapping[_buyerId] == msg.sender) && (BuyertoLandMapping[_buyerId] == _landId)){
+        //     BuyertoStatusMapping[_buyerId] = true;
+        // }
+        RequestStatus[_reqId] = true;
 
-        emit requestApproved(req.buyerId);
+        // emit requestApproved(req.buyerId);
     }
 
     function LandOwnershipTransfer(uint _landId, address _newOwner) public{

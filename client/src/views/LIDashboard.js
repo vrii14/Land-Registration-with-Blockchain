@@ -51,6 +51,7 @@ const drizzleOptions = {
 var sellerTable = [];
 var buyerTable = [];
 var landTable = [];
+var completed = true;
 
 class LIDashboard extends Component {
     constructor(props) {
@@ -66,6 +67,61 @@ class LIDashboard extends Component {
         }
     }
 
+    // displayAlert = (item) => (event) => {
+    //     // you can access the item object and the event object
+    //     alert('Hi');
+    //   }
+    verifySeller = (item) => async () => {
+        //console.log("Hello");
+        //console.log(item);
+
+        await this.state.LandInstance.methods.verifySeller(
+            item
+        ).send({
+            from: this.state.account,
+            gas: 2100000
+        });
+
+        //Reload
+        window.location.reload(false);
+
+    }
+
+    verifyBuyer = (item) => async () => {
+        //console.log("Hello");
+        //console.log(item);
+
+        await this.state.LandInstance.methods.verifyBuyer(
+            item
+        ).send({
+            from: this.state.account,
+            gas: 2100000
+        });
+
+        //Reload
+        window.location.reload(false);
+
+    }
+    landTransfer = (landId, newOwner) => async () => {
+
+        await this.state.LandInstance.methods.LandOwnershipTransfer(
+            landId, newOwner
+        ).send({
+            from: this.state.account,
+            gas: 2100000
+        });
+        //Reload
+        console.log(newOwner);
+        console.log(completed);
+        // this.setState({completed:false});
+        completed = false;
+        console.log(completed);
+
+        window.location.reload(false);
+
+    }
+
+
     componentDidMount = async () => {
         //For refreshing page only once
         if (!window.location.hash) {
@@ -80,7 +136,7 @@ class LIDashboard extends Component {
             const accounts = await web3.eth.getAccounts();
 
             const currentAddress = await web3.currentProvider.selectedAddress;
-            console.log(currentAddress);
+            //console.log(currentAddress);
             const networkId = await web3.eth.net.getId();
             const deployedNetwork = Land.networks[networkId];
             const instance = new web3.eth.Contract(
@@ -92,9 +148,9 @@ class LIDashboard extends Component {
 
 
             var sellersCount = await this.state.LandInstance.methods.getSellersCount().call();
-            console.log(typeof (sellersCount));
+            console.log(sellersCount);
             var buyersCount = await this.state.LandInstance.methods.getBuyersCount().call();
-            console.log(typeof (buyersCount));
+            console.log(buyersCount);
             var count = await this.state.LandInstance.methods.getLandsCount().call();
             count = parseInt(count);
             var rowsArea = [];
@@ -109,36 +165,70 @@ class LIDashboard extends Component {
                 rowsPrice.push(<ContractData contract="Land" method="getPrice" methodArgs={[i, { from: accounts[1] }]} />);
             }
             for (var i = 0; i < count; i++) {
-                landTable.push(<tr><td>{i + 1}</td><td>{rowsArea[i]}</td><td>{rowsLoc[i]}</td><td>{rowsPrice[i]}</td><td>{rowsSt[i]}</td></tr>)
+                var request = await this.state.LandInstance.methods.getRequestDetails(i + 1).call();
+                var approved = await this.state.LandInstance.methods.isApproved(i + 1).call();
+                // console.log(approved);
+                // console.log(request[3]);
+                var disabled = request[3] && completed;
+                console.log("Disabled: ", disabled);
+                console.log("request[3]: ", request[3]);
+                console.log("completed: ", completed);
+
+                var owner = await this.state.LandInstance.methods.getLandOwner(i + 1).call();
+                landTable.push(<tr><td>{i + 1}</td><td>{owner}</td><td>{rowsArea[i]}</td><td>{rowsLoc[i]}</td><td>{rowsPrice[i]}</td><td>{rowsSt[i]}</td>
+                    <td>
+                        <Button onClick={this.landTransfer(i + 1, request[1])} disabled={!disabled} className="button-vote">
+                            Verify Transaction
+                    </Button>
+                    </td>
+                </tr>)
+
 
             }
 
             var sellersMap = [];
             var buyersMap = [];
             sellersMap = await this.state.LandInstance.methods.getSeller().call();
-            console.log(sellersMap);
+            //console.log(sellersMap);
             buyersMap = await this.state.LandInstance.methods.getBuyer().call();
-            console.log(buyersMap);
+            //console.log(buyersMap);
 
             var verified = await this.state.LandInstance.methods.isLandInspector(currentAddress).call();
-            console.log(verified);
+            //console.log(verified);
             this.setState({ verified: verified });
 
-            // if(0x8B1CFEeCe1DFe91eef626357c29C0e19C989131e == currentAddress){
-            //     this.setState({verified: true});
-            // }else{
-            //     this.setState({verified: false});              
-            // }
 
             for (let i = 0; i < sellersCount; i++) {
                 var seller = await this.state.LandInstance.methods.getSellerDetails(sellersMap[i]).call();
                 console.log(seller);
-                sellerTable.push(<tr><td>{i + 1}</td><td>{sellersMap[i]}</td><td>{seller[0]}</td><td>{seller[1]}</td><td>{seller[2]}</td><td>{seller[3]}</td><td>{seller[4]}</td></tr>)
+                var seller_verify = await this.state.LandInstance.methods.isVerified(sellersMap[i]).call();
+                console.log(seller_verify);
+
+                sellerTable.push(<tr><td>{i + 1}</td><td>{sellersMap[i]}</td><td>{seller[0]}</td><td>{seller[1]}</td><td>{seller[2]}</td><td>{seller[3]}</td><td>{seller[4]}</td>
+                    <td>
+                        <Button onClick={this.verifySeller(sellersMap[i])} disabled={seller_verify} className="button-vote">
+                            Verify
+                    </Button>
+                    </td></tr>)
+
+
             }
+
+            console.log(sellerTable);
+
             for (let i = 0; i < buyersCount; i++) {
                 var buyer = await this.state.LandInstance.methods.getBuyerDetails(buyersMap[i]).call();
-                console.log(buyer);
-                buyerTable.push(<tr><td>{i + 1}</td><td>{buyersMap[i]}</td><td>{buyer[0]}</td><td>{buyer[1]}</td><td>{buyer[2]}</td><td>{buyer[3]}</td><td>{buyer[4]}</td><td>{buyer[5]}</td></tr>)
+                //console.log(buyer);
+                var buyer_verify = await this.state.LandInstance.methods.isVerified(buyersMap[i]).call();
+                console.log(buyer_verify);
+
+                buyerTable.push(<tr><td>{i + 1}</td><td>{buyersMap[i]}</td><td>{buyer[0]}</td><td>{buyer[1]}</td><td>{buyer[2]}</td><td>{buyer[3]}</td><td>{buyer[4]}</td><td>{buyer[5]}</td>
+                    <td>
+                        <Button onClick={this.verifyBuyer(buyersMap[i])} disabled={buyer_verify} className="button-vote">
+                            Verify
+                    </Button>
+                    </td>
+                </tr>)
 
             }
 
@@ -152,13 +242,14 @@ class LIDashboard extends Component {
     };
 
 
+
     render() {
         if (!this.state.web3) {
             return (
                 <div>
                     <div>
                         <h1>
-                            <Spinner animation="border" variant="warning" />
+                            <Spinner animation="border" variant="primary" />
                         </h1>
                     </div>
 
@@ -168,11 +259,19 @@ class LIDashboard extends Component {
 
         if (!this.state.verified) {
             return (
-                <div>
+                <div className="content">
                     <div>
-                        <h1>
-                            You are not verified to view this page
-                  </h1>
+                        <Row>
+                            <Col xs="6">
+                                <Card className="card-chart">
+                                    <CardBody>
+                                        <h1>
+                                            You are not verified to view this page
+                                        </h1>
+                                    </CardBody>
+                                </Card>
+                            </Col>
+                        </Row>
                     </div>
 
                 </div>
@@ -259,6 +358,7 @@ class LIDashboard extends Component {
                                                     <th>Aadhar Number</th>
                                                     <th>Pan Number</th>
                                                     <th>Owned Lands</th>
+                                                    <th>Verify Seller</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -289,6 +389,7 @@ class LIDashboard extends Component {
                                                     <th>State</th>
                                                     <th>Aadhar Number</th>
                                                     <th>Pan Number</th>
+                                                    <th>Verify Buyer</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -311,10 +412,12 @@ class LIDashboard extends Component {
                                             <thead className="text-primary">
                                                 <tr>
                                                     <th>#</th>
+                                                    <th>Address</th>
                                                     <th>Area</th>
                                                     <th>Location</th>
                                                     <th>Price</th>
                                                     <th>Status</th>
+                                                    <th>Approve Transaction</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -325,7 +428,7 @@ class LIDashboard extends Component {
                                 </Card>
                             </Col>
                         </Row>
-                     
+
                     </div>
                 </LoadingContainer>
             </DrizzleProvider>

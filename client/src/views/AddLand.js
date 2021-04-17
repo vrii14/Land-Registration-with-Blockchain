@@ -81,6 +81,11 @@ class AddLand extends Component {
     };
 
     addLand = async () => {
+      if (this.state.area == '' || this.state.location == '' || this.state.price == '') {
+        alert("All the fields are compulsory!");
+    } else if ((!Number(this.state.area)) || (!Number(this.state.price))) {
+        alert("Land area and Price of Land must be a number!");
+    } else {
         await this.state.LandInstance.methods.addLand(
             this.state.area,
             this.state.location,
@@ -94,6 +99,7 @@ class AddLand extends Component {
 
         //Reload
         window.location.reload(false);
+    }
     }
 
     updateArea = event => (
@@ -112,7 +118,7 @@ class AddLand extends Component {
             <div>
               <div>
                 <h1>
-                <Spinner animation="border" variant="warning" />
+                <Spinner animation="border" variant="primary" />
                 </h1>
               </div>
               
@@ -120,16 +126,24 @@ class AddLand extends Component {
           );
         }
 
-        if (!this.state.registered) {
+        if (!this.state.registered  || !this.state.verified) {
             return (
-              <div>
-                <div>
-                  <h1>
-                  You are not authorized to view this page.
-                  </h1>
+              <div className="content">
+                    <div>
+                        <Row>
+                            <Col xs="6">
+                                <Card className="card-chart">
+                                    <CardBody>
+                                        <h1>
+                                            You are not verified to view this page
+                                        </h1>
+                                    </CardBody>
+                                </Card>
+                            </Col>
+                        </Row>
+                    </div>
+
                 </div>
-                
-              </div>
             );
           }
 
@@ -146,7 +160,7 @@ class AddLand extends Component {
                   <Row>
                     <Col md="12">
                       <FormGroup>
-                        <label>Area</label>
+                        <label>Area (in sqm.)</label>
                         <Input
                           placeholder="Area"
                           type="text"

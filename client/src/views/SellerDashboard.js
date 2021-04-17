@@ -4,7 +4,7 @@ import LandContract from "../artifacts/Land.json";
 import Land from "../artifacts/Land.json";
 import getWeb3 from "../getWeb3";
 import { DrizzleProvider } from 'drizzle-react';
-import {Spinner} from 'react-bootstrap';
+import { Spinner } from 'react-bootstrap';
 import {
   LoadingContainer,
   AccountData,
@@ -47,8 +47,10 @@ const drizzleOptions = {
 }
 
 
-var row = [];
 var verified;
+var row = [];
+
+
 class SDash extends Component {
   constructor(props) {
     super(props)
@@ -78,9 +80,9 @@ class SDash extends Component {
       const accounts = await web3.eth.getAccounts();
 
       const networkId = await web3.eth.net.getId();
-      const deployedNetwork = LandContract.networks[networkId];
+      const deployedNetwork = Land.networks[networkId];
       const instance = new web3.eth.Contract(
-        LandContract.abi,
+        Land.abi,
         deployedNetwork && deployedNetwork.address,
       );
 
@@ -108,10 +110,10 @@ class SDash extends Component {
       for (var i = 1; i < count + 1; i++) {
         // note: we are adding a key prop here to allow react to uniquely identify each
         // element in this array. see: https://reactjs.org/docs/lists-and-keys.html
-        rowsArea.push(<ContractData contract="Land" method="getArea" methodArgs={[i, { from: "0x45Ba39dD54Fd2A56fc64242955F5C076972Fc1D7" }]} />);
-        rowsLoc.push(<ContractData contract="Land" method="getLocation" methodArgs={[i, { from: "0x45Ba39dD54Fd2A56fc64242955F5C076972Fc1D7" }]} />);
-        rowsSt.push(<ContractData contract="Land" method="getStatus" methodArgs={[i, { from: "0x45Ba39dD54Fd2A56fc64242955F5C076972Fc1D7" }]} />);
-        rowsPrice.push(<ContractData contract="Land" method="getPrice" methodArgs={[i, { from: "0x45Ba39dD54Fd2A56fc64242955F5C076972Fc1D7" }]} />);
+        rowsArea.push(<ContractData contract="Land" method="getArea" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
+        rowsLoc.push(<ContractData contract="Land" method="getLocation" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
+        rowsSt.push(<ContractData contract="Land" method="getStatus" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
+        rowsPrice.push(<ContractData contract="Land" method="getPrice" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
 
       }
 
@@ -122,8 +124,6 @@ class SDash extends Component {
       }
       console.log(row);
 
-      // verified = verified.toString();
-      // console.log(verified);
 
     } catch (error) {
       // Catch any errors for any of the above operations.
@@ -140,7 +140,7 @@ class SDash extends Component {
         <div>
           <div>
             <h1>
-              <Spinner animation="border" variant="warning" />
+              <Spinner animation="border" variant="primary" />
             </h1>
           </div>
 
@@ -150,11 +150,19 @@ class SDash extends Component {
 
     if (!this.state.registered) {
       return (
-        <div>
+        <div className="content">
           <div>
-            <h1>
-              You are not authorized to view this page.
-                </h1>
+            <Row>
+              <Col xs="6">
+                <Card className="card-chart">
+                  <CardBody>
+                    <h1>
+                      You are not verified to view this page
+                                        </h1>
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
           </div>
 
         </div>
@@ -223,7 +231,7 @@ class SDash extends Component {
             </Col>
           </Row>
           <Row>
-            <Col xs="12">
+            <Col lg="4">
               <Card>
                 <CardHeader>
                   <h5 className="title">Wish to Add Land !</h5>
@@ -238,35 +246,65 @@ class SDash extends Component {
                 </CardBody>
               </Card>
             </Col>
-          </Row>
-          <DrizzleProvider options={drizzleOptions}>
-            <LoadingContainer>
-          <Row>
-            <Col lg="12" md="12">
+            <Col lg="4">
               <Card>
                 <CardHeader>
-                  <CardTitle tag="h4">Lands Info</CardTitle>
+                  <h5 className="title">Profile</h5>
                 </CardHeader>
                 <CardBody>
-                  <Table className="tablesorter" responsive color="black">
-                    <thead className="text-primary">
-                      <tr>
-                        <th>#</th>
-                        <th>Area</th>
-                        <th>Location</th>
-                        <th>Price</th>
-                        <th>Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {row}
-                    </tbody>
-                  </Table>
+                  <div className="chart-area">
+
+                    <Button href="/sellerProfile" className="btn-fill" color="primary">
+                      View Profile
+                </Button>
+                  </div>
+                </CardBody>
+              </Card>
+            </Col>
+            <Col lg="4">
+              <Card>
+                <CardHeader>
+                  <h5 className="title">Requests</h5>
+                </CardHeader>
+                <CardBody>
+                  <div className="chart-area">
+
+                    <Button href="/ApproveRequest" disabled={!this.state.verified} className="btn-fill" color="primary">
+                      View all Land Requests
+                        </Button>
+                  </div>
                 </CardBody>
               </Card>
             </Col>
           </Row>
-          </LoadingContainer>
+          <DrizzleProvider options={drizzleOptions}>
+            <LoadingContainer>
+              <Row>
+                <Col lg="12" md="12">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle tag="h4">Lands Info</CardTitle>
+                    </CardHeader>
+                    <CardBody>
+                      <Table className="tablesorter" responsive color="black">
+                        <thead className="text-primary">
+                          <tr>
+                            <th>#</th>
+                            <th>Area</th>
+                            <th>Location</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {row}
+                        </tbody>
+                      </Table>
+                    </CardBody>
+                  </Card>
+                </Col>
+              </Row>
+            </LoadingContainer>
           </DrizzleProvider>
         </div>
       </>

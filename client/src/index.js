@@ -22,6 +22,10 @@ import "./assets/demo/demo.css";
 import "./assets/css/nucleo-icons.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
+import sellerProfile from "./sellerProfile";
+import buyerProfile from "./buyerProfile";
+import ApproveRequest from "./ApproveRequest";
+
 import ThemeContextWrapper from "./components/ThemeWrapper/ThemeWrapper";
 import BackgroundColorWrapper from "./components/BackgroundColorWrapper/BackgroundColorWrapper";
 
@@ -31,9 +35,9 @@ ReactDOM.render(
   //   <App />
   // </React.StrictMode>
   <ThemeContextWrapper>
-  <BackgroundColorWrapper>
-  <Router history={history}>
-    {/* <div className="img-wrapper">
+    <BackgroundColorWrapper>
+      <Router history={history}>
+        {/* <div className="img-wrapper">
           <img src="https://i.pinimg.com/originals/71/6e/00/716e00537e8526347390d64ec900107d.png" className="logo"/>
             <div className="wine-text-container">
               <h6 className="site-title wood-text">Land Registry</h6>
@@ -41,29 +45,32 @@ ReactDOM.render(
           </div>
          <div className="auth-wrapper">
             <div className="auth-inner"> */}
-    <Switch>
-      <Route exact path='/' component={Login} />
-      {/* <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
+        <Switch>
+          <Route exact path='/' component={Login} />
+          {/* <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
       <Redirect from="/" to="/admin/dashboard" /> */}
-      <Route path="/RegisterBuyer" component={RegisterBuyer} />
-      <Route path="/RegisterSeller" component={RegisterSeller} />
-      {/* <Route path="/AddLand" component={AddLand} /> */}
-      <Route path="/admin/dashboard" render={(props) => <AdminLayout {...props} />} />
-      <Redirect from="/ShowLand" to="/admin/dashboard" />
-      <Route path="/admin/LIdashboard" render={(props) => <LI {...props} />} />
-      <Redirect from="/LIdashboard" to="/admin/LIdashboard" />
-      <Route path="/admin/SellerDashboard" render={(props) => <Seller {...props} />} />
-      <Redirect from="/SellerDashboard" to="/admin/SellerDashboard" />
-      <Route path="/admin/AddLand" render={(props) => <Land {...props} />} />
-      <Redirect from="/AddLand" to="/admin/AddLand" />
-      {/* <Route path="/LIDashboard" component={LIDashboard} />
+          <Route path="/RegisterBuyer" component={RegisterBuyer} />
+          <Route path="/RegisterSeller" component={RegisterSeller} />
+          {/* <Route path="/AddLand" component={AddLand} /> */}
+          <Route path="/admin/dashboard" render={(props) => <AdminLayout {...props} />} />
+          <Redirect from="/ShowLand" to="/admin/dashboard" />
+          <Route path="/admin/LIdashboard" render={(props) => <LI {...props} />} />
+          <Redirect from="/LIdashboard" to="/admin/LIdashboard" />
+          <Route path="/admin/SellerDashboard" render={(props) => <Seller {...props} />} />
+          <Redirect from="/SellerDashboard" to="/admin/SellerDashboard" />
+          <Route path="/admin/AddLand" render={(props) => <Land {...props} />} />
+          <Redirect from="/AddLand" to="/admin/AddLand" />
+          <Route path="/sellerProfile" component={sellerProfile} />
+          <Route path="/buyerProfile" component={buyerProfile} />
+          <Route path="/ApproveRequest" component={ApproveRequest} />
+          {/* <Route path="/LIDashboard" component={LIDashboard} />
       <Route path="/SellerDashboard" component={SellerDashboard} /> */}
 
-    </Switch>
-    {/* </div>
+        </Switch>
+        {/* </div>
           </div> */}
-  </Router>
-  </BackgroundColorWrapper>
+      </Router>
+    </BackgroundColorWrapper>
   </ThemeContextWrapper>,
   document.getElementById('root')
 );

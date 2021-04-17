@@ -7,7 +7,7 @@ import Land from "../artifacts/Land.json";
 import getWeb3 from "../getWeb3";
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import { DrizzleProvider } from 'drizzle-react';
-import {Spinner} from 'react-bootstrap'
+import { Spinner } from 'react-bootstrap'
 import {
   LoadingContainer,
   AccountData,
@@ -51,6 +51,8 @@ const drizzleOptions = {
 
 
 var row = [];
+var landOwner = [];
+// var requested = false;
 
 class Dashboard extends Component {
   constructor(props) {
@@ -61,8 +63,30 @@ class Dashboard extends Component {
       account: null,
       web3: null,
       count: 0,
+      requested: false,
     }
   }
+
+  requestLand = (seller_address, land_id) => async () => {
+
+    console.log(seller_address);
+    console.log(land_id);
+    // this.setState({requested: true});
+    // requested = true;
+    await this.state.LandInstance.methods.requestLand(
+      seller_address,
+      land_id
+    ).send({
+      from: this.state.account,
+      gas: 2100000
+    });
+    // console.log(this.state.requested);
+
+    //Reload
+    window.location.reload(false);
+
+  }
+
   componentDidMount = async () => {
     //For refreshing page only once
     if (!window.location.hash) {
@@ -85,10 +109,22 @@ class Dashboard extends Component {
 
       this.setState({ LandInstance: instance, web3: web3, account: accounts[0] });
 
+      const currentAddress = await web3.currentProvider.selectedAddress;
+      console.log(currentAddress);
+      var registered = await this.state.LandInstance.methods.isBuyer(currentAddress).call();
+      console.log(registered);
+      this.setState({ registered: registered });
       var count = await this.state.LandInstance.methods.getLandsCount().call();
       count = parseInt(count);
       console.log(typeof (count));
       console.log(count);
+
+      // for(var i=1; i<count+1;i++){
+      //     var address = await this.state.LandInstance.methods.getLandOwner(i).call();
+      //     landOwner[i-1] = address;
+      //     console.log(landOwner[i-1]);
+      // }
+
       //this.setState({count:count});
 
       var rowsArea = [];
@@ -96,22 +132,54 @@ class Dashboard extends Component {
       var rowsSt = [];
       var rowsPrice = [];
 
+
+      var dict = {}
+      for (var i = 1; i < count + 1; i++) {
+        var address = await this.state.LandInstance.methods.getLandOwner(i).call();
+        dict[i] = address;
+        // var requested = await this.state.LandInstance.methods.getRequestStatus(i).call();
+
+        // this.setState({requested: requested});
+        // console.log(this.state.requested);
+      }
+
+      console.log(dict[1]);
+
+
       for (var i = 1; i < count + 1; i++) {
         // note: we are adding a key prop here to allow react to uniquely identify each
         // element in this array. see: https://reactjs.org/docs/lists-and-keys.html
-        rowsArea.push(<ContractData contract="Land" method="getArea" methodArgs={[i, { from: "0x45Ba39dD54Fd2A56fc64242955F5C076972Fc1D7" }]} />);
-        rowsLoc.push(<ContractData contract="Land" method="getLocation" methodArgs={[i, { from: "0x45Ba39dD54Fd2A56fc64242955F5C076972Fc1D7" }]} />);
-        rowsSt.push(<ContractData contract="Land" method="getStatus" methodArgs={[i, { from: "0x45Ba39dD54Fd2A56fc64242955F5C076972Fc1D7" }]} />);
-        rowsPrice.push(<ContractData contract="Land" method="getPrice" methodArgs={[i, { from: "0x45Ba39dD54Fd2A56fc64242955F5C076972Fc1D7" }]} />);
-
+        rowsArea.push(<ContractData contract="Land" method="getArea" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
+        rowsLoc.push(<ContractData contract="Land" method="getLocation" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
+        rowsSt.push(<ContractData contract="Land" method="getStatus" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
+        rowsPrice.push(<ContractData contract="Land" method="getPrice" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
+        // var address = await this.state.LandInstance.methods.getLandOwner(i).call();
+        // landOwner[i] = address;
       }
+      //console.log(landOwner);
 
-      console.log(rowsArea);
+      // for(var i=1; i< count+1; i++){
+      //     var address = await this.state.LandInstance.methods.getLandOwner(i).call();
+
+      //     landOwner[i] = address;
+      //     console.log(landOwner[i]);
+      // }
+
+      //console.log(rowsArea);
       for (var i = 0; i < count; i++) {
-        row.push(<tr><td>{i + 1}</td><td>{rowsArea[i]}</td><td>{rowsLoc[i]}</td><td>{rowsPrice[i]}</td><td>{rowsSt[i]}</td></tr>)
+        var requested = await this.state.LandInstance.methods.isRequested(i + 1).call();
+        console.log(requested);
+        var reqStatus = await this.state.LandInstance.methods.isApproved(i + 1).call();
+        row.push(<tr><td>{i + 1}</td><td>{rowsArea[i]}</td><td>{rowsLoc[i]}</td><td>{rowsPrice[i]}</td><td>{reqStatus.toString()}</td>
+          <td>
+            <Button onClick={this.requestLand(dict[i + 1], i + 1)} disabled={requested} className="button-vote">
+              Request Land
+                    </Button>
+          </td>
+        </tr>)
 
       }
-      console.log(row);
+      //console.log(row);
 
 
 
@@ -133,10 +201,31 @@ class Dashboard extends Component {
         <div>
           <div>
             <h1>
-            <Spinner animation="border" variant="warning" />
+              <Spinner animation="border" variant="primary" />
             </h1>
           </div>
-          
+
+        </div>
+      );
+    }
+
+    if (!this.state.registered) {
+      return (
+        <div className="content">
+          <div>
+            <Row>
+              <Col xs="6">
+                <Card className="card-chart">
+                  <CardBody>
+                    <h1>
+                      You are not verified to view this page
+                                        </h1>
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </div>
+
         </div>
       );
     }
@@ -202,61 +291,52 @@ class Dashboard extends Component {
               </Card>
             </Col>
           </Row>
-          <DrizzleProvider options={drizzleOptions}>
-            <LoadingContainer>
-            <Row>
-          <Col md="12">
-            
-                <h5 className="title">Lands Info</h5>
-             
-                <Row>
-                  <Col
-                    className="font-icon-list col-xs-6 col-xs-6"
-                    lg="2"
-                    md="3"
-                    sm="4"
-                  >
-                    <Card>
-                      <CardBody style={{textAlign: "center"}}>
-                        <label># : <span> 1 </span></label><br/>
-                        <label>Area : <span> 20 </span></label><br/>
-                        <label>Location : <span> Akola </span></label><br/>
-                        <label>Price : <span> 3000000 </span></label><br/>
-                        <label>Status: <span> FALSE </span></label><br/>
-                        </CardBody>
-                    </Card>
-                  </Col>
-                  
-                </Row>
-             
-          </Col>
-        </Row>
-          {/* <Row>
-            <Col lg="12" md="12">
+          <Row>
+            <Col lg="4">
               <Card>
                 <CardHeader>
-                  <CardTitle tag="h4">Lands Info</CardTitle>
+                  <h5 className="title">Profile</h5>
                 </CardHeader>
                 <CardBody>
-                   <Table className="tablesorter" responsive color="black">
-                    <thead className="text-primary">
-                      <tr>
-                        <th>#</th>
-                        <th>Area</th>
-                        <th>Location</th>
-                        <th>Price</th>
-                        <th className="text-center">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {row}
-                    </tbody>
-                  </Table> 
+                  <div className="chart-area">
+
+                    <Button href="/buyerProfile" className="btn-fill" color="primary">
+                      View Profile
+                </Button>
+                  </div>
                 </CardBody>
               </Card>
             </Col>
-          </Row> */}
-          </LoadingContainer>
+          </Row>
+          <DrizzleProvider options={drizzleOptions}>
+            <LoadingContainer>
+              <Row>
+                <Col lg="12" md="12">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle tag="h4">Lands Info</CardTitle>
+                    </CardHeader>
+                    <CardBody>
+                      <Table className="tablesorter" responsive color="black">
+                        <thead className="text-primary">
+                          <tr>
+                            <th>#</th>
+                            <th>Area</th>
+                            <th>Location</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                            <th>Request Land</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {row}
+                        </tbody>
+                      </Table>
+                    </CardBody>
+                  </Card>
+                </Col>
+              </Row>
+            </LoadingContainer>
           </DrizzleProvider>
         </div>
       </>
@@ -264,5 +344,6 @@ class Dashboard extends Component {
     );
   }
 }
+
 
 export default Dashboard;
