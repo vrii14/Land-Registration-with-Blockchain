@@ -86,7 +86,7 @@ class ApproveRequest extends Component {
                 var approved = await this.state.LandInstance.methods.isApproved(i).call();
                 console.log(approved);
                 if(currentAddress == request[0].toLowerCase()){
-                    requestTable.push(<tr><td>{i}</td><td>{request[2]}</td><td>{request[3].toString()}</td>
+                    requestTable.push(<tr><td>{i}</td><td>{request[1]}</td><td>{request[2]}</td><td>{request[3].toString()}</td>
                     <td>
                      <Button onClick={this.approveRequest(i)} disabled={approved} className="button-vote">
                           Approve Request
@@ -142,6 +142,7 @@ class ApproveRequest extends Component {
                         <thead>
                             <tr>
                                 <th>#</th>
+                                <th>Buyer ID</th>
                                 <th>Land ID</th>
                                 <th>Request Status</th>
                             </tr>

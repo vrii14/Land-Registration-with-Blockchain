@@ -140,7 +140,8 @@ class ShowLand extends Component {
             for (var i = 0; i < count; i++) {
                 var requested = await this.state.LandInstance.methods.isRequested(i+1).call();
                 console.log(requested);
-                row.push(<tr><td>{i+1}</td><td>{rowsArea[i]}</td><td>{rowsLoc[i]}</td><td>{rowsPrice[i]}</td><td>{rowsSt[i]}</td>
+                var reqStatus = await this.state.LandInstance.methods.isApproved(i+1).call();
+                row.push(<tr><td>{i+1}</td><td>{rowsArea[i]}</td><td>{rowsLoc[i]}</td><td>{rowsPrice[i]}</td><td>{reqStatus.toString()}</td>
                 <td>
                     <Button onClick={this.requestLand(dict[i+1], i+1)} disabled={requested} className="button-vote">
                          Request Land

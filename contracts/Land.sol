@@ -160,7 +160,7 @@ contract Land {
     }
 
     function isLandInspector(address _id) public view returns (bool) {
-        if(0x1eb723bD940725D40DF870e93419FF47790ad0A2 == _id){
+        if(0x7a0d6278c22Fc3a2344bECE0d824DcfB1C711667 == _id){
             return true;
         }else{
             return false;
@@ -250,6 +250,7 @@ contract Land {
         requestsCount++;
         RequestsMapping[requestsCount] = LandRequest(requestsCount, _sellerId, msg.sender, _landId);
         RequestStatus[requestsCount] = false;
+        RequestedLands[requestsCount] = true;
 
         emit Landrequested(_sellerId);
         // RequestsMapping[msg.sender] = LandRequest(_sellerId, _landId, false);

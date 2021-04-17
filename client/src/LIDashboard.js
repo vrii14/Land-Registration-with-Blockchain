@@ -24,6 +24,7 @@ const drizzleOptions = {
 var sellerTable = [];
 var buyerTable = [];
 var landTable = [];
+var completed= true;
 
 class LIDashboard extends Component {
     constructor(props){
@@ -74,6 +75,25 @@ class LIDashboard extends Component {
         window.location.reload(false);
 
     }
+    landTransfer = (landId, newOwner) => async () => {
+        
+        await this.state.LandInstance.methods.LandOwnershipTransfer(
+            landId, newOwner
+        ).send({
+            from : this.state.account,
+            gas : 2100000
+        });
+        //Reload
+        console.log(newOwner);
+        console.log(completed);
+        // this.setState({completed:false});
+        completed = false;
+        console.log(completed);
+
+        window.location.reload(false);
+
+    }
+
 
     componentDidMount = async () => {
         //For refreshing page only once
@@ -118,8 +138,24 @@ class LIDashboard extends Component {
                 rowsPrice.push(<ContractData contract="Land" method="getPrice" methodArgs={[i, { from: accounts[1] }]} />);   
             }
             for (var i = 0; i < count; i++) {
+                var request = await this.state.LandInstance.methods.getRequestDetails(i+1).call();
+                var approved = await this.state.LandInstance.methods.isApproved(i+1).call();
+                // console.log(approved);
+                // console.log(request[3]);
+                var disabled = request[3]&&completed;
+                console.log("Disabled: ", disabled);
+                console.log("request[3]: ", request[3]);
+                console.log("completed: ", completed);
+
                 var owner = await this.state.LandInstance.methods.getLandOwner(i+1).call();
-                landTable.push(<tr><td>{i+1}</td><td>{owner}</td><td>{rowsArea[i]}</td><td>{rowsLoc[i]}</td><td>{rowsPrice[i]}</td><td>{rowsSt[i]}</td></tr>)
+                landTable.push(<tr><td>{i+1}</td><td>{owner}</td><td>{rowsArea[i]}</td><td>{rowsLoc[i]}</td><td>{rowsPrice[i]}</td><td>{rowsSt[i]}</td>
+                <td>
+                     <Button onClick={this.landTransfer(i+1, request[1])} disabled={!disabled} className="button-vote">
+                          Verify Transaction
+                    </Button>
+                </td>
+                </tr>)
+
 
             }
 
