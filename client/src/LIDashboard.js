@@ -155,9 +155,9 @@ class LIDashboard extends Component {
         return (
             <DrizzleProvider options={drizzleOptions}>
             <LoadingContainer>
-                <div >
+                <div>
                     <h5>Sellers Info</h5>
-                    <Table striped bordered hover >
+                    <Table striped bordered hover>
                         <thead>
                             <tr>
                                 <th>#</th>

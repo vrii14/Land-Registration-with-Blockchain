@@ -23,7 +23,17 @@
     "react-scrolllock": "^5.0.1",
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
-    "web3": "^1.2.2"
+    "web3": "^1.2.2",
+    "@fortawesome/fontawesome-free": "5.15.1",
+    "chart.js": "2.9.4",
+    "classnames": "2.2.6",
+    "node-sass": "4.14.1",
+    "node-sass-package-importer": "5.3.2",
+    "perfect-scrollbar": "1.5.0",
+    "prop-types": "15.7.2",
+    "react-chartjs-2": "2.11.1",
+    "react-notification-alert": "0.0.13",
+    "reactstrap": "8.7.1"
   },
   "scripts": {
     "start": "react-scripts start",

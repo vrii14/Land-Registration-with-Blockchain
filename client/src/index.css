@@ -1,13 +1,14 @@
 @import url('https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600,700,800');
 
+
 * {
   box-sizing: border-box;
 }
-body {
+
+
+
+.bodyC{
   background-image: url("https://i.pinimg.com/originals/08/a7/ab/08a7ab130881d2fb60585dc37744e04b.jpg");
-  min-height: 100vh;
-  display: flex;
-  /* Full height */
   height: 100%;
   width: 100%;
   overflow: hidden;
@@ -15,6 +16,9 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+}
+body {
+  min-height: 100vh;
   font-weight: 400;
   font-family: 'Fira Sans', sans-serif;
 }
