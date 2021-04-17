@@ -44,6 +44,7 @@ import {
   chartExample4,
 } from "../variables/charts";
 
+// import MaterialTable from 'material-table'
 
 const drizzleOptions = {
   contracts: [Land]
@@ -169,10 +170,13 @@ class Dashboard extends Component {
       for (var i = 0; i < count; i++) {
         var requested = await this.state.LandInstance.methods.isRequested(i + 1).call();
         console.log(requested);
+        var verified = await this.state.LandInstance.methods.isLandVerified(i + 1).call();
+        console.log(verified);
+
         var reqStatus = await this.state.LandInstance.methods.isApproved(i + 1).call();
         row.push(<tr><td>{i + 1}</td><td>{rowsArea[i]}</td><td>{rowsLoc[i]}</td><td>{rowsPrice[i]}</td><td>{reqStatus.toString()}</td>
           <td>
-            <Button onClick={this.requestLand(dict[i + 1], i + 1)} disabled={requested} className="button-vote">
+            <Button onClick={this.requestLand(dict[i + 1], i + 1)} disabled={requested && !verified} className="button-vote">
               Request Land
                     </Button>
           </td>
@@ -332,6 +336,23 @@ class Dashboard extends Component {
                           {row}
                         </tbody>
                       </Table>
+                      {/* <MaterialTable
+                        columns={[
+                          { title: '#', field: 'id' },
+                          { title: 'Area', field: 'area', type: 'numeric' },
+                          { title: 'Location', field: 'location' },
+                          { title: 'Price', field: 'price', type: 'numeric'},
+                          { title: 'Status', field: 'status' },
+                          { title: 'Request Land', field: 'request' },
+                        ]}
+                        data={row}
+                        title="Land Details"
+                        options={{
+                          paging:false,
+                          sorting:false,
+                          // filtering:true,
+                        }}
+                      /> */}
                     </CardBody>
                   </Card>
                 </Col>

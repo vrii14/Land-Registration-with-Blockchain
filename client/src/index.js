@@ -25,6 +25,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import sellerProfile from "./sellerProfile";
 import buyerProfile from "./buyerProfile";
 import ApproveRequest from "./ApproveRequest";
+import ApproveTransaction from "./ApproveTransaction";
 
 import ThemeContextWrapper from "./components/ThemeWrapper/ThemeWrapper";
 import BackgroundColorWrapper from "./components/BackgroundColorWrapper/BackgroundColorWrapper";
@@ -63,6 +64,8 @@ ReactDOM.render(
           <Route path="/sellerProfile" component={sellerProfile} />
           <Route path="/buyerProfile" component={buyerProfile} />
           <Route path="/ApproveRequest" component={ApproveRequest} />
+          <Route path="/ApproveTransaction" component={ApproveTransaction} />
+
           {/* <Route path="/LIDashboard" component={LIDashboard} />
       <Route path="/SellerDashboard" component={SellerDashboard} /> */}
 

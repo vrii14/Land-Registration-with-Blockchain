@@ -59,6 +59,7 @@ contract Land {
     mapping(address => bool) public RegisteredBuyerMapping;
     mapping(address => bool) public SellerVerification;
     mapping(address => bool) public BuyerVerification;
+    mapping(uint => bool) public LandVerification;
     mapping(uint => address) public LandOwner;
     mapping(uint => bool) public RequestStatus;
     mapping(uint => bool) public RequestedLands;
@@ -146,6 +147,18 @@ contract Land {
         BuyerVerification[_buyerId] = true;
         emit Verified(_buyerId);
     }
+    
+    function verifyLand(uint _landId) public{
+        require(isLandInspector(msg.sender));
+
+        LandVerification[_landId] = true;
+    }
+
+    function isLandVerified(uint _id) public view returns (bool) {
+        if(LandVerification[_id]){
+            return true;
+        }
+    }
 
     function isVerified(address _id) public view returns (bool) {
         if(SellerVerification[_id] || BuyerVerification[_id]){
@@ -160,7 +173,7 @@ contract Land {
     }
 
     function isLandInspector(address _id) public view returns (bool) {
-        if(0x964dE87B240fe4e50cf07606791ddAf3405a9888 == _id){
+        if(0x98227f5DDf4e10B0BB10fff31b3Eb49A567cE096 == _id){
             return true;
         }else{
             return false;
@@ -243,10 +256,6 @@ contract Land {
         //     requestStatus: false, 
         //     requested: true});
     
-        // RequestsMapping.push(newReq);
-        // BuyertoSellerMapping[msg.sender] = _sellerId;
-        // BuyertoLandMapping[msg.sender] = _landId;
-        // BuyertoStatusMapping[msg.sender] = false;
         requestsCount++;
         RequestsMapping[requestsCount] = LandRequest(requestsCount, _sellerId, msg.sender, _landId);
         RequestStatus[requestsCount] = false;
@@ -276,9 +285,7 @@ contract Land {
         require((isSeller(msg.sender)) && (isVerified(msg.sender)));
 
         // // req.requestStatus = true;
-        // if((BuyertoSellerMapping[_buyerId] == msg.sender) && (BuyertoLandMapping[_buyerId] == _landId)){
-        //     BuyertoStatusMapping[_buyerId] = true;
-        // }
+       
         RequestStatus[_reqId] = true;
 
         // emit requestApproved(req.buyerId);
