@@ -26,7 +26,7 @@ import Footer from "../../components/Footer/Footer";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import FixedPlugin from "../../components/FixedPlugin/FixedPlugin";
 import LIDashboard from "../../views/LIDashboard";
-import routes from "../../routes";
+import routes from "../../routesLI";
 
 import logo from "../../assets/img/react-logo.png";
 import { BackgroundColorContext } from "../../contexts/BackgroundColorContext";
@@ -78,15 +78,30 @@ function LI(props) {
     document.documentElement.classList.toggle("nav-open");
     setsidebarOpened(!sidebarOpened);
   };
-
-  // const getBrandText = (path) => {
-  //   for (let i = 0; i < routes.length; i++) {
-  //     if (location.pathname.indexOf(routes[i].layout + routes[i].path) !== -1) {
-  //       return routes[i].name;
-  //     }
-  //   }
-  //   return "Brand";
-  // };
+  const getRoutes = (routes) => {
+    return routes.map((prop, key) => {
+      if (prop.layout === "/LI") {
+        return (
+          <Route
+            path={prop.layout + prop.path}
+            component={prop.component}
+            key={key}
+          />
+        );
+      } else {
+        return null;
+      }
+    });
+  };
+  
+  const getBrandText = (path) => {
+    for (let i = 0; i < routes.length; i++) {
+      if (location.pathname.indexOf(routes[i].layout + routes[i].path) !== -1) {
+        return routes[i].name;
+      }
+    }
+    return "Brand";
+  };
   return (
     <BackgroundColorContext.Consumer>
       {({ color, changeColor }) => (
@@ -102,19 +117,20 @@ function LI(props) {
               toggleSidebar={toggleSidebar}
             />
             <div className="main-panel" ref={mainPanelRef} data={color}>
-              <AdminNavbar
+            <AdminNavbar
+                brandText={getBrandText(location.pathname)}
+                toggleSidebar={toggleSidebar}
+                sidebarOpened={sidebarOpened}
               />
               <Switch>
-                <Route
-                  path="/admin/LIDashboard"
-                  component={LIDashboard}
-                />
-                <Redirect from="*" to="/admin/LIDashboard" />
+                {getRoutes(routes)}
+                <Redirect from="*" to="/LI/LIDashboard" />
               </Switch>
+              <Footer fluid />
 
             </div>
           </div>
-          <FixedPlugin bgColor={color} handleBgClick={changeColor} />
+          {/* <FixedPlugin bgColor={color} handleBgClick={changeColor} /> */}
         </React.Fragment>
       )}
     </BackgroundColorContext.Consumer>

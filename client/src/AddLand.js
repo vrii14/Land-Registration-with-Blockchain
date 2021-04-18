@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import LandContract from "./artifacts/Land.json";
 import getWeb3 from "./getWeb3";
 
-import {FormGroup, FormControl, Button, Spinner} from 'react-bootstrap'
+import {FormGroup, FormControl, Button, Spinner} from 'react-bootstrap';
 
 //import Navigation from './Navigation'
 

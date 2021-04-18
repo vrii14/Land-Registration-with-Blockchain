@@ -239,7 +239,7 @@ class SDash extends Component {
                 <CardBody>
                   <div className="chart-area">
 
-                    <Button href="/AddLand" disabled={!this.state.verified} className="btn-fill" color="primary">
+                    <Button href="/Seller/AddLand" disabled={!this.state.verified} className="btn-fill" color="primary">
                       Add Land
                 </Button>
                   </div>
@@ -254,7 +254,7 @@ class SDash extends Component {
                 <CardBody>
                   <div className="chart-area">
 
-                    <Button href="/sellerProfile" className="btn-fill" color="primary">
+                    <Button href="/seller/sellerProfile" className="btn-fill" color="primary">
                       View Profile
                 </Button>
                   </div>
@@ -269,7 +269,7 @@ class SDash extends Component {
                 <CardBody>
                   <div className="chart-area">
 
-                    <Button href="/ApproveRequest" disabled={!this.state.verified} className="btn-fill" color="primary">
+                    <Button href="/Seller/ApproveRequest" disabled={!this.state.verified} className="btn-fill" color="primary">
                       View all Land Requests
                         </Button>
                   </div>

@@ -16,6 +16,7 @@
 
 */
 import LIDashboard from "./views/LIDashboard";
+import buyerProfile from "./views/buyerProfile";
 import Dashboard from "./views/Dashboard";
 import Icons from "./views/Icons";
 import Map from "./views/Map";
@@ -35,11 +36,11 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/LIDashboard",
-    name: "Lands Info",
+    path: "/buyerProfile",
+    name: "Buyers Profile",
     rtlName: "الرموز",
-    icon: "tim-icons icon-world",
-    component: LIDashboard,
+    icon: "tim-icons icon-single-02",
+    component: buyerProfile,
     layout: "/admin",
   },
   // {
@@ -48,7 +49,7 @@ var routes = [
   //   rtlName: "خرائط",
   //   icon: "tim-icons icon-square-pin",
   //   component: Map,
-  //   layout: "/admin",
+  //   layout: "/",
   // },
   // {
   //   path: "/notifications",

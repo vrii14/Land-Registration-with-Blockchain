@@ -53,18 +53,18 @@ ReactDOM.render(
           <Route path="/RegisterBuyer" component={RegisterBuyer} />
           <Route path="/RegisterSeller" component={RegisterSeller} />
           {/* <Route path="/AddLand" component={AddLand} /> */}
-          <Route path="/admin/dashboard" render={(props) => <AdminLayout {...props} />} />
+          <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
           <Redirect from="/ShowLand" to="/admin/dashboard" />
-          <Route path="/admin/LIdashboard" render={(props) => <LI {...props} />} />
-          <Redirect from="/LIdashboard" to="/admin/LIdashboard" />
-          <Route path="/admin/SellerDashboard" render={(props) => <Seller {...props} />} />
-          <Redirect from="/SellerDashboard" to="/admin/SellerDashboard" />
-          <Route path="/admin/AddLand" render={(props) => <Land {...props} />} />
-          <Redirect from="/AddLand" to="/admin/AddLand" />
+          <Route path="/LI" render={(props) => <LI {...props} />} />
+          <Redirect from="/LIdashboard" to="/LI/LIdashboard" />
+          <Route path="/Seller" render={(props) => <Seller {...props} />} />
+          <Redirect from="/SellerDashboard" to="/Seller/SellerDashboard" />
+          {/* <Route path="/admin/AddLand" render={(props) => <Land {...props} />} /> */}
+          {/* <Redirect from="/AddLand" to="/admin/AddLand" />
           <Route path="/sellerProfile" component={sellerProfile} />
           <Route path="/buyerProfile" component={buyerProfile} />
           <Route path="/ApproveRequest" component={ApproveRequest} />
-          <Route path="/ApproveTransaction" component={ApproveTransaction} />
+          <Route path="/ApproveTransaction" component={ApproveTransaction} /> */}
 
           {/* <Route path="/LIDashboard" component={LIDashboard} />
       <Route path="/SellerDashboard" component={SellerDashboard} /> */}

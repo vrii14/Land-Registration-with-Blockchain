@@ -25,7 +25,7 @@ function Footer() {
   return (
     <footer className="footer">
       <Container fluid>
-        <Nav>
+        {/* <Nav>
           <NavItem>
             <NavLink href="https://www.creative-tim.com/?ref=bdr-user-archive-footer">
               Land Registry
@@ -41,7 +41,7 @@ function Footer() {
               Blog
             </NavLink>
           </NavItem>
-        </Nav>
+        </Nav> */}
         <div className="copyright">
           © {new Date().getFullYear()} made with{" "}
           <i className="tim-icons icon-heart-2" /> for{" "}

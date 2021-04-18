@@ -173,7 +173,7 @@ contract Land {
     }
 
     function isLandInspector(address _id) public view returns (bool) {
-        if(0x98227f5DDf4e10B0BB10fff31b3Eb49A567cE096 == _id){
+        if(0x0Bbf85610ad625EF0319e56d9B5d6e9E65fF56A9 == _id){
             return true;
         }else{
             return false;
