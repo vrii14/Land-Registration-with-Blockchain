@@ -125,7 +125,7 @@ function Admin(props) {
               />
               <Switch>
                 {getRoutes(routes)}
-                <Redirect from="*" to="/admin/dashboard" />
+                {/* <Redirect from="*" to="/admin/dashboard" /> */}
               </Switch>
               <Footer fluid />
             </div>

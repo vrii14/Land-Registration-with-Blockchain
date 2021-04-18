@@ -19,6 +19,7 @@ import SellerDashboard from "./views/SellerDashboard";
 import AddLand from "./views/AddLand";
 import ApproveRequest from "./views/ApproveRequest";
 import sellerProfile from "./views/sellerProfile";
+import viewImage from "./views/viewImage";
 
 
 var routes = [
@@ -52,6 +53,14 @@ var routes = [
     rtlName: "الرموز",
     icon: "tim-icons icon-badge",
     component: ApproveRequest,
+    layout: "/Seller",
+  },
+  {
+    path: "/viewImage",
+    name: "Land Gallery",
+    rtlName: "الرموز",
+    icon: "tim-icons icon-badge",
+    component: viewImage,
     layout: "/Seller",
   },
 ];

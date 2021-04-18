@@ -75,7 +75,7 @@ class RegisterSeller extends Component {
                     from : this.state.account,
                     gas : 2100000
                 }).then(response => {
-                    this.props.history.push("/SellerDashboard");
+                    this.props.history.push("/Seller/SellerDashboard");
                 });
     
             //Reload

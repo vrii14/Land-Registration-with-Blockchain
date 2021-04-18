@@ -31,8 +31,6 @@ const drizzleOptions = {
     contracts: [Land]
 }
 
-// var buyers = 0;
-// var sellers = 0;
 var buyer;
 var buyerTable = [];
 
@@ -79,7 +77,6 @@ class buyerProfile extends Component {
             console.log(buyer);
             console.log(buyer[0]);
 
-           // buyerTable.push(<div><p>Name: {buyer[0]}</p><p>Age: {buyer[1]}</p><p>City: {buyer[2]}</p><p>State: {buyer[3]}</p><p>Aadhar Number: {buyer[4]}</p><p>Pan Number: {buyer[5]}</p></div>);
             buyerTable.push(<><Row>
                 <Col md="12">
                   <FormGroup>

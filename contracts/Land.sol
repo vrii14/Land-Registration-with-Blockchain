@@ -6,10 +6,9 @@ contract Land {
         uint id;
         uint area;
         string location;
-        // address owner; //-->this should be the seller 
         bool verificationStatus;
-        // string landImg;
         uint landPrice;
+        string ipfsHash;
     }
 
     struct Buyer{
@@ -63,14 +62,8 @@ contract Land {
     mapping(uint => address) public LandOwner;
     mapping(uint => bool) public RequestStatus;
     mapping(uint => bool) public RequestedLands;
-    // mapping(uint => bool) public requestedLand;
 
 
-    // mapping(address => address) public BuyertoSellerMapping;
-    // mapping(address => uint) public BuyertoLandMapping;
-    // mapping(address => bool) public BuyertoStatusMapping;
-
-    // LandRequest[] public RequestsMapping;
     address[] public sellers;
     address[] public buyers;
 
@@ -87,9 +80,6 @@ contract Land {
     event Verified(address _id);
 
     constructor() public{
-        // addLand(450, "Pune");
-        // addLand(650, "Akola");
-        // addLand(500, "Mumbai");
         addLandInspector("Inspector 1", 45, "Tehsil Manager");
     }
 
@@ -128,6 +118,9 @@ contract Land {
     }
     function getPrice(uint i) public view returns (uint) {
         return lands[i].landPrice;
+    }
+     function getImage(uint i) public view returns (string memory) {
+        return lands[i].ipfsHash;
     }
     
     function getLandOwner(uint id) public view returns (address) {
@@ -173,7 +166,7 @@ contract Land {
     }
 
     function isLandInspector(address _id) public view returns (bool) {
-        if(0x0Bbf85610ad625EF0319e56d9B5d6e9E65fF56A9 == _id){
+        if(0x4c469ec572fFfE9FEfeB8c54E9f86A92ab548237 == _id){
             return true;
         }else{
             return false;
@@ -191,11 +184,10 @@ contract Land {
         }
     }
 
-    function addLand(uint _area, string memory _location, uint landPrice) public {
-        // let landImg = "https://images.unsplash.com/photo-1597843736176-23c29f7187f7?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1489&q=80";
+    function addLand(uint _area, string memory _location, uint landPrice, string memory _ipfsHash) public {
         require((isSeller(msg.sender)) && (isVerified(msg.sender)));
         landsCount++;
-        lands[landsCount] = Landreg(landsCount, _area, _location, false, landPrice);
+        lands[landsCount] = Landreg(landsCount, _area, _location, false, landPrice, _ipfsHash);
         LandOwner[landsCount] = msg.sender;
         // emit AddingLand(landsCount);
     }
@@ -249,13 +241,6 @@ contract Land {
     function requestLand(address _sellerId, uint _landId) public{
         require(isBuyer(msg.sender) && isVerified(msg.sender));
         
-        // LandRequest memory newReq =  LandRequest({
-        //     sellerId: _sellerId,
-        //     buyerId: msg.sender,
-        //     landId: _landId,
-        //     requestStatus: false, 
-        //     requested: true});
-    
         requestsCount++;
         RequestsMapping[requestsCount] = LandRequest(requestsCount, _sellerId, msg.sender, _landId);
         RequestStatus[requestsCount] = false;
@@ -283,12 +268,9 @@ contract Land {
 
     function approveRequest(uint _reqId) public {
         require((isSeller(msg.sender)) && (isVerified(msg.sender)));
-
-        // // req.requestStatus = true;
        
         RequestStatus[_reqId] = true;
 
-        // emit requestApproved(req.buyerId);
     }
 
     function LandOwnershipTransfer(uint _landId, address _newOwner) public{

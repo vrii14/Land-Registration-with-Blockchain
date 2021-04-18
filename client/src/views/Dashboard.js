@@ -44,7 +44,6 @@ import {
   chartExample4,
 } from "../variables/charts";
 
-// import MaterialTable from 'material-table'
 
 const drizzleOptions = {
   contracts: [Land]
@@ -80,8 +79,9 @@ class Dashboard extends Component {
     ).send({
       from: this.state.account,
       gas: 2100000
+    }).then(response => {
+      this.props.history.push("#");
     });
-    // console.log(this.state.requested);
 
     //Reload
     window.location.reload(false);
@@ -91,6 +91,7 @@ class Dashboard extends Component {
   componentDidMount = async () => {
     //For refreshing page only once
     if (!window.location.hash) {
+      console.log(window.location.hash);
       window.location = window.location + '#loaded';
       window.location.reload();
     }
@@ -120,14 +121,6 @@ class Dashboard extends Component {
       console.log(typeof (count));
       console.log(count);
 
-      // for(var i=1; i<count+1;i++){
-      //     var address = await this.state.LandInstance.methods.getLandOwner(i).call();
-      //     landOwner[i-1] = address;
-      //     console.log(landOwner[i-1]);
-      // }
-
-      //this.setState({count:count});
-
       var rowsArea = [];
       var rowsLoc = [];
       var rowsSt = [];
@@ -138,52 +131,33 @@ class Dashboard extends Component {
       for (var i = 1; i < count + 1; i++) {
         var address = await this.state.LandInstance.methods.getLandOwner(i).call();
         dict[i] = address;
-        // var requested = await this.state.LandInstance.methods.getRequestStatus(i).call();
-
-        // this.setState({requested: requested});
-        // console.log(this.state.requested);
       }
 
       console.log(dict[1]);
 
 
       for (var i = 1; i < count + 1; i++) {
-        // note: we are adding a key prop here to allow react to uniquely identify each
-        // element in this array. see: https://reactjs.org/docs/lists-and-keys.html
         rowsArea.push(<ContractData contract="Land" method="getArea" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
         rowsLoc.push(<ContractData contract="Land" method="getLocation" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
         rowsSt.push(<ContractData contract="Land" method="getStatus" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
         rowsPrice.push(<ContractData contract="Land" method="getPrice" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
-        // var address = await this.state.LandInstance.methods.getLandOwner(i).call();
-        // landOwner[i] = address;
       }
-      //console.log(landOwner);
 
-      // for(var i=1; i< count+1; i++){
-      //     var address = await this.state.LandInstance.methods.getLandOwner(i).call();
-
-      //     landOwner[i] = address;
-      //     console.log(landOwner[i]);
-      // }
-
-      //console.log(rowsArea);
+      
       for (var i = 0; i < count; i++) {
         var requested = await this.state.LandInstance.methods.isRequested(i + 1).call();
         console.log(requested);
-        var verified = await this.state.LandInstance.methods.isLandVerified(i + 1).call();
-        console.log(verified);
-
         var reqStatus = await this.state.LandInstance.methods.isApproved(i + 1).call();
         row.push(<tr><td>{i + 1}</td><td>{rowsArea[i]}</td><td>{rowsLoc[i]}</td><td>{rowsPrice[i]}</td><td>{reqStatus.toString()}</td>
           <td>
-            <Button onClick={this.requestLand(dict[i + 1], i + 1)} disabled={requested && !verified} className="button-vote">
+            <Button onClick={this.requestLand(dict[i + 1], i + 1)} disabled={requested} className="button-vote">
               Request Land
-                    </Button>
+            </Button>
           </td>
         </tr>)
 
       }
-      //console.log(row);
+      console.log(row);
 
 
 
@@ -336,23 +310,6 @@ class Dashboard extends Component {
                           {row}
                         </tbody>
                       </Table>
-                      {/* <MaterialTable
-                        columns={[
-                          { title: '#', field: 'id' },
-                          { title: 'Area', field: 'area', type: 'numeric' },
-                          { title: 'Location', field: 'location' },
-                          { title: 'Price', field: 'price', type: 'numeric'},
-                          { title: 'Status', field: 'status' },
-                          { title: 'Request Land', field: 'request' },
-                        ]}
-                        data={row}
-                        title="Land Details"
-                        options={{
-                          paging:false,
-                          sorting:false,
-                          // filtering:true,
-                        }}
-                      /> */}
                     </CardBody>
                   </Card>
                 </Col>

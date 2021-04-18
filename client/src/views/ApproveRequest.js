@@ -92,14 +92,9 @@ class ApproveRequest extends Component {
             this.setState({ registered: registered });
             var requestsCount = await this.state.LandInstance.methods.getRequestsCount().call();
             console.log(requestsCount);
-            // var requestsMap = [];
-            // requestsMap = await this.state.LandInstance.methods.getAllRequests().call();
-
+            
             for (let i = 1; i < requestsCount + 1; i++) {
                 var request = await this.state.LandInstance.methods.getRequestDetails(i).call();
-                // console.log(request);
-                // console.log(request[0].toLowerCase());
-                // console.log(currentAddress);
                 var approved = await this.state.LandInstance.methods.isApproved(i).call();
                 console.log(approved);
                 if (currentAddress == request[0].toLowerCase()) {

@@ -115,7 +115,7 @@ class ApproveRequest extends Component {
                 console.log(approved);
                 requestTable.push(<tr><td>{i}</td><td>{request[0]}</td><td>{request[1]}</td><td>{request[2]}</td><td>{request[3].toString()}</td>
                 <td>
-                    <Button onClick={this.landTransfer(i, request[1])} disabled={approved && completed} className="button-vote">
+                    <Button onClick={this.landTransfer(i, request[1])} disabled={!approved && completed} className="button-vote">
                         Approve Land Transfer
                 </Button>
                 </td></tr>)

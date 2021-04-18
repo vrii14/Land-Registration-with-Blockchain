@@ -4,13 +4,16 @@ import LandContract from "../artifacts/Land.json";
 import Land from "../artifacts/Land.json";
 import getWeb3 from "../getWeb3";
 import { DrizzleProvider } from 'drizzle-react';
-import { Spinner } from 'react-bootstrap';
+import { Spinner  } from 'react-bootstrap';
+import {  Link} from 'react-router-dom';
 import {
   LoadingContainer,
   AccountData,
   ContractData,
   ContractForm
 } from 'drizzle-react-components';
+
+import viewImage from './viewImage';
 
 // reactstrap components
 import {
@@ -63,8 +66,16 @@ class SDash extends Component {
       verified: '',
       registered: '',
       count: 0,
+      id: '',
     }
   }
+
+  viewImage = (landId) => {
+    alert(landId);
+    this.props.history.push({
+        pathname: '/viewImage',
+      })
+}
 
   componentDidMount = async () => {
     //For refreshing page only once
@@ -106,24 +117,28 @@ class SDash extends Component {
       var rowsLoc = [];
       var rowsSt = [];
       var rowsPrice = [];
+      var rowsIpfs = []
+      
 
       for (var i = 1; i < count + 1; i++) {
-        // note: we are adding a key prop here to allow react to uniquely identify each
-        // element in this array. see: https://reactjs.org/docs/lists-and-keys.html
         rowsArea.push(<ContractData contract="Land" method="getArea" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
         rowsLoc.push(<ContractData contract="Land" method="getLocation" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
         rowsSt.push(<ContractData contract="Land" method="getStatus" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
-        rowsPrice.push(<ContractData contract="Land" method="getPrice" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
-
+        rowsPrice.push(<ContractData contract="Land" method="getPrice" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]}  />);
+        // rowsIpfs.push((<ContractData contract="Land" method="getImage"  methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />));
       }
+      var landImg = await this.state.LandInstance.methods.getImage(1).call();
 
-      console.log(rowsArea);
+      // console.log(rowsIpfs[4]);
       for (var i = 0; i < count; i++) {
-        row.push(<tr><td>{i + 1}</td><td>{rowsArea[i]}</td><td>{rowsLoc[i]}</td><td>{rowsPrice[i]}</td><td>{rowsSt[i]}</td></tr>)
+        row.push(<tr><td>{i + 1}</td><td>{rowsArea[i]}</td><td>{rowsLoc[i]}</td><td>{rowsPrice[i]}</td><td>{rowsSt[i]}</td>
+        <img src={`https://ipfs.io/ipfs/${landImg}`} alt="" width="50em" height="40em"/>
+        {/* <td>{rowsIpfs[i].toString()}</td>
+         */}
+        </tr>)
 
       }
       console.log(row);
-
 
     } catch (error) {
       // Catch any errors for any of the above operations.
@@ -169,10 +184,10 @@ class SDash extends Component {
       );
     }
 
+
     return (
       <>
         <div className="content">
-
           <Row>
             <Col lg="4">
               <Card className="card-chart">
@@ -277,13 +292,15 @@ class SDash extends Component {
               </Card>
             </Col>
           </Row>
+         
           <DrizzleProvider options={drizzleOptions}>
             <LoadingContainer>
               <Row>
                 <Col lg="12" md="12">
                   <Card>
                     <CardHeader>
-                      <CardTitle tag="h4">Lands Info</CardTitle>
+                      <CardTitle tag="h4">Lands Info
+                      </CardTitle>
                     </CardHeader>
                     <CardBody>
                       <Table className="tablesorter" responsive color="black">
@@ -306,6 +323,20 @@ class SDash extends Component {
               </Row>
             </LoadingContainer>
           </DrizzleProvider>
+          <Row>
+            <Col lg="4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>View Images of all Lands!</CardTitle>
+                </CardHeader>
+                <CardBody>
+                    <Button href="/Seller/viewImage" className="btn-fill" color="primary">
+                      View Images
+                </Button>
+                </CardBody>
+              </Card>
+            </Col>
+            </Row>
         </div>
       </>
 
