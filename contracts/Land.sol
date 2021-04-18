@@ -1,13 +1,15 @@
 pragma solidity >= 0.5.2;
-pragma experimental ABIEncoderV2;
 
 contract Land {
     struct Landreg {
         uint id;
         uint area;
-        string location;
+        string city;
+        string state;
         bool verificationStatus;
         uint landPrice;
+        uint propertyPID;
+        uint physicalSurveyNumber;
         string ipfsHash;
     }
 
@@ -110,8 +112,11 @@ contract Land {
     function getArea(uint i) public view returns (uint) {
         return lands[i].area;
     }
-    function getLocation(uint i) public view returns (string memory) {
-        return lands[i].location;
+    function getCity(uint i) public view returns (string memory) {
+        return lands[i].city;
+    }
+     function getState(uint i) public view returns (string memory) {
+        return lands[i].state;
     }
     function getStatus(uint i) public view returns (bool) {
         return lands[i].verificationStatus;
@@ -119,7 +124,13 @@ contract Land {
     function getPrice(uint i) public view returns (uint) {
         return lands[i].landPrice;
     }
-     function getImage(uint i) public view returns (string memory) {
+    function getPID(uint i) public view returns (uint) {
+        return lands[i].propertyPID;
+    }
+    function getSurveyNumber(uint i) public view returns (uint) {
+        return lands[i].physicalSurveyNumber;
+    }
+    function getImage(uint i) public view returns (string memory) {
         return lands[i].ipfsHash;
     }
     
@@ -166,7 +177,7 @@ contract Land {
     }
 
     function isLandInspector(address _id) public view returns (bool) {
-        if(0x4c469ec572fFfE9FEfeB8c54E9f86A92ab548237 == _id){
+        if(0x1797977Cfa98C7C63370A7888b494d6463BF729a == _id){
             return true;
         }else{
             return false;
@@ -184,10 +195,10 @@ contract Land {
         }
     }
 
-    function addLand(uint _area, string memory _location, uint landPrice, string memory _ipfsHash) public {
+    function addLand(uint _area, string memory _city,string memory _state, uint landPrice, uint _propertyPID,uint _surveyNum,string memory _ipfsHash) public {
         require((isSeller(msg.sender)) && (isVerified(msg.sender)));
         landsCount++;
-        lands[landsCount] = Landreg(landsCount, _area, _location, false, landPrice, _ipfsHash);
+        lands[landsCount] = Landreg(landsCount, _area, _city, _state, false, landPrice,_propertyPID, _surveyNum, _ipfsHash);
         LandOwner[landsCount] = msg.sender;
         // emit AddingLand(landsCount);
     }

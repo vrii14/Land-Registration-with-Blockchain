@@ -113,16 +113,23 @@ class TransactionInfo extends Component {
             var count = await this.state.LandInstance.methods.getLandsCount().call();
             count = parseInt(count);
             var rowsArea = [];
-            var rowsLoc = [];
+            var rowsCity = [];
+            var rowsState = [];
             var rowsSt = [];
             var rowsPrice = [];
+            var rowsPID = [];
+            var rowsSurvey = [];
+
 
             for (var i = 1; i < count + 1; i++) {
-                rowsArea.push(<ContractData contract="Land" method="getArea" methodArgs={[i, { from: accounts[1] }]} />);
-                rowsLoc.push(<ContractData contract="Land" method="getLocation" methodArgs={[i, { from: accounts[1] }]} />);
-                rowsSt.push(<ContractData contract="Land" method="getStatus" methodArgs={[i, { from: accounts[1] }]} />);
-                rowsPrice.push(<ContractData contract="Land" method="getPrice" methodArgs={[i, { from: accounts[1] }]} />);
-            }
+                rowsArea.push(<ContractData contract="Land" method="getArea" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
+                rowsCity.push(<ContractData contract="Land" method="getCity" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
+                rowsState.push(<ContractData contract="Land" method="getState" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
+                rowsSt.push(<ContractData contract="Land" method="getStatus" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
+                rowsPrice.push(<ContractData contract="Land" method="getPrice" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
+                rowsPID.push(<ContractData contract="Land" method="getPID" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
+                rowsSurvey.push(<ContractData contract="Land" method="getSurveyNumber" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
+              }
             for (var i = 0; i < count; i++) {
                 var request = await this.state.LandInstance.methods.getRequestDetails(i+1).call();
                 var approved = await this.state.LandInstance.methods.isApproved(i+1).call();
@@ -134,7 +141,7 @@ class TransactionInfo extends Component {
                 console.log("completed: ", completed);
 
                 var owner = await this.state.LandInstance.methods.getLandOwner(i+1).call();
-                landTable.push(<tr><td>{i+1}</td><td>{owner}</td><td>{rowsArea[i]}</td><td>{rowsLoc[i]}</td><td>{rowsPrice[i]}</td><td>{rowsSt[i]}</td>
+                landTable.push(<tr><td>{i+1}</td><td>{owner}</td><td>{rowsArea[i]}</td><td>{rowsCity[i]}</td><td>{rowsState[i]}</td><td>{rowsPrice[i]}</td><td>{rowsPID[i]}</td><td>{rowsSurvey[i]}</td><td>{rowsSt[i]}</td>
                 <td>
                      <Button onClick={this.landTransfer(i+1, request[1])} disabled={!disabled} className="button-vote">
                           Verify Transaction
@@ -265,12 +272,15 @@ class TransactionInfo extends Component {
                                         <Table className="tablesorter" responsive color="black">
                                             <thead className="text-primary">
                                                 <tr>
-                                                    <th>#</th>
-                                                    <th>Land Owner</th>
-                                                    <th>Area</th>
-                                                    <th>Location</th>
-                                                    <th>Price</th>
-                                                    <th>Status</th>
+                                                <th>#</th>
+                                                <th>Owner ID</th>
+                                                <th>Area</th>
+                                                <th>City</th>
+                                                <th>State</th>
+                                                <th>Price</th>
+                                                <th>Property PID</th>
+                                                <th>Survey Number</th>
+                                                <th>Status</th>
                                                     <th>Verify Land</th>
                                                 </tr>
                                             </thead>

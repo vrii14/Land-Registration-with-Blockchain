@@ -29,7 +29,8 @@ class AddLand extends Component {
       account: null,
       web3: null,
       area: '',
-      location: '',
+      city: '',
+      stateLoc: '',
       price: '',
       lands: null,
       verficationStatus: false,
@@ -37,6 +38,9 @@ class AddLand extends Component {
       registered: '',
       buffer: null,
       ipfsHash: '',
+      propertyPID: '',
+      surveyNum: '',
+
     }
     this.captureFile = this.captureFile.bind(this);
     this.addimage = this.addimage.bind(this);
@@ -96,24 +100,27 @@ class AddLand extends Component {
       console.log('ipfsHash:', this.state.ipfsHash);
     })
   }
-
+  //QmYdztkcPJLmGmwLmM4nyBfVatoBMRDuUjmgBupjmTodAP
   addLand = async () => {
     this.addimage();
     // alert('After add image')
-    await new Promise(resolve => setTimeout(resolve, 15000));
-    if (this.state.area == '' || this.state.location == '' || this.state.price == '') {
+    await new Promise(resolve => setTimeout(resolve, 10000));
+    if (this.state.area == '' || this.state.city == '' || this.state.stateLoc == '' || this.state.price == '' || this.state.propertyPID == '' || this.state.surveyNum == '') {
       alert("All the fields are compulsory!");
     } else if ((!Number(this.state.area)) || (!Number(this.state.price))) {
       alert("Land area and Price of Land must be a number!");
     } else {
       await this.state.LandInstance.methods.addLand(
         this.state.area,
-        this.state.location,
+        this.state.city,
+        this.state.stateLoc,
         this.state.price, 
+        this.state.propertyPID,
+        this.state.surveyNum,
         this.state.ipfsHash)
         .send({
           from: this.state.account,
-          gas: 210000
+          gas: 2100000
         }).then(response => {
           this.props.history.push("/Seller/SellerDashboard");
         });
@@ -122,15 +129,25 @@ class AddLand extends Component {
       window.location.reload(false);
     }
   }
+  // _city,string  _state, uint landPrice, uint _propertyPID,uint _surveyNum,string memory _ipfsHash
 
   updateArea = event => (
     this.setState({ area: event.target.value })
   )
-  updateLocation = event => (
-    this.setState({ location: event.target.value })
+  updateCity = event => (
+    this.setState({ city: event.target.value })
+  )
+  updateState = event => (
+    this.setState({ stateLoc: event.target.value })
   )
   updatePrice = event => (
     this.setState({ price: event.target.value })
+  )
+  updatePID = event => (
+    this.setState({ propertyPID: event.target.value })
+  )
+  updateSurveyNum = event => (
+    this.setState({ surveyNum: event.target.value })
   )
   captureFile(event) {
     event.preventDefault()
@@ -206,12 +223,25 @@ class AddLand extends Component {
                   <Row>
                     <Col md="12">
                       <FormGroup>
-                        <label>Location</label>
+                        <label>City</label>
                         <Input
-                          placeholder="Location"
+                          placeholder="City"
                           type="text"
-                          value={this.state.location}
-                          onChange={this.updateLocation}
+                          value={this.state.city}
+                          onChange={this.updateCity}
+                        />
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md="12">
+                      <FormGroup>
+                        <label>State</label>
+                        <Input
+                          placeholder="State"
+                          type="text"
+                          value={this.state.stateLoc}
+                          onChange={this.updateState}
                         />
                       </FormGroup>
                     </Col>
@@ -226,6 +256,32 @@ class AddLand extends Component {
                           type="text"
                           value={this.state.price}
                           onChange={this.updatePrice}
+                        />
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md="12">
+                      <FormGroup>
+                        <label>Property PID Number</label>
+                        <Input
+                          placeholder="Property PID"
+                          type="text"
+                          value={this.state.propertyPID}
+                          onChange={this.updatePID}
+                        />
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md="12">
+                      <FormGroup>
+                        <label>Physical Survey Number</label>
+                        <Input
+                          placeholder="Survey Num"
+                          type="text"
+                          value={this.state.surveyNum}
+                          onChange={this.updateSurveyNum}
                         />
                       </FormGroup>
                     </Col>

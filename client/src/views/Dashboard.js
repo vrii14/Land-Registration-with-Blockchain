@@ -122,9 +122,12 @@ class Dashboard extends Component {
       console.log(count);
 
       var rowsArea = [];
-      var rowsLoc = [];
+      var rowsCity = [];
+      var rowsState = [];
       var rowsSt = [];
       var rowsPrice = [];
+      var rowsPID = [];
+      var rowsSurvey = [];
 
 
       var dict = {}
@@ -138,9 +141,12 @@ class Dashboard extends Component {
 
       for (var i = 1; i < count + 1; i++) {
         rowsArea.push(<ContractData contract="Land" method="getArea" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
-        rowsLoc.push(<ContractData contract="Land" method="getLocation" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
+        rowsCity.push(<ContractData contract="Land" method="getCity" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
+        rowsState.push(<ContractData contract="Land" method="getState" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
         rowsSt.push(<ContractData contract="Land" method="getStatus" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
         rowsPrice.push(<ContractData contract="Land" method="getPrice" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
+        rowsPID.push(<ContractData contract="Land" method="getPID" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
+        rowsSurvey.push(<ContractData contract="Land" method="getSurveyNumber" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
       }
 
       
@@ -148,7 +154,7 @@ class Dashboard extends Component {
         var requested = await this.state.LandInstance.methods.isRequested(i + 1).call();
         console.log(requested);
         var reqStatus = await this.state.LandInstance.methods.isApproved(i + 1).call();
-        row.push(<tr><td>{i + 1}</td><td>{rowsArea[i]}</td><td>{rowsLoc[i]}</td><td>{rowsPrice[i]}</td><td>{reqStatus.toString()}</td>
+        row.push(<tr><td>{i + 1}</td><td>{rowsArea[i]}</td><td>{rowsCity[i]}</td><td>{rowsState[i]}</td><td>{rowsPrice[i]}</td><td>{rowsPID[i]}</td><td>{rowsSurvey[i]}</td><td>{reqStatus.toString()}</td>
           <td>
             <Button onClick={this.requestLand(dict[i + 1], i + 1)} disabled={requested} className="button-vote">
               Request Land
@@ -300,8 +306,11 @@ class Dashboard extends Component {
                           <tr>
                             <th>#</th>
                             <th>Area</th>
-                            <th>Location</th>
+                            <th>City</th>
+                            <th>State</th>
                             <th>Price</th>
+                            <th>Property PID</th>
+                            <th>Survey Number</th>
                             <th>Status</th>
                             <th>Request Land</th>
                           </tr>

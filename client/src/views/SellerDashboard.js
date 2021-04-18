@@ -23,12 +23,6 @@ import {
   CardHeader,
   CardBody,
   CardTitle,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  Label,
-  FormGroup,
   Input,
   Table,
   Row,
@@ -114,25 +108,31 @@ class SDash extends Component {
       //this.setState({count:count});
 
       var rowsArea = [];
-      var rowsLoc = [];
+      var rowsCity = [];
+      var rowsState = [];
       var rowsSt = [];
       var rowsPrice = [];
+      var rowsPID = [];
+      var rowsSurvey = [];
       var rowsIpfs = []
       
 
       for (var i = 1; i < count + 1; i++) {
         rowsArea.push(<ContractData contract="Land" method="getArea" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
-        rowsLoc.push(<ContractData contract="Land" method="getLocation" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
+        rowsCity.push(<ContractData contract="Land" method="getCity" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
+        rowsState.push(<ContractData contract="Land" method="getState" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
         rowsSt.push(<ContractData contract="Land" method="getStatus" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
-        rowsPrice.push(<ContractData contract="Land" method="getPrice" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]}  />);
-        // rowsIpfs.push((<ContractData contract="Land" method="getImage"  methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />));
+        rowsPrice.push(<ContractData contract="Land" method="getPrice" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
+        rowsPID.push(<ContractData contract="Land" method="getPID" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
+        rowsSurvey.push(<ContractData contract="Land" method="getSurveyNumber" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
+      // rowsIpfs.push((<ContractData contract="Land" method="getImage"  methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />));
       }
       var landImg = await this.state.LandInstance.methods.getImage(1).call();
 
       // console.log(rowsIpfs[4]);
       for (var i = 0; i < count; i++) {
-        row.push(<tr><td>{i + 1}</td><td>{rowsArea[i]}</td><td>{rowsLoc[i]}</td><td>{rowsPrice[i]}</td><td>{rowsSt[i]}</td>
-        <img src={`https://ipfs.io/ipfs/${landImg}`} alt="" width="50em" height="40em"/>
+        row.push(<tr><td>{i + 1}</td><td>{rowsArea[i]}</td><td>{rowsCity[i]}</td><td>{rowsState[i]}</td><td>{rowsPrice[i]}</td><td>{rowsPID[i]}</td><td>{rowsSurvey[i]}</td><td>{rowsSt[i]}</td>
+        <img src={`https://ipfs.io/ipfs/${landImg}`} alt="" width="50em" height="50em"/>
         {/* <td>{rowsIpfs[i].toString()}</td>
          */}
         </tr>)
@@ -306,10 +306,13 @@ class SDash extends Component {
                       <Table className="tablesorter" responsive color="black">
                         <thead className="text-primary">
                           <tr>
-                            <th>#</th>
+                          <th>#</th>
                             <th>Area</th>
-                            <th>Location</th>
+                            <th>City</th>
+                            <th>State</th>
                             <th>Price</th>
+                            <th>Property PID</th>
+                            <th>Survey Number</th>
                             <th>Status</th>
                           </tr>
                         </thead>
