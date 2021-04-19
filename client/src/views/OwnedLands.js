@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
+import { Line, Bar } from "react-chartjs-2";
+import LandContract from "../artifacts/Land.json";
 import Land from "../artifacts/Land.json";
 import getWeb3 from "../getWeb3";
 import { DrizzleProvider } from 'drizzle-react';
 import { Spinner  } from 'react-bootstrap';
+import {  Link} from 'react-router-dom';
 import {
   LoadingContainer,
   AccountData,
   ContractData,
   ContractForm
 } from 'drizzle-react-components';
-import "../index.css";
+
+import viewImage from './viewImage';
 
 // reactstrap components
 import {
@@ -19,12 +23,6 @@ import {
   CardHeader,
   CardBody,
   CardTitle,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  Label,
-  FormGroup,
   Input,
   Table,
   Row,
@@ -32,16 +30,25 @@ import {
   UncontrolledTooltip,
 } from "reactstrap";
 
+// core components
+import {
+  chartExample1,
+  chartExample2,
+  chartExample3,
+  chartExample4,
+} from "../variables/charts";
+
 
 const drizzleOptions = {
   contracts: [Land]
 }
 
+
 var verified;
 var row = [];
-var rowsIpfs = [];
 
-class viewImage extends Component {
+
+class OwnedLands extends Component {
   constructor(props) {
     super(props)
 
@@ -90,7 +97,8 @@ class viewImage extends Component {
       verified = await this.state.LandInstance.methods.isVerified(currentAddress).call();
       console.log(verified);
       this.setState({ verified: verified });
-      var registered = true;
+      var registered = await this.state.LandInstance.methods.isBuyer(currentAddress).call();
+      console.log(registered);
       this.setState({ registered: registered });
 
       var count = await this.state.LandInstance.methods.getLandsCount().call();
@@ -102,58 +110,32 @@ class viewImage extends Component {
       var rowsArea = [];
       var rowsCity = [];
       var rowsState = [];
-      var rowsSt = [];
       var rowsPrice = [];
       var rowsPID = [];
       var rowsSurvey = [];
-      var rowsIpfs = [];
-      var rowsDocs = [];
+      var rowsIpfs = []
+      
 
       for (var i = 1; i < count + 1; i++) {
         rowsArea.push(<ContractData contract="Land" method="getArea" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
         rowsCity.push(<ContractData contract="Land" method="getCity" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
         rowsState.push(<ContractData contract="Land" method="getState" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
-        rowsSt.push(<ContractData contract="Land" method="getStatus" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
         rowsPrice.push(<ContractData contract="Land" method="getPrice" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
         rowsPID.push(<ContractData contract="Land" method="getPID" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
         rowsSurvey.push(<ContractData contract="Land" method="getSurveyNumber" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
-      // rowsIpfs.push((<ContractData contract="Land" method="getImage"  methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />));
       }
-      
+    
 
-      for (var i = 1; i < count + 1; i++) {
-        var landImg = await this.state.LandInstance.methods.getImage(i).call();
-        rowsIpfs.push(landImg)
-        var document = await this.state.LandInstance.methods.getDocument(i).call();
-        rowsDocs.push(document);
-        // row.push(<> <Col xs="6"><Card style={{textAlign: "center"}}>
-        //   <CardHeader><CardTitle><h2>Land {i}</h2></CardTitle></CardHeader>
-        // <CardBody><div><img src={`https://ipfs.io/ipfs/${landImg}`} alt="" width="90%" height="90%" style={{marginBottom:"10px"}}/><p>Area: {rowsArea[i-1]}</p><p>City: {rowsCity[i-1]}</p><p>State: {rowsState[i-1]}</p><p>PID: {rowsPID[i-1]}</p><p>Price: {rowsPrice[i-1]}</p> 
-        // </div></CardBody></Card></Col></>)
-        row.push(<Col xs="6">
-     
-        <div class="post-module">
-          
-          <div class="thumbnail">
-            <div class="date">
-            <div class="day">{i}</div>
-            </div><img src={`https://ipfs.io/ipfs/${landImg}`}/>
-          </div>
-          
-          <div class="post-content">
-            <div class="category">Photos</div>
-            <h1 class="title">{rowsArea[i-1]} Sq. m.</h1>
-            <h2 class="sub_title">{rowsCity[i-1]}, {rowsState[i-1]}</h2>
-            <p class="description">PID: {rowsPID[i-1]}<br/> Survey No.: {rowsSurvey[i-1]}</p>
-      <div class="post-meta"><span class="timestamp">Price: ₹ {rowsPrice[i-1]}</span></div>
-      <div class="post-meta"><span class="timestamp">View Verified Land  <a href={`https://ipfs.io/ipfs/${document}`} target="_blank">Document</a></span></div>
-          </div>
-        </div>
-      </Col>)
+      for (var i = 0; i < count; i++) {
+        var owner = await this.state.LandInstance.methods.getLandOwner(i+1).call();
+        console.log(owner.toLowerCase());
+        console.log(currentAddress);
+        if(owner.toLowerCase() == currentAddress){
+            row.push(<tr><td>{i + 1}</td><td>{rowsArea[i]}</td><td>{rowsCity[i]}</td><td>{rowsState[i]}</td><td>{rowsPrice[i]}</td><td>{rowsPID[i]}</td><td>{rowsSurvey[i]}</td>
+                </tr>)
+        }
       }
-      console.log(row)
-
-      
+      console.log(row);
 
     } catch (error) {
       // Catch any errors for any of the above operations.
@@ -178,13 +160,13 @@ class viewImage extends Component {
       );
     }
 
-    if (!this.state.registered || !this.state.verified) {
+    if (!this.state.registered) {
       return (
         <div className="content">
           <div>
             <Row>
               <Col xs="6">
-                <Card>
+                <Card className="card-chart">
                   <CardBody>
                     <h1>
                       You are not verified to view this page
@@ -205,15 +187,36 @@ class viewImage extends Component {
         <div className="content">
           <DrizzleProvider options={drizzleOptions}>
             <LoadingContainer>
-
               <Row>
-
-                {row}
-
+                <Col lg="12" md="12">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle tag="h4">Owned Lands
+                      </CardTitle>
+                    </CardHeader>
+                    <CardBody>
+                      <Table className="tablesorter" responsive color="black">
+                        <thead className="text-primary">
+                          <tr>
+                          <th>#</th>
+                            <th>Area</th>
+                            <th>City</th>
+                            <th>State</th>
+                            <th>Price</th>
+                            <th>Property PID</th>
+                            <th>Survey Number</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {row}
+                        </tbody>
+                      </Table>
+                    </CardBody>
+                  </Card>
+                </Col>
               </Row>
             </LoadingContainer>
           </DrizzleProvider>
-          
         </div>
       </>
 
@@ -222,4 +225,4 @@ class viewImage extends Component {
   }
 }
 
-export default viewImage;
+export default OwnedLands;

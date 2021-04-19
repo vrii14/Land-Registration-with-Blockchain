@@ -125,7 +125,6 @@ export default class Login extends Component {
 
                             <div>
                                 <button onClick={() => this.submit()} className="btn btn-primary btn-block" style={{ marginBottom: "10px", marginTop: "10px" }}>Register</button>
-                                <button type="submit" className="btn btn-outline-primary btn-block" >Login</button>
                             </div>
                         </div>
                     </div>

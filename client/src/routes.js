@@ -26,6 +26,7 @@ import TableList from "./views/TableList";
 import Typography from "./views/Typography";
 import UserProfile from "./views/UserProfile";
 import viewImage from "./views/viewImage";
+import OwnedLands from "./views/OwnedLands";
 
 var routes = [
   {
@@ -50,6 +51,14 @@ var routes = [
     rtlName: "الرموز",
     icon: "tim-icons icon-image-02",
     component: viewImage,
+    layout: "/admin",
+  },
+  {
+    path: "/OwnedLands",
+    name: "Owned Lands",
+    rtlName: "الرموز",
+    icon: "tim-icons icon-chart-pie-36",
+    component: OwnedLands,
     layout: "/admin",
   },
   

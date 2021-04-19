@@ -153,8 +153,7 @@ class Dashboard extends Component {
       for (var i = 0; i < count; i++) {
         var requested = await this.state.LandInstance.methods.isRequested(i + 1).call();
         console.log(requested);
-        var reqStatus = await this.state.LandInstance.methods.isApproved(i + 1).call();
-        row.push(<tr><td>{i + 1}</td><td>{rowsArea[i]}</td><td>{rowsCity[i]}</td><td>{rowsState[i]}</td><td>{rowsPrice[i]}</td><td>{rowsPID[i]}</td><td>{rowsSurvey[i]}</td><td>{reqStatus.toString()}</td>
+        row.push(<tr><td>{i + 1}</td><td>{rowsArea[i]}</td><td>{rowsCity[i]}</td><td>{rowsState[i]}</td><td>{rowsPrice[i]}</td><td>{rowsPID[i]}</td><td>{rowsSurvey[i]}</td>
           <td>
             <Button onClick={this.requestLand(dict[i + 1], i + 1)} disabled={requested} className="button-vote">
               Request Land
@@ -291,6 +290,21 @@ class Dashboard extends Component {
                 </CardBody>
               </Card>
             </Col>
+            <Col lg="4">
+              <Card>
+                <CardHeader>
+                  <h5 className="title">Owned Lands</h5>
+                </CardHeader>
+                <CardBody>
+                  <div className="chart-area">
+
+                    <Button href="/admin/OwnedLands" className="btn-fill" color="primary">
+                      View Your Lands
+                </Button>
+                  </div>
+                </CardBody>
+              </Card>
+            </Col>
           </Row>
           <DrizzleProvider options={drizzleOptions}>
             <LoadingContainer>
@@ -311,7 +325,6 @@ class Dashboard extends Component {
                             <th>Price</th>
                             <th>Property PID</th>
                             <th>Survey Number</th>
-                            <th>Status</th>
                             <th>Request Land</th>
                           </tr>
                         </thead>

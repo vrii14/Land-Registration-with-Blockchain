@@ -40,10 +40,13 @@ class AddLand extends Component {
       ipfsHash: '',
       propertyPID: '',
       surveyNum: '',
-
+      buffer2: null,
+      document: '',
     }
     this.captureFile = this.captureFile.bind(this);
     this.addimage = this.addimage.bind(this);
+    this.captureDoc = this.captureDoc.bind(this);
+    this.addDoc = this.addDoc.bind(this);
   }
 
   componentDidMount = async () => {
@@ -100,11 +103,26 @@ class AddLand extends Component {
       console.log('ipfsHash:', this.state.ipfsHash);
     })
   }
+  addDoc = async () => {
+    // alert('In add image')
+    await ipfs.files.add(this.state.buffer2, (error, result) => {
+      if (error) {
+        alert(error)
+        return
+      }
+
+      alert(result[0].hash)
+      this.setState({ document: result[0].hash });
+      console.log('document:', this.state.document);
+    })
+  }
+
   //QmYdztkcPJLmGmwLmM4nyBfVatoBMRDuUjmgBupjmTodAP
   addLand = async () => {
     this.addimage();
+    this.addDoc();
     // alert('After add image')
-    await new Promise(resolve => setTimeout(resolve, 10000));
+    await new Promise(resolve => setTimeout(resolve, 15000));
     if (this.state.area == '' || this.state.city == '' || this.state.stateLoc == '' || this.state.price == '' || this.state.propertyPID == '' || this.state.surveyNum == '') {
       alert("All the fields are compulsory!");
     } else if ((!Number(this.state.area)) || (!Number(this.state.price))) {
@@ -117,7 +135,8 @@ class AddLand extends Component {
         this.state.price, 
         this.state.propertyPID,
         this.state.surveyNum,
-        this.state.ipfsHash)
+        this.state.ipfsHash, 
+        this.state.document)
         .send({
           from: this.state.account,
           gas: 2100000
@@ -159,6 +178,17 @@ class AddLand extends Component {
       console.log('buffer', this.state.buffer)
     }
     console.log('caoture file...')
+  }
+  captureDoc(event) {
+    event.preventDefault()
+    const file2 = event.target.files[0]
+    const reader2 = new window.FileReader()
+    reader2.readAsArrayBuffer(file2)
+    reader2.onloadend = () => {
+      this.setState({ buffer2: Buffer(reader2.result) })
+      console.log('buffer2', this.state.buffer2)
+    }
+    console.log('caoture doc...')
   }
 
   render() {
@@ -293,6 +323,17 @@ class AddLand extends Component {
                         <FormFile
                           id="File1"
                           onChange={this.captureFile}
+                        />
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md="12">
+                      <FormGroup>
+                        <label>Insert Adhar card document</label>
+                        <FormFile
+                          id="File2"
+                          onChange={this.captureDoc}
                         />
                       </FormGroup>
                     </Col>

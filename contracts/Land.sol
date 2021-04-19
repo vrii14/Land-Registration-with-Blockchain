@@ -11,6 +11,7 @@ contract Land {
         uint propertyPID;
         uint physicalSurveyNumber;
         string ipfsHash;
+        string document;
     }
 
     struct Buyer{
@@ -133,6 +134,9 @@ contract Land {
     function getImage(uint i) public view returns (string memory) {
         return lands[i].ipfsHash;
     }
+    function getDocument(uint i) public view returns (string memory) {
+        return lands[i].document;
+    }
     
     function getLandOwner(uint id) public view returns (address) {
         return LandOwner[id];
@@ -177,7 +181,7 @@ contract Land {
     }
 
     function isLandInspector(address _id) public view returns (bool) {
-        if(0x996d5Dd44538775D98Abc15d578a86428ACD8943 == _id){
+        if(0xA9A2Dd050820EBb2cE87e3f5D1162Aa836636B07 == _id){
             return true;
         }else{
             return false;
@@ -195,10 +199,10 @@ contract Land {
         }
     }
 
-    function addLand(uint _area, string memory _city,string memory _state, uint landPrice, uint _propertyPID,uint _surveyNum,string memory _ipfsHash) public {
+    function addLand(uint _area, string memory _city,string memory _state, uint landPrice, uint _propertyPID,uint _surveyNum,string memory _ipfsHash, string memory _document) public {
         require((isSeller(msg.sender)) && (isVerified(msg.sender)));
         landsCount++;
-        lands[landsCount] = Landreg(landsCount, _area, _city, _state, false, landPrice,_propertyPID, _surveyNum, _ipfsHash);
+        lands[landsCount] = Landreg(landsCount, _area, _city, _state, false, landPrice,_propertyPID, _surveyNum, _ipfsHash, _document);
         LandOwner[landsCount] = msg.sender;
         // emit AddingLand(landsCount);
     }
