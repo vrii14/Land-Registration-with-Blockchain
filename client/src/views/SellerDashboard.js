@@ -125,16 +125,11 @@ class SDash extends Component {
         rowsPrice.push(<ContractData contract="Land" method="getPrice" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
         rowsPID.push(<ContractData contract="Land" method="getPID" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
         rowsSurvey.push(<ContractData contract="Land" method="getSurveyNumber" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
-      // rowsIpfs.push((<ContractData contract="Land" method="getImage"  methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />));
       }
-      var landImg = await this.state.LandInstance.methods.getImage(1).call();
+    
 
-      // console.log(rowsIpfs[4]);
       for (var i = 0; i < count; i++) {
         row.push(<tr><td>{i + 1}</td><td>{rowsArea[i]}</td><td>{rowsCity[i]}</td><td>{rowsState[i]}</td><td>{rowsPrice[i]}</td><td>{rowsPID[i]}</td><td>{rowsSurvey[i]}</td><td>{rowsSt[i]}</td>
-        <img src={`https://ipfs.io/ipfs/${landImg}`} alt="" width="50em" height="50em"/>
-        {/* <td>{rowsIpfs[i].toString()}</td>
-         */}
         </tr>)
 
       }
@@ -343,22 +338,6 @@ class SDash extends Component {
         </div>
       </>
 
-      // <div className="App">  
-      //   <div>
-      //     <div>
-      //       <h1>
-      //         Seller Dashboard
-      //       </h1>
-      //     </div>
-      //   </div>
-
-      //   <div className="form">
-      //       <Button href="/AddLand" disabled={!this.state.verified} className="button-vote">
-      //           Add Land
-      //       </Button>
-      //   </div>
-
-      // </div>
     );
 
   }

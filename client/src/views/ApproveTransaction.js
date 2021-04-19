@@ -167,8 +167,8 @@ class ApproveRequest extends Component {
                       <CardTitle tag="h4">Lands Tranfer Request Info</CardTitle>
                     </CardHeader>
                     <CardBody>
-                    <Table striped bordered hover>
-                        <thead>
+                    <Table className="tablesorter" responsive color="black">
+                        <thead className="text-primary">
                             <tr>
                                 <th>#</th>
                                 <th>Seller ID</th>

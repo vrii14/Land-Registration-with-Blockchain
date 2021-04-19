@@ -155,13 +155,14 @@ class ApproveRequest extends Component {
                             </CardHeader>
                             <CardBody>
 
-                                <Table striped bordered hover>
-                                    <thead>
+                                <Table className="tablesorter" responsive color="black">
+                                    <thead className="text-primary">
                                         <tr>
                                             <th>#</th>
                                             <th>Buyer ID</th>
                                             <th>Land ID</th>
                                             <th>Request Status</th>
+                                            <th>Approve Request</th>
                                         </tr>
                                     </thead>
                                     <tbody>

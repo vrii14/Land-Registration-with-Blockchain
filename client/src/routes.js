@@ -25,6 +25,7 @@ import Rtl from "./views/Rtl";
 import TableList from "./views/TableList";
 import Typography from "./views/Typography";
 import UserProfile from "./views/UserProfile";
+import viewImage from "./views/viewImage";
 
 var routes = [
   {
@@ -43,46 +44,14 @@ var routes = [
     component: buyerProfile,
     layout: "/admin",
   },
-  // {
-  //   path: "/map",
-  //   name: "Map",
-  //   rtlName: "خرائط",
-  //   icon: "tim-icons icon-square-pin",
-  //   component: Map,
-  //   layout: "/",
-  // },
-  // {
-  //   path: "/notifications",
-  //   name: "Notifications",
-  //   rtlName: "إخطارات",
-  //   icon: "tim-icons icon-bell-55",
-  //   component: Notifications,
-  //   layout: "/admin",
-  // },
-  // {
-  //   path: "/user-profile",
-  //   name: "User Profile",
-  //   rtlName: "ملف تعريفي للمستخدم",
-  //   icon: "tim-icons icon-single-02",
-  //   component: UserProfile,
-  //   layout: "/admin",
-  // },
-  // {
-  //   path: "/tables",
-  //   name: "Request History",
-  //   rtlName: "قائمة الجدول",
-  //   icon: "tim-icons icon-refresh-02",
-  //   component: TableList,
-  //   layout: "/admin",
-  // },
-  // {
-  //   path: "/typography",
-  //   name: "Land Owned",
-  //   rtlName: "طباعة",
-  //   icon: "tim-icons icon-badge",
-  //   component: Typography,
-  //   layout: "/admin",
-  // },
-
+  {
+    path: "/viewImage",
+    name: "Land Gallery",
+    rtlName: "الرموز",
+    icon: "tim-icons icon-image-02",
+    component: viewImage,
+    layout: "/admin",
+  },
+  
 ];
 export default routes;

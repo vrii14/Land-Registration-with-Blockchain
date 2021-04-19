@@ -59,7 +59,7 @@ var routes = [
     path: "/viewImage",
     name: "Land Gallery",
     rtlName: "الرموز",
-    icon: "tim-icons icon-badge",
+    icon: "tim-icons icon-image-02",
     component: viewImage,
     layout: "/Seller",
   },
