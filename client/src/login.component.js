@@ -4,7 +4,7 @@ import history from './history';
 import { Redirect } from 'react-router-dom';
 import getWeb3 from "./getWeb3"
 import LandContract from "./artifacts/Land.json"
-
+import { Button } from "reactstrap";
 
 export default class Login extends Component {
     constructor() {
@@ -71,26 +71,26 @@ export default class Login extends Component {
     render() {
         if (this.state.registered || this.state.verified) {
             return (
-               
-                    <div className="bodyC">
-                        <div className="img-wrapper">
-                            <img src="https://i.pinimg.com/originals/71/6e/00/716e00537e8526347390d64ec900107d.png" className="logo" />
-                            <div className="wine-text-container">
-                                <div className="site-title wood-text">Land Registry</div>
-                            </div>
+
+                <div className="bodyC">
+                    <div className="img-wrapper">
+                        <img src="https://i.pinimg.com/originals/71/6e/00/716e00537e8526347390d64ec900107d.png" className="logo" />
+                        <div className="wine-text-container">
+                            <div className="site-title wood-text">Land Registry</div>
                         </div>
-                        <div className="auth-wrapper">
-                            <div className="auth-inner">
+                    </div>
+                    <div className="auth-wrapper">
+                        <div className="auth-inner">
+                            <div>
                                 <div>
-                                    <div>
-                                        <h1>
-                                            You have already registered.
+                                    <h1>
+                                        You have already registered.
                                         </h1>
-                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
             );
         }
 
@@ -105,8 +105,8 @@ export default class Login extends Component {
                 <div className="auth-wrapper">
                     <div className="auth-inner">
                         <div>
-                            <h1 style={{ letterSpacing: "3px", fontWeight: 500, color: "black"}}>Welcome !</h1>
-                            <h4 style={{ letterSpacing: "2px", color:'black' }}>Making the Most of Digital Era!</h4>
+                            <h1 style={{ letterSpacing: "3px", fontWeight: 500, color: "black" }}>Welcome !</h1>
+                            <h4 style={{ letterSpacing: "2px", color: 'black' }}>Making the Most of Digital Era!</h4>
                             <hr
                                 style={{
                                     color: "#696969",
@@ -114,7 +114,7 @@ export default class Login extends Component {
                                 }}
                             />
 
-                            <div class="form-group" style={{color:"black"}}>
+                            <div class="form-group" style={{ color: "black" }}>
                                 <label class="control-label" for="Company" style={{ fontSize: "18px", padding: "2px" }}>Select Role</label>
                                 <select id="Company" class="form-control" name="Company" onChange={this.handleInputChange}>
                                     <option selected="true" disabled="disabled">Select Role</option>
@@ -125,6 +125,9 @@ export default class Login extends Component {
 
                             <div>
                                 <button onClick={() => this.submit()} className="btn btn-primary btn-block" style={{ marginBottom: "10px", marginTop: "10px" }}>Register</button>
+                                    <Button href ="/Help" className="btn-fill">
+                                        About Us!
+                                    </Button>
                             </div>
                         </div>
                     </div>
