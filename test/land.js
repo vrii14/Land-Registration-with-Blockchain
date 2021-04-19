@@ -73,7 +73,7 @@ contract("Land", function(accounts){
     it("allows to add a Land by a verified Seller", function(){
         return Land.deployed().then(function(instance) {
             landReginstance = instance;
-            return landReginstance.addLand(500,"Akola", {from: accounts[5]});
+            return landReginstance.addLand(500,"Akola", 20000, {from: accounts[5]});
         }).then(function(receipt) {
             assert.equal(receipt.logs.length, 0, "Receipt"); 
             return landReginstance.landsCount();
