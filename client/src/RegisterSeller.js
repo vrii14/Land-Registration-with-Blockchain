@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import LandContract from "./artifacts/Land.json"
 import getWeb3 from "./getWeb3"
+import ipfs from './ipfs';
 
-import { FormGroup, FormControl, Button, Spinner } from 'react-bootstrap'
+import { FormGroup, FormControl, Button, Spinner, FormFile } from 'react-bootstrap'
 
 //import Navigation from './Navigation'
 
@@ -20,7 +21,11 @@ class RegisterSeller extends Component {
             panNumber: '',
             landsOwned: '',
             isVerified: false,
+            buffer2: null,
+            document: '',
         }
+        this.captureDoc = this.captureDoc.bind(this);
+        this.addDoc = this.addDoc.bind(this);
     }
 
     componentDidMount = async () => {
@@ -55,29 +60,47 @@ class RegisterSeller extends Component {
         }
     };
 
+    addDoc = async () => {
+        // alert('In add image')
+        await ipfs.files.add(this.state.buffer2, (error, result) => {
+          if (error) {
+            alert(error)
+            return
+          }
+    
+          alert(result[0].hash)
+          this.setState({ document: result[0].hash });
+          console.log('document:', this.state.document);
+        })
+      }
+
     registerSeller = async () => {
+        this.addDoc();
+        // alert('After add image')
+        await new Promise(resolve => setTimeout(resolve, 10000));
         if (this.state.name == '' || this.state.age == '' || this.state.aadharNumber == '' || this.state.panNumber == '' || this.state.landsOwned == '') {
             alert("All the fields are compulsory!");
-        } else if(this.state.aadharNumber.length != 12){
+        } else if (this.state.aadharNumber.length != 12) {
             alert("Aadhar Number should be 12 digits long!");
-        } else if(this.state.panNumber.length != 10){
+        } else if (this.state.panNumber.length != 10) {
             alert("Pan Number should be a 10 digit unique number!");
         } else if (!Number(this.state.age)) {
             alert("Your age must be a number");
-        } else{
+        } else {
             await this.state.LandInstance.methods.registerSeller(
                 this.state.name,
                 this.state.age,
                 this.state.aadharNumber,
                 this.state.panNumber,
-                this.state.landsOwned)
+                this.state.landsOwned, 
+                this.state.document)
                 .send({
-                    from : this.state.account,
-                    gas : 2100000
+                    from: this.state.account,
+                    gas: 2100000
                 }).then(response => {
                     this.props.history.push("/Seller/SellerDashboard");
                 });
-    
+
             //Reload
             window.location.reload(false);
         }
@@ -98,6 +121,17 @@ class RegisterSeller extends Component {
     updateOwnedLands = event => (
         this.setState({ landsOwned: event.target.value })
     )
+    captureDoc(event) {
+        event.preventDefault()
+        const file2 = event.target.files[0]
+        const reader2 = new window.FileReader()
+        reader2.readAsArrayBuffer(file2)
+        reader2.onloadend = () => {
+          this.setState({ buffer2: Buffer(reader2.result) })
+          console.log('buffer2', this.state.buffer2)
+        }
+        console.log('caoture doc...')
+      }
 
     render() {
         if (!this.state.web3) {
@@ -140,7 +174,7 @@ class RegisterSeller extends Component {
 
                             <div>
                                 <div>
-                                    <h1 style={{color:"black"}}>
+                                    <h1 style={{ color: "black" }}>
                                         Seller Registration
                   </h1>
                                 </div>
@@ -213,6 +247,15 @@ class RegisterSeller extends Component {
                                         />
                                     </div>
                                 </FormGroup>
+
+                                <FormGroup>
+                                    <label>Add your Aadhar Card (PDF Format)</label>
+                                    <FormFile
+                                        id="File2"
+                                        onChange={this.captureDoc}
+                                    />
+                                </FormGroup>
+
 
                                 <Button onClick={this.registerSeller} className="button-vote">
                                     Register as Seller

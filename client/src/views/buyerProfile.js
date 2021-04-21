@@ -153,6 +153,14 @@ class buyerProfile extends Component {
                   </FormGroup>
                 </Col>
               </Row>
+              <Row>
+                <Col md="12">
+                  <FormGroup>
+                    <label>Your Aadhar Document</label>
+                    <div class="post-meta"><span class="timestamp"> <a href={`https://ipfs.io/ipfs/${buyer[6]}`} target="_blank">Here</a></span></div>
+                  </FormGroup>
+                </Col>
+              </Row>
              </>);
 
         } catch (error) {

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import LandContract from "./artifacts/Land.json";
 import getWeb3 from "./getWeb3";
+import ipfs from './ipfs';
 
-import { FormGroup, FormControl, Button, Spinner } from 'react-bootstrap'
+import { FormGroup, FormControl, Button, Spinner, FormFile } from 'react-bootstrap'
 
 //import Navigation from './Navigation'
 
@@ -21,7 +22,11 @@ class RegisterBuyer extends Component {
             aadharNumber: '',
             panNumber: '',
             isVerified: false,
+            buffer2: null,
+            document: '',
         }
+        this.captureDoc = this.captureDoc.bind(this);
+        this.addDoc = this.addDoc.bind(this);
     }
 
     componentDidMount = async () => {
@@ -55,8 +60,24 @@ class RegisterBuyer extends Component {
             console.error(error);
         }
     };
+    addDoc = async () => {
+        // alert('In add image')
+        await ipfs.files.add(this.state.buffer2, (error, result) => {
+          if (error) {
+            alert(error)
+            return
+          }
+    
+          alert(result[0].hash)
+          this.setState({ document: result[0].hash });
+          console.log('document:', this.state.document);
+        })
+      }
 
     RegisterBuyer = async () => {
+        this.addDoc();
+        // alert('After add image')
+        await new Promise(resolve => setTimeout(resolve, 10000));
         if (this.state.name == '' || this.state.age == '' || this.state.city == '' || this.state.state == '' || this.state.aadharNumber == '' || this.state.panNumber == '') {
             alert("All the fields are compulsory!");
         } else if(this.state.aadharNumber.length != 12){
@@ -73,7 +94,8 @@ class RegisterBuyer extends Component {
                 this.state.city,
                 this.state.state,
                 this.state.aadharNumber,
-                this.state.panNumber)
+                this.state.panNumber,
+                this.state.document)
                 .send({
                     from : this.state.account,
                     gas : 2100000
@@ -104,6 +126,17 @@ class RegisterBuyer extends Component {
     updatePan = event => (
         this.setState({ panNumber: event.target.value })
     )
+    captureDoc(event) {
+        event.preventDefault()
+        const file2 = event.target.files[0]
+        const reader2 = new window.FileReader()
+        reader2.readAsArrayBuffer(file2)
+        reader2.onloadend = () => {
+          this.setState({ buffer2: Buffer(reader2.result) })
+          console.log('buffer2', this.state.buffer2)
+        }
+        console.log('caoture doc...')
+      }
 
 
     render() {
@@ -234,7 +267,13 @@ class RegisterBuyer extends Component {
                                     </div>
                                 </FormGroup>
 
-
+                                <FormGroup>
+                                    <label>Add your Aadhar Card (PDF Format)</label>
+                                    <FormFile
+                                        id="File2"
+                                        onChange={this.captureDoc}
+                                    />
+                                </FormGroup>
 
                                 <Button onClick={this.RegisterBuyer} className="button-vote">
                                     Register as Buyer

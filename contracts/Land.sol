@@ -22,6 +22,7 @@ contract Land {
         string state;
         string aadharNumber;
         string panNumber;
+        string document;
     }
 
     struct Seller{
@@ -31,6 +32,7 @@ contract Land {
         string aadharNumber;
         string panNumber;
         string landsOwned;
+        string document;
     }
 
     struct LandInspector {
@@ -181,7 +183,7 @@ contract Land {
     }
 
     function isLandInspector(address _id) public view returns (bool) {
-        if(0x80f90b5D6E6E956d0Ffc2DC6973c01DcaaE5C03C == _id){
+        if(0xEfFc2a5ab8dcF09ce7b19D06696f29360f1A8763 == _id){
             return true;
         }else{
             return false;
@@ -208,14 +210,14 @@ contract Land {
     }
 
     //registration of seller
-    function registerSeller(string memory _name, uint _age, string memory _aadharNumber, string memory _panNumber, string memory _landsOwned) public {
+    function registerSeller(string memory _name, uint _age, string memory _aadharNumber, string memory _panNumber, string memory _landsOwned, string memory _document) public {
         //require that Buyer is not already registered
         require(!RegisteredAddressMapping[msg.sender]);
 
         RegisteredAddressMapping[msg.sender] = true;
         RegisteredSellerMapping[msg.sender] = true ;
         sellersCount++;
-        SellerMapping[msg.sender] = Seller(msg.sender, _name, _age, _aadharNumber,_panNumber, _landsOwned);
+        SellerMapping[msg.sender] = Seller(msg.sender, _name, _age, _aadharNumber,_panNumber, _landsOwned, _document);
         sellers.push(msg.sender);
         emit Registration(msg.sender);
     }
@@ -224,18 +226,18 @@ contract Land {
         return(sellers);
     }
 
-    function getSellerDetails(address i) public view returns (string memory, uint, string memory, string memory, string memory) {
-        return (SellerMapping[i].name, SellerMapping[i].age, SellerMapping[i].aadharNumber, SellerMapping[i].panNumber, SellerMapping[i].landsOwned);
+    function getSellerDetails(address i) public view returns (string memory, uint, string memory, string memory, string memory, string memory) {
+        return (SellerMapping[i].name, SellerMapping[i].age, SellerMapping[i].aadharNumber, SellerMapping[i].panNumber, SellerMapping[i].landsOwned, SellerMapping[i].document);
     }
 
-    function registerBuyer(string memory _name, uint _age, string memory _city, string memory _state, string memory _aadharNumber, string memory _panNumber) public {
+    function registerBuyer(string memory _name, uint _age, string memory _city, string memory _state, string memory _aadharNumber, string memory _panNumber, string memory _document) public {
         //require that Buyer is not already registered
         require(!RegisteredAddressMapping[msg.sender]);
 
         RegisteredAddressMapping[msg.sender] = true;
         RegisteredBuyerMapping[msg.sender] = true ;
         buyersCount++;
-        BuyerMapping[msg.sender] = Buyer(msg.sender, _name, _age, _city, _state, _aadharNumber, _panNumber);
+        BuyerMapping[msg.sender] = Buyer(msg.sender, _name, _age, _city, _state, _aadharNumber, _panNumber, _document);
         buyers.push(msg.sender);
 
         emit Registration(msg.sender);
@@ -245,8 +247,8 @@ contract Land {
         return(buyers);
     }
 
-    function getBuyerDetails(address i) public view returns (string memory, uint, string memory, string memory, string memory, string memory) {
-        return (BuyerMapping[i].name, BuyerMapping[i].age,BuyerMapping[i].city,BuyerMapping[i].state,  BuyerMapping[i].aadharNumber, BuyerMapping[i].panNumber);
+    function getBuyerDetails(address i) public view returns (string memory, uint, string memory, string memory, string memory, string memory, string memory) {
+        return (BuyerMapping[i].name, BuyerMapping[i].age,BuyerMapping[i].city,BuyerMapping[i].state,  BuyerMapping[i].aadharNumber, BuyerMapping[i].panNumber, BuyerMapping[i].document);
     }
 
     // function getAllRequests() public view returns (LandRequest[] memory){
