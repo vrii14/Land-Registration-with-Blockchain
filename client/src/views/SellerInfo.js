@@ -118,17 +118,17 @@ class SellerInfo extends Component {
                 var seller_verify = await this.state.LandInstance.methods.isVerified(sellersMap[i]).call();
                 console.log(seller_verify);
 
-                sellerTable.push(<tr><td>{i + 1}</td><td>{sellersMap[i]}</td><td>{seller[0]}</td><td>{seller[1]}</td><td>{seller[2]}</td><td>{seller[3]}</td><td>{seller[4]}</td>
+                sellerTable.push(<tr><td>{i + 1}</td><td>{sellersMap[i]}</td><td>{seller[0]}</td><td>{seller[1]}</td><td>{seller[2]}</td><td>{seller[3]}</td><td>{seller[4]}</td><td><a href={`https://ipfs.io/ipfs/${seller[5]}`} target="_blank">Click Here</a></td>
                     <td>
                         <Button onClick={this.verifySeller(sellersMap[i])} disabled={seller_verify} className="button-vote">
                             Verify
                     </Button>
                     </td></tr>)
+            console.log(seller[5]);
 
 
             }
 
-            console.log(sellerTable);
 
 
         } catch (error) {
@@ -257,6 +257,7 @@ class SellerInfo extends Component {
                                                     <th>Aadhar Number</th>
                                                     <th>Pan Number</th>
                                                     <th>Owned Lands</th>
+                                                    <th>Aadhar Card Document</th>
                                                     <th>Verify Seller</th>
                                                 </tr>
                                             </thead>

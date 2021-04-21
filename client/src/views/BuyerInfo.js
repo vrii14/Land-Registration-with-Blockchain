@@ -126,7 +126,7 @@ class BuyerInfo extends Component {
                 var buyer_verify = await this.state.LandInstance.methods.isVerified(buyersMap[i]).call();
                 console.log(buyer_verify);
 
-                buyerTable.push(<tr><td>{i + 1}</td><td>{buyersMap[i]}</td><td>{buyer[0]}</td><td>{buyer[1]}</td><td>{buyer[2]}</td><td>{buyer[3]}</td><td>{buyer[4]}</td><td>{buyer[5]}</td>
+                buyerTable.push(<tr><td>{i + 1}</td><td>{buyersMap[i]}</td><td>{buyer[0]}</td><td>{buyer[1]}</td><td>{buyer[2]}</td><td>{buyer[3]}</td><td>{buyer[4]}</td><td>{buyer[5]}</td><td><a href={`https://ipfs.io/ipfs/${buyer[6]}`} target="_blank">Click Here</a></td>
                     <td>
                         <Button onClick={this.verifyBuyer(buyersMap[i])} disabled={buyer_verify} className="button-vote">
                             Verify
@@ -262,6 +262,7 @@ class BuyerInfo extends Component {
                                                     <th>State</th>
                                                     <th>Aadhar Number</th>
                                                     <th>Pan Number</th>
+                                                    <th>Aadhar Card Document</th>
                                                     <th>Verify Buyer</th>
                                                 </tr>
                                             </thead>
