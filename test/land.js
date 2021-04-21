@@ -5,13 +5,6 @@ contract("Land", function(accounts){
     var landReginstance;
     // let accounts = await web3.eth.getAccounts();
 
-    // it("Initialize with 3 lands", function(){
-    //     return Land.deployed().then(function(instance){
-    //         return instance.landsCount();
-    //     }).then(function(count){
-    //         assert.equal(count, 3);
-    //     });
-    // });
 
     it("Initialize with 1 Land Inspector", function(){
         return Land.deployed().then(function(instance){
@@ -60,10 +53,20 @@ contract("Land", function(accounts){
     });
 
 
-    it("allows to verify a seller/buyer by Land Inspector", function(){
+    it("allows to verify a seller by Land Inspector", function(){
         return Land.deployed().then(function(instance) {
             landReginstance = instance;
             return landReginstance.verifySeller(accounts[5], {from: accounts[9]});
+        }).then(function(receipt) {
+            assert.equal(receipt.logs.length, 1, "an event was triggered"); 
+            assert.equal(receipt.logs[0].event, "Verified", "the event type is correct");
+        })
+    });
+
+    it("allows to verify a Buyer by Land Inspector", function(){
+        return Land.deployed().then(function(instance) {
+            landReginstance = instance;
+            return landReginstance.verifyBuyer(accounts[2], {from: accounts[9]});
         }).then(function(receipt) {
             assert.equal(receipt.logs.length, 1, "an event was triggered"); 
             assert.equal(receipt.logs[0].event, "Verified", "the event type is correct");
@@ -73,12 +76,37 @@ contract("Land", function(accounts){
     it("allows to add a Land by a verified Seller", function(){
         return Land.deployed().then(function(instance) {
             landReginstance = instance;
-            return landReginstance.addLand(500,"Akola", 20000, {from: accounts[5]});
+            return landReginstance.addLand(500,"Akola","Maharashtra", 20000, 567,1890, "QmYdztkcPJLmGmwLmM4nyBfVatoBMRDuUjmgBupjmTodAP","QmYdztkcPJLmGmwLmM4nyBfVatoBMRDuUjmgBupjmTodAP", {from: accounts[5]});
         }).then(function(receipt) {
             assert.equal(receipt.logs.length, 0, "Receipt"); 
             return landReginstance.landsCount();
         }).then(function(count) {
             assert.equal(count, 1, "first land added.");
+          })
+    });
+
+    it("allows to request Land by a Verified Buyer", function(){
+        return Land.deployed().then(function(instance) {
+            landReginstance = instance;
+            return landReginstance.requestLand(accounts[5],1, {from: accounts[2]});
+        }).then(function(receipt) {
+            assert.equal(receipt.logs.length, 1, "Receipt"); 
+            assert.equal(receipt.logs[0].event, "Landrequested", "the event type is correct");
+            return landReginstance.requestsCount();
+        }).then(function(count) {
+            assert.equal(count, 1, "Successful Request for land made.");
+          })
+    });
+
+    it("allows Seller to approve the Land Request by Buyer", function(){
+        return Land.deployed().then(function(instance) {
+            landReginstance = instance;
+            return landReginstance.approveRequest(1, {from: accounts[5]});
+        }).then(function(receipt) {
+            assert.equal(receipt.logs.length, 0, "Receipt"); 
+            return landReginstance.RequestStatus(1);
+        }).then(function(reqStatus) {
+            assert.equal(reqStatus, true, "Approved the land request!");
           })
     });
 
