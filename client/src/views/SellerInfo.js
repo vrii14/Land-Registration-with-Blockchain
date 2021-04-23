@@ -41,10 +41,10 @@ const drizzleOptions = {
     contracts: [Land]
 }
 
-// var buyers = 0;
-// var sellers = 0;
+
+var sellersCount;
+var sellersMap = [];
 var sellerTable = [];
-var completed = true;
 
 class SellerInfo extends Component {
     constructor(props) {
@@ -56,6 +56,7 @@ class SellerInfo extends Component {
             web3: null,
             sellers: 0,
             verified: '',
+            not_verified: '',
         }
     }
 
@@ -73,6 +74,18 @@ class SellerInfo extends Component {
         //Reload
         window.location.reload(false);
 
+    }
+
+    NotverifySeller = (item) => async() => {
+
+        await this.state.LandInstance.methods.rejectSeller(
+            item
+        ).send({
+            from: this.state.account,
+            gas: 2100000
+        });
+
+        window.location.reload(false);
     }
 
     componentDidMount = async () => {
@@ -100,10 +113,10 @@ class SellerInfo extends Component {
             this.setState({ LandInstance: instance, web3: web3, account: accounts[0] });
 
 
-            var sellersCount = await this.state.LandInstance.methods.getSellersCount().call();
+            sellersCount = await this.state.LandInstance.methods.getSellersCount().call();
             console.log(sellersCount);
 
-            var sellersMap = [];
+            
             
             sellersMap = await this.state.LandInstance.methods.getSeller().call();
             
@@ -117,11 +130,24 @@ class SellerInfo extends Component {
                 console.log(seller);
                 var seller_verify = await this.state.LandInstance.methods.isVerified(sellersMap[i]).call();
                 console.log(seller_verify);
+                seller.verified = seller_verify;
+                
+                //seller.push(seller_verify);
+                var not_verify = await this.state.LandInstance.methods.isRejected(sellersMap[i]).call();
+                console.log(not_verify);
+
+
 
                 sellerTable.push(<tr><td>{i + 1}</td><td>{sellersMap[i]}</td><td>{seller[0]}</td><td>{seller[1]}</td><td>{seller[2]}</td><td>{seller[3]}</td><td>{seller[4]}</td><td><a href={`https://ipfs.io/ipfs/${seller[5]}`} target="_blank">Click Here</a></td>
+                    <td>{seller.verified.toString()}</td>
                     <td>
-                        <Button onClick={this.verifySeller(sellersMap[i])} disabled={seller_verify} className="button-vote">
+                        <Button onClick={this.verifySeller(sellersMap[i])} disabled={seller_verify || not_verify} className="button-vote">
                             Verify
+                    </Button>
+                    </td>
+                    <td>
+                        <Button onClick={this.NotverifySeller(sellersMap[i])} disabled={seller_verify || not_verify} className="button-vote">
+                           Not Verify
                     </Button>
                     </td></tr>)
             console.log(seller[5]);
@@ -258,7 +284,9 @@ class SellerInfo extends Component {
                                                     <th>Pan Number</th>
                                                     <th>Owned Lands</th>
                                                     <th>Aadhar Card Document</th>
+                                                    <th>Verification Status</th>
                                                     <th>Verify Seller</th>
+                                                    <th>Reject Seller</th>
                                                 </tr>
                                             </thead>
                                             <tbody>

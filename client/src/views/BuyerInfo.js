@@ -81,6 +81,18 @@ class BuyerInfo extends Component {
 
     }
     
+    NotverifyBuyer = (item) => async() => {
+
+        await this.state.LandInstance.methods.rejectBuyer(
+            item
+        ).send({
+            from: this.state.account,
+            gas: 2100000
+        });
+
+        window.location.reload(false);
+    }
+
     componentDidMount = async () => {
         //For refreshing page only once
         if (!window.location.hash) {
@@ -125,11 +137,21 @@ class BuyerInfo extends Component {
                 //console.log(buyer);
                 var buyer_verify = await this.state.LandInstance.methods.isVerified(buyersMap[i]).call();
                 console.log(buyer_verify);
-
+                buyer.verified = buyer_verify;
+                
+                //seller.push(seller_verify);
+                var not_verify = await this.state.LandInstance.methods.isRejected(buyersMap[i]).call();
+                console.log(not_verify);
                 buyerTable.push(<tr><td>{i + 1}</td><td>{buyersMap[i]}</td><td>{buyer[0]}</td><td>{buyer[1]}</td><td>{buyer[2]}</td><td>{buyer[3]}</td><td>{buyer[4]}</td><td>{buyer[5]}</td><td><a href={`https://ipfs.io/ipfs/${buyer[6]}`} target="_blank">Click Here</a></td>
+                    <td>{buyer.verified.toString()}</td>
                     <td>
-                        <Button onClick={this.verifyBuyer(buyersMap[i])} disabled={buyer_verify} className="button-vote">
+                        <Button onClick={this.verifyBuyer(buyersMap[i])} disabled={buyer_verify || not_verify} className="button-vote">
                             Verify
+                    </Button>
+                    </td>
+                    <td>
+                        <Button onClick={this.NotverifyBuyer(buyersMap[i])} disabled={buyer_verify || not_verify} className="button-vote">
+                           Not Verify
                     </Button>
                     </td>
                 </tr>)
@@ -263,7 +285,9 @@ class BuyerInfo extends Component {
                                                     <th>Aadhar Number</th>
                                                     <th>Pan Number</th>
                                                     <th>Aadhar Card Document</th>
+                                                    <th>Verification Status</th>
                                                     <th>Verify Buyer</th>
+                                                    <th>Reject Buyer</th>
                                                 </tr>
                                             </thead>
                                             <tbody>

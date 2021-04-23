@@ -62,7 +62,9 @@ contract Land {
     mapping(address => bool) public RegisteredSellerMapping;
     mapping(address => bool) public RegisteredBuyerMapping;
     mapping(address => bool) public SellerVerification;
+    mapping(address => bool) public SellerRejection;
     mapping(address => bool) public BuyerVerification;
+    mapping(address => bool) public BuyerRejection;
     mapping(uint => bool) public LandVerification;
     mapping(uint => address) public LandOwner;
     mapping(uint => bool) public RequestStatus;
@@ -83,6 +85,7 @@ contract Land {
     event Landrequested(address _sellerId);
     event requestApproved(address _buyerId);
     event Verified(address _id);
+    event Rejected(address _id);
 
     constructor() public{
         addLandInspector("Inspector 1", 45, "Tehsil Manager");
@@ -151,11 +154,25 @@ contract Land {
         emit Verified(_sellerId);
     }
 
+    function rejectSeller(address _sellerId) public{
+        require(isLandInspector(msg.sender));
+
+        SellerRejection[_sellerId] = true;
+        emit Rejected(_sellerId);
+    }
+
     function verifyBuyer(address _buyerId) public{
         require(isLandInspector(msg.sender));
 
         BuyerVerification[_buyerId] = true;
         emit Verified(_buyerId);
+    }
+
+    function rejectBuyer(address _buyerId) public{
+        require(isLandInspector(msg.sender));
+
+        BuyerRejection[_buyerId] = true;
+        emit Rejected(_buyerId);
     }
     
     function verifyLand(uint _landId) public{
@@ -176,6 +193,12 @@ contract Land {
         }
     }
 
+    function isRejected(address _id) public view returns (bool) {
+        if(SellerRejection[_id] || BuyerRejection[_id]){
+            return true;
+        }
+    }
+
     function isSeller(address _id) public view returns (bool) {
         if(RegisteredSellerMapping[_id]){
             return true;
@@ -183,7 +206,7 @@ contract Land {
     }
 
     function isLandInspector(address _id) public view returns (bool) {
-        if(0xFCC36f4fE26a27541B2FdaA31e46504e2Ad959A9 == _id){
+        if(0xF8b219379624dcB1F39295c2BBD9d80Bb8027903 == _id){
             return true;
         }else{
             return false;
