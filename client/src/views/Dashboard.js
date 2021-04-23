@@ -88,6 +88,26 @@ class Dashboard extends Component {
 
   }
 
+  makePayment = (seller_address, amount, land_id) => async () => {
+    // alert(amount);
+
+    amount = 1000*0.0000057;
+    alert(amount);
+    await this.state.LandInstance.methods.payment(
+      seller_address,
+      land_id
+    ).send({
+      from: this.state.account,
+      value: this.state.web3.utils.toWei(amount.toString(), "ether"),
+      gas: 2100000
+    }).then(response => {
+      this.props.history.push("#");
+    });
+    //Reload
+    window.location.reload(false);
+
+  }
+
   componentDidMount = async () => {
     //For refreshing page only once
     if (!window.location.hash) {
@@ -154,12 +174,19 @@ class Dashboard extends Component {
       
       for (var i = 0; i < count; i++) {
         var requested = await this.state.LandInstance.methods.isRequested(i + 1).call();
-        console.log(requested);
+        // console.log(requested);
+        var approved = await this.state.LandInstance.methods.isApproved(i + 1).call();
 
         row.push(<tr><td>{i + 1}</td><td>{rowsArea[i]}</td><td>{rowsCity[i]}</td><td>{rowsState[i]}</td><td>{rowsPrice[i]}</td><td>{rowsPID[i]}</td><td>{rowsSurvey[i]}</td>
           <td>
             <Button onClick={this.requestLand(dict[i + 1], i + 1)} disabled={!verified || requested} className="button-vote">
               Request Land
+            </Button>
+          </td>
+          <td>
+            <Button onClick={this.makePayment(dict[i + 1], rowsPrice[i], i+1)} 
+            disabled={!approved} className="btn btn-success">
+              Make Payment
             </Button>
           </td>
         </tr>)
@@ -329,6 +356,7 @@ class Dashboard extends Component {
                             <th>Property PID</th>
                             <th>Survey Number</th>
                             <th>Request Land</th>
+                            <th>Make Payment</th>
                           </tr>
                         </thead>
                         <tbody>

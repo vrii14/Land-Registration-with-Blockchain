@@ -108,14 +108,13 @@ class ApproveRequest extends Component {
             for(let i = 1; i<requestsCount+1; i++){
                 var request = await this.state.LandInstance.methods.getRequestDetails(i).call();
                 console.log(request);
-                var completed = true;
                 // console.log(request[0].toLowerCase());
                 // console.log(currentAddress);
-                var approved = await this.state.LandInstance.methods.isApproved(i).call();
-                console.log(approved);
+                var isPaid = await this.state.LandInstance.methods.isPaid(request[2]).call();
+                console.log(isPaid);
                 requestTable.push(<tr><td>{i}</td><td>{request[0]}</td><td>{request[1]}</td><td>{request[2]}</td><td>{request[3].toString()}</td>
                 <td>
-                    <Button onClick={this.landTransfer(i, request[1])} disabled={!approved && completed} className="button-vote">
+                    <Button onClick={this.landTransfer(i, request[1])} disabled={!isPaid} className="button-vote">
                         Approve Land Transfer
                 </Button>
                 </td></tr>)

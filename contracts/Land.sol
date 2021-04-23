@@ -69,8 +69,9 @@ contract Land {
     mapping(uint => address) public LandOwner;
     mapping(uint => bool) public RequestStatus;
     mapping(uint => bool) public RequestedLands;
+    mapping(uint => bool) public PaymentReceived;
 
-
+    address public Land_Inspector;
     address[] public sellers;
     address[] public buyers;
 
@@ -88,6 +89,7 @@ contract Land {
     event Rejected(address _id);
 
     constructor() public{
+        Land_Inspector = msg.sender ;
         addLandInspector("Inspector 1", 45, "Tehsil Manager");
     }
 
@@ -206,7 +208,7 @@ contract Land {
     }
 
     function isLandInspector(address _id) public view returns (bool) {
-        if(0xD25a5374CcDbc06F56B45444a30ed5976419dcc2 == _id){
+        if(Land_Inspector == _id){
             return true;
         }else{
             return false;
@@ -234,7 +236,7 @@ contract Land {
 
     //registration of seller
     function registerSeller(string memory _name, uint _age, string memory _aadharNumber, string memory _panNumber, string memory _landsOwned, string memory _document) public {
-        //require that Buyer is not already registered
+        //require that Seller is not already registered
         require(!RegisteredAddressMapping[msg.sender]);
 
         RegisteredAddressMapping[msg.sender] = true;
@@ -243,6 +245,18 @@ contract Land {
         SellerMapping[msg.sender] = Seller(msg.sender, _name, _age, _aadharNumber,_panNumber, _landsOwned, _document);
         sellers.push(msg.sender);
         emit Registration(msg.sender);
+    }
+
+    function updateSeller(string memory _name, uint _age, string memory _aadharNumber, string memory _panNumber, string memory _landsOwned) public {
+        //require that Seller is already registered
+        require(RegisteredAddressMapping[msg.sender] && (SellerMapping[msg.sender].id == msg.sender));
+
+        SellerMapping[msg.sender].name = _name;
+        SellerMapping[msg.sender].age = _age;
+        SellerMapping[msg.sender].aadharNumber = _aadharNumber;
+        SellerMapping[msg.sender].panNumber = _panNumber;
+        SellerMapping[msg.sender].landsOwned = _landsOwned;
+
     }
 
     function getSeller() public view returns( address [] memory ){
@@ -266,6 +280,19 @@ contract Land {
         emit Registration(msg.sender);
     }
 
+    function updateBuyer(string memory _name, uint _age, string memory _city, string memory _state, string memory _aadharNumber, string memory _panNumber) public {
+        //require that Buyer is already registered
+        require(RegisteredAddressMapping[msg.sender] && (BuyerMapping[msg.sender].id == msg.sender));
+
+        BuyerMapping[msg.sender].name = _name;
+        BuyerMapping[msg.sender].age = _age;
+        BuyerMapping[msg.sender].city = _city;
+        BuyerMapping[msg.sender].state = _state;
+        BuyerMapping[msg.sender].aadharNumber = _aadharNumber;
+        BuyerMapping[msg.sender].panNumber = _panNumber;
+        
+    }
+
     function getBuyer() public view returns( address [] memory ){
         return(buyers);
     }
@@ -274,9 +301,6 @@ contract Land {
         return (BuyerMapping[i].name, BuyerMapping[i].age,BuyerMapping[i].city,BuyerMapping[i].state,  BuyerMapping[i].aadharNumber, BuyerMapping[i].panNumber, BuyerMapping[i].document);
     }
 
-    // function getAllRequests() public view returns (LandRequest[] memory){
-    //     return RequestsMapping;
-    // }
 
     function requestLand(address _sellerId, uint _landId) public{
         require(isBuyer(msg.sender) && isVerified(msg.sender));
@@ -287,7 +311,6 @@ contract Land {
         RequestedLands[requestsCount] = true;
 
         emit Landrequested(_sellerId);
-        // RequestsMapping[msg.sender] = LandRequest(_sellerId, _landId, false);
     }
 
     function getRequestDetails (uint i) public view returns (address, address, uint, bool) {
@@ -318,5 +341,18 @@ contract Land {
 
         LandOwner[_landId] = _newOwner;
     }
+
+    function isPaid(uint _landId) public view returns (bool) {
+        if(PaymentReceived[_landId]){
+            return true;
+        }
+    }
+
+    function payment(address payable _receiver, uint _landId) public payable {
+        PaymentReceived[_landId] = true;
+        _receiver.transfer(msg.value);
+    }
+
+
 
 }
