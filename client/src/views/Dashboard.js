@@ -138,6 +138,8 @@ class Dashboard extends Component {
 
       console.log(dict[1]);
 
+      var verified =  await this.state.LandInstance.methods.isVerified(currentAddress).call();
+      console.log(verified);
 
       for (var i = 1; i < count + 1; i++) {
         rowsArea.push(<ContractData contract="Land" method="getArea" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
@@ -153,9 +155,10 @@ class Dashboard extends Component {
       for (var i = 0; i < count; i++) {
         var requested = await this.state.LandInstance.methods.isRequested(i + 1).call();
         console.log(requested);
+
         row.push(<tr><td>{i + 1}</td><td>{rowsArea[i]}</td><td>{rowsCity[i]}</td><td>{rowsState[i]}</td><td>{rowsPrice[i]}</td><td>{rowsPID[i]}</td><td>{rowsSurvey[i]}</td>
           <td>
-            <Button onClick={this.requestLand(dict[i + 1], i + 1)} disabled={requested} className="button-vote">
+            <Button onClick={this.requestLand(dict[i + 1], i + 1)} disabled={!verified || requested} className="button-vote">
               Request Land
             </Button>
           </td>

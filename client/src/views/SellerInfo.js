@@ -146,8 +146,8 @@ class SellerInfo extends Component {
                     </Button>
                     </td>
                     <td>
-                        <Button onClick={this.NotverifySeller(sellersMap[i])} disabled={seller_verify || not_verify} className="button-vote">
-                           Not Verify
+                        <Button onClick={this.NotverifySeller(sellersMap[i])} disabled={seller_verify || not_verify} className="btn btn-danger">
+                        Reject
                     </Button>
                     </td></tr>)
             console.log(seller[5]);

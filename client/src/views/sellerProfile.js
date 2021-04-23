@@ -35,6 +35,7 @@ const drizzleOptions = {
 // var sellers = 0;
 var seller;
 var sellerTable = [];
+var verification = [];
 
 class sellerProfile extends Component {
     constructor(props){
@@ -74,7 +75,19 @@ class sellerProfile extends Component {
 
             this.setState({ LandInstance: instance, web3: web3, account: accounts[0] });
 
-            
+            var seller_verify = await this.state.LandInstance.methods.isVerified(currentAddress).call();
+            console.log(seller_verify);
+                
+            var not_verify = await this.state.LandInstance.methods.isRejected(currentAddress).call();
+            console.log(not_verify);
+            if(seller_verify){
+              verification.push(<p id = "verified">Verified <i class="fas fa-user-check"></i></p>);
+            }else if(not_verify){
+              verification.push(<p  id = "rejected">Rejected <i class="fas fa-user-times"></i></p>);
+            }else{
+              verification.push(<p id = "unknown">Not Yet Verified <i class="fas fa-user-cog"></i></p>);
+            }
+
             seller = await this.state.LandInstance.methods.getSellerDetails(currentAddress).call();
             console.log(seller);
             console.log(seller[0]);
@@ -190,6 +203,8 @@ class sellerProfile extends Component {
                                 <Card>
                                     <CardHeader>
                                         <h5 className="title">Seller Profile</h5>
+                                        <h5 className="title">{verification}</h5>
+
                                     </CardHeader>
                                     <CardBody>
                                         <Form>

@@ -150,8 +150,8 @@ class BuyerInfo extends Component {
                     </Button>
                     </td>
                     <td>
-                        <Button onClick={this.NotverifyBuyer(buyersMap[i])} disabled={buyer_verify || not_verify} className="button-vote">
-                           Not Verify
+                        <Button onClick={this.NotverifyBuyer(buyersMap[i])} disabled={buyer_verify || not_verify} className="btn btn-danger">
+                           Reject
                     </Button>
                     </td>
                 </tr>)

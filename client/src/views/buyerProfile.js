@@ -33,6 +33,7 @@ const drizzleOptions = {
 
 var buyer;
 var buyerTable = [];
+var verification = [];
 
 class buyerProfile extends Component {
     constructor(props) {
@@ -71,7 +72,17 @@ class buyerProfile extends Component {
             );
 
             this.setState({ LandInstance: instance, web3: web3, account: accounts[0] });
-
+            
+            var buyer_verify = await this.state.LandInstance.methods.isVerified(currentAddress).call();
+                
+            var not_verify = await this.state.LandInstance.methods.isRejected(currentAddress).call();
+            if(buyer_verify){
+              verification.push(<p id = "verified">Verified <i class="fas fa-user-check"></i></p>);
+            }else if(not_verify){
+              verification.push(<p  id = "rejected">Rejected <i class="fas fa-user-times"></i></p>);
+            }else{
+              verification.push(<p id = "unknown">Not Yet Verified <i class="fas fa-user-cog"></i></p>);
+            }
 
             buyer = await this.state.LandInstance.methods.getBuyerDetails(currentAddress).call();
             console.log(buyer);
@@ -195,6 +206,8 @@ class buyerProfile extends Component {
                                 <Card>
                                     <CardHeader>
                                         <h5 className="title">Buyer Profile</h5>
+                                        <h5 className="title">{verification}</h5>
+
                                     </CardHeader>
                                     <CardBody>
                                         <Form>
