@@ -201,65 +201,6 @@ class TransactionInfo extends Component {
             <DrizzleProvider options={drizzleOptions}>
                 <LoadingContainer>
                     <div className="content">
-
-                        <Row>
-                            <Col lg="4">
-                                <Card className="card-chart">
-                                    <CardHeader>
-                                        <h5 className="card-category">Total Requests for land</h5>
-                                        <CardTitle tag="h3">
-                                            <i className="tim-icons icon-bell-55 text-info" /> 10
-                                         </CardTitle>
-                                    </CardHeader>
-                                    <CardBody>
-                                        <div className="chart-area">
-                                            <Line
-                                                data={chartExample2.data}
-                                                options={chartExample2.options}
-                                            />
-                                        </div>
-                                    </CardBody>
-                                </Card>
-                            </Col>
-                            <Col lg="4">
-                                <Card className="card-chart">
-                                    <CardHeader>
-                                        <h5 className="card-category">Daily Transactions</h5>
-                                        <CardTitle tag="h3">
-                                            <i className="tim-icons icon-delivery-fast text-primary" />{" "}
-                    3-5
-                  </CardTitle>
-                                    </CardHeader>
-                                    <CardBody>
-                                        <div className="chart-area">
-                                            <Bar
-                                                data={chartExample3.data}
-                                                options={chartExample3.options}
-                                            />
-                                        </div>
-                                    </CardBody>
-                                </Card>
-                            </Col>
-                            <Col lg="4">
-                                <Card className="card-chart">
-                                    <CardHeader>
-                                        <h5 className="card-category">Successful Transactions</h5>
-                                        <CardTitle tag="h3">
-                                            <i className="tim-icons icon-send text-success" /> 120
-                  </CardTitle>
-                                    </CardHeader>
-                                    <CardBody>
-                                        <div className="chart-area">
-                                            <Line
-                                                data={chartExample4.data}
-                                                options={chartExample4.options}
-                                            />
-                                        </div>
-                                    </CardBody>
-                                </Card>
-                            </Col>
-                        </Row>
-
                         <Row>
                             <Col xs="12">
                                 <Card>

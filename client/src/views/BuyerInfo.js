@@ -41,7 +41,7 @@ import {
     chartExample3,
     chartExample4,
 } from "../variables/charts";
-
+import { emailjs } from 'emailjs-com';
 const drizzleOptions = {
     contracts: [Land]
 }
@@ -50,6 +50,21 @@ const drizzleOptions = {
 // var sellers = 0;
 var buyerTable = [];
 var completed = true;
+
+function sendMail(email, name){
+    alert(typeof(name));
+
+    var tempParams = {
+        from_name: email,
+        to_name: name,
+        function: 'request and buy any land/property',
+    };
+    
+    window.emailjs.send('service_vrxa1ak', 'template_zhc8m9h', tempParams)
+    .then(function(res){
+        alert("Mail sent successfully");
+    })
+}
 
 class BuyerInfo extends Component {
     constructor(props) {
@@ -81,7 +96,12 @@ class BuyerInfo extends Component {
 
     }
     
-    NotverifyBuyer = (item) => async() => {
+    NotverifyBuyer = (item, email, name) => async() => {
+        alert('Before mail');
+        sendMail(email, name);
+        alert('After mail');
+
+        await new Promise(resolve => setTimeout(resolve, 10000));
 
         await this.state.LandInstance.methods.rejectBuyer(
             item
@@ -130,9 +150,8 @@ class BuyerInfo extends Component {
             //console.log(verified);
             this.setState({ verified: verified });
 
-
-
             for (let i = 0; i < buyersCount; i++) {
+                // var i =3;
                 var buyer = await this.state.LandInstance.methods.getBuyerDetails(buyersMap[i]).call();
 
                 var buyer_verify = await this.state.LandInstance.methods.isVerified(buyersMap[i]).call();
@@ -149,7 +168,7 @@ class BuyerInfo extends Component {
                     </Button>
                     </td>
                     <td>
-                        <Button onClick={this.NotverifyBuyer(buyersMap[i])} disabled={buyer_verify || not_verify} className="btn btn-danger">
+                        <Button onClick={this.NotverifyBuyer(buyersMap[i], buyer[4], buyer[0])} disabled={buyer_verify || not_verify} className="btn btn-danger">
                            Reject
                     </Button>
                     </td>
@@ -207,64 +226,6 @@ class BuyerInfo extends Component {
             <DrizzleProvider options={drizzleOptions}>
                 <LoadingContainer>
                     <div className="content">
-
-                        <Row>
-                            <Col lg="4">
-                                <Card className="card-chart">
-                                    <CardHeader>
-                                        <h5 className="card-category">Total Requests for land</h5>
-                                        <CardTitle tag="h3">
-                                            <i className="tim-icons icon-bell-55 text-info" /> 10
-                                         </CardTitle>
-                                    </CardHeader>
-                                    <CardBody>
-                                        <div className="chart-area">
-                                            <Line
-                                                data={chartExample2.data}
-                                                options={chartExample2.options}
-                                            />
-                                        </div>
-                                    </CardBody>
-                                </Card>
-                            </Col>
-                            <Col lg="4">
-                                <Card className="card-chart">
-                                    <CardHeader>
-                                        <h5 className="card-category">Daily Transactions</h5>
-                                        <CardTitle tag="h3">
-                                            <i className="tim-icons icon-delivery-fast text-primary" />{" "}
-                    3-5
-                  </CardTitle>
-                                    </CardHeader>
-                                    <CardBody>
-                                        <div className="chart-area">
-                                            <Bar
-                                                data={chartExample3.data}
-                                                options={chartExample3.options}
-                                            />
-                                        </div>
-                                    </CardBody>
-                                </Card>
-                            </Col>
-                            <Col lg="4">
-                                <Card className="card-chart">
-                                    <CardHeader>
-                                        <h5 className="card-category">Successful Transactions</h5>
-                                        <CardTitle tag="h3">
-                                            <i className="tim-icons icon-send text-success" /> 120
-                  </CardTitle>
-                                    </CardHeader>
-                                    <CardBody>
-                                        <div className="chart-area">
-                                            <Line
-                                                data={chartExample4.data}
-                                                options={chartExample4.options}
-                                            />
-                                        </div>
-                                    </CardBody>
-                                </Card>
-                            </Col>
-                        </Row>
                         <Row>
                             <Col xs="12">
                                 <Card>

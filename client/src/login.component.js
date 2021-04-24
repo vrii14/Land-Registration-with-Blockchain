@@ -96,6 +96,9 @@ export default class Login extends Component {
 
         return (
             <div className="bodyC">
+                 <a href ="/Help" className="faq" style={{borderRadius: "10%", textDecoration: "none", fontWeight: "bolder"}} >
+                 <h3 style={{color: "wheat"}}>Help?</h3>
+                                    </a>
                 <div className="img-wrapper">
                     <img src="https://i.pinimg.com/originals/71/6e/00/716e00537e8526347390d64ec900107d.png" className="logo" />
                     <div className="wine-text-container">
@@ -125,9 +128,6 @@ export default class Login extends Component {
 
                             <div>
                                 <button onClick={() => this.submit()} className="btn btn-primary btn-block" style={{ marginBottom: "10px", marginTop: "10px" }}>Register</button>
-                                    <Button href ="/Help" className="btn-fill">
-                                        About Us!
-                                    </Button>
                             </div>
                         </div>
                     </div>

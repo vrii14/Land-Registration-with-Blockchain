@@ -14,7 +14,6 @@ import {
   ContractData,
   ContractForm
 } from 'drizzle-react-components'
-
 // reactstrap components
 import {
   Button,
@@ -35,14 +34,7 @@ import {
   Col,
   UncontrolledTooltip,
 } from "reactstrap";
-
-// core components
-import {
-  chartExample1,
-  chartExample2,
-  chartExample3,
-  chartExample4,
-} from "../variables/charts";
+import "../card.css";
 
 
 const drizzleOptions = {
@@ -51,6 +43,9 @@ const drizzleOptions = {
 
 
 var row = [];
+var countarr = [];
+var userarr = [];
+var reqsarr = [];
 var landOwner = [];
 // var requested = false;
 
@@ -123,6 +118,15 @@ class Dashboard extends Component {
       var verified = await this.state.LandInstance.methods.isVerified(currentAddress).call();
       console.log(verified);
 
+      // var countbuyer = await this.state.LandInstance.methods.getBuyersCount().call();
+      // var countseller = await this.state.LandInstance.methods.getSellersCount().call();
+      // userarr.push(<p>{countseller.toString()}</p>);
+
+      // countarr.push(<p>{count.toString()}</p>);
+      countarr.push(<ContractData contract="Land" method="getLandsCount" />);
+      userarr.push(<ContractData contract="Land" method="getSellersCount" />);
+      reqsarr.push(<ContractData contract="Land" method="getRequestsCount" />);
+
       var rowsArea = [];
       var rowsCity = [];
       var rowsState = [];
@@ -148,7 +152,6 @@ class Dashboard extends Component {
         rowsSurvey.push(<ContractData contract="Land" method="getSurveyNumber" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
       }
 
-      
       for (var i = 0; i < count; i++) {
         var requested = await this.state.LandInstance.methods.isRequested(i + 1).call();
         // console.log(requested);
@@ -160,7 +163,6 @@ class Dashboard extends Component {
             </Button>
           </td>
         </tr>)
-
       }
       console.log(row);
 
@@ -216,65 +218,49 @@ class Dashboard extends Component {
     return (
       <>
         <div className="content">
-
-          <Row>
-            <Col lg="4">
-              <Card className="card-chart">
-                <CardHeader>
-                  <h5 className="card-category">Total Requests for land</h5>
-                  <CardTitle tag="h3">
-                    <i className="tim-icons icon-bell-55 text-info" /> 10
-                </CardTitle>
-                </CardHeader>
-                <CardBody>
-                  <div className="chart-area">
-                    <Line
-                      data={chartExample2.data}
-                      options={chartExample2.options}
-                    />
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-            <Col lg="4">
-              <Card className="card-chart">
-                <CardHeader>
-                  <h5 className="card-category">Daily Transactions</h5>
-                  <CardTitle tag="h3">
-                    <i className="tim-icons icon-delivery-fast text-primary" />{" "}
-                  3-5
-                </CardTitle>
-                </CardHeader>
-                <CardBody>
-                  <div className="chart-area">
-                    <Bar
-                      data={chartExample3.data}
-                      options={chartExample3.options}
-                    />
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-            <Col lg="4">
-              <Card className="card-chart">
-                <CardHeader>
-                  <h5 className="card-category">Successful Transactions</h5>
-                  <CardTitle tag="h3">
-                    <i className="tim-icons icon-send text-success" /> 120
-                </CardTitle>
-                </CardHeader>
-                <CardBody>
-                  <div className="chart-area">
-                    <Line
-                      data={chartExample4.data}
-                      options={chartExample4.options}
-                    />
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-          <Row>
+        <DrizzleProvider options={drizzleOptions}>
+            <LoadingContainer>
+              <div className="main-section">
+                <Row>
+                  <Col lg="4">
+                    <div class="dashbord dashbord-skyblue">
+                      <div class="icon-section">
+                        <i class="fa fa-users" aria-hidden="true"></i><br />
+                        <medium>Total Sellers</medium><br />
+                       <p> {userarr} </p>
+                      </div>
+                      <div class="detail-section"><br />
+                      </div>
+                    </div>
+                  </Col>
+                  <Col lg="4">
+                    <div class="dashbord dashbord-orange">
+                      <div class="icon-section">
+                        <i class="fa fa-landmark" aria-hidden="true"></i><br />
+                        <medium>Registered Lands Count</medium><br />
+                        <p>{countarr}</p>
+                      </div>
+                      <div class="detail-section"><br />
+                      </div>
+                    </div>
+                  </Col>
+                  <Col lg="4">
+                    <div class="dashbord dashbord-blue">
+                      <div class="icon-section">
+                        <i class="fa fa-bell" aria-hidden="true"></i><br />
+                        <medium>Total Requests</medium><br />
+                        <p>{reqsarr}</p>
+                      </div>
+                      <div class="detail-section">
+                        <br />
+                      </div>
+                    </div>
+                  </Col>
+                </Row>
+              </div>
+            </LoadingContainer>
+          </DrizzleProvider>
+                    <Row>
             <Col lg="4">
               <Card>
                 <CardHeader>

@@ -137,7 +137,6 @@ class buyerProfile extends Component {
                     />
                   </FormGroup>
                 </Col>
-                
               </Row>
               
               <Row>

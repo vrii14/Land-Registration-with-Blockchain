@@ -93,7 +93,20 @@ class sellerProfile extends Component {
             console.log(seller[0]);
 
             //sellerTable.push(<div><p>Name: {seller[0]}</p><p>Age: {seller[1]}</p><p>Aadhar Number: {seller[2]}</p><p>Pan Number: {seller[3]}</p><p>Owned Lands: {seller[4]}</p></div>);
-              sellerTable.push(<><Row>
+              sellerTable.push(<>
+              <Row>
+                <Col md="12">
+                  <FormGroup>
+                    <label>Your Wallet Address: </label>
+                    <Input
+                      disabled
+                      type="text"
+                      value={currentAddress}
+                    />
+                  </FormGroup>
+                </Col>
+              </Row>
+              <Row>
                 <Col md="12">
                   <FormGroup>
                     <label>Name</label>

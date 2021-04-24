@@ -1,0 +1,70 @@
+.main-section{
+	width:100%;
+	margin:0 auto;
+	text-align: center;
+	
+}
+.dashbord{
+	width:100%;
+    display: inline-block;
+    font-size: 22px;
+	background-color:#34495E;
+	color:#fff;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 20px; 
+}
+.icon-section i{
+	font-size: 30px;
+	padding:10px;
+	border:1px solid #fff;
+	border-radius:50%;
+	margin-top:-25px;
+	margin-bottom: 10px;
+	background-color:#34495E;
+}
+.icon-section p{
+	margin:0px;
+	font-size: 26px;
+	padding-bottom: 10px;
+}
+.detail-section{
+	background-color: #2F4254;
+    padding: 5px 0px;
+    font-size: 15px;
+}
+.dashbord .detail-section:hover{
+	background-color: #5a5a5a;
+	cursor: pointer;
+}
+.detail-section a{
+	color:#fff;
+	text-decoration: none;
+}
+.dashbord-orange .icon-section,.dashbord-orange .icon-section i{
+	background: #800080;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #ffc0cb, #800080);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #ffc0cb, #800080); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+.dashbord-orange .detail-section{
+	background-color:#800080; 
+}
+.dashbord-blue .icon-section,.dashbord-blue .icon-section i{
+	background: #603813;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #b29f94, #603813);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #b29f94, #603813); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    
+}
+.dashbord-blue .detail-section{
+	background-color:#603813;
+}
+.dashbord-skyblue .icon-section,.dashbord-skyblue .icon-section i{
+    background: #808080;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #3fada8, #808080);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #3fada8, #808080); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    
+}
+.dashbord-skyblue .detail-section{
+	background-color: #3fada8; 
+}

@@ -27,19 +27,19 @@ import {
     UncontrolledTooltip,
 } from "reactstrap";
 
-// core components
-import {
-    chartExample1,
-    chartExample2,
-    chartExample3,
-    chartExample4,
-} from "../variables/charts";
+import "../card.css";
+
 
 const drizzleOptions = {
-    contracts: [Land]
+  contracts: [Land]
 }
 
-var completed = true;
+
+var verified;
+var row = [];
+var buyerarr = [];
+var sellerarr = [];
+var reqsarr = [];
 
 class LIDashboard extends Component {
     constructor(props) {
@@ -75,9 +75,14 @@ class LIDashboard extends Component {
             );
 
             this.setState({ LandInstance: instance, web3: web3, account: accounts[0] });
-             
+
             var verified = await this.state.LandInstance.methods.isLandInspector(currentAddress).call();
             this.setState({ verified: verified });
+
+            sellerarr.push(<ContractData contract="Land" method="getSellersCount" />);
+            buyerarr.push(<ContractData contract="Land" method="getBuyersCount" />);
+            reqsarr.push(<ContractData contract="Land" method="getRequestsCount" />);
+
 
         } catch (error) {
             // Catch any errors for any of the above operations.
@@ -129,112 +134,91 @@ class LIDashboard extends Component {
             <DrizzleProvider options={drizzleOptions}>
                 <LoadingContainer>
                     <div className="content">
-
+                        <div className="main-section">
+                            <Row>
+                                <Col lg="4">
+                                    <div class="dashbord dashbord-skyblue">
+                                        <div class="icon-section">
+                                            <i class="fa fa-users" aria-hidden="true"></i><br />
+                                            <medium>Total Buyers</medium><br />
+                                            <p> {buyerarr} </p>
+                                        </div>
+                                        <div class="detail-section"><br />
+                                        </div>
+                                    </div>
+                                </Col>
+                                <Col lg="4">
+                                    <div class="dashbord dashbord-blue">
+                                        <div class="icon-section">
+                                            <i class="fa fa-bell" aria-hidden="true"></i><br />
+                                            <medium>Total Requests</medium><br />
+                                            <p>{reqsarr}</p>
+                                        </div>
+                                        <div class="detail-section">
+                                            <br />
+                                        </div>
+                                    </div>
+                                </Col>
+                                <Col lg="4">
+                                    <div class="dashbord dashbord-orange">
+                                        <div class="icon-section">
+                                            <i class="fa fa-users" aria-hidden="true"></i><br />
+                                            <medium>Total Sellers</medium><br />
+                                            <p>{sellerarr}</p>
+                                        </div>
+                                        <div class="detail-section"><br />
+                                        </div>
+                                    </div>
+                                </Col>
+                            </Row>
+                        </div>
                         <Row>
                             <Col lg="4">
-                                <Card className="card-chart">
+                                <Card>
                                     <CardHeader>
-                                        <h5 className="card-category">Total Requests for land</h5>
-                                        <CardTitle tag="h3">
-                                            <i className="tim-icons icon-bell-55 text-info" /> 10
-                                         </CardTitle>
+                                        <h5 className="title">Sellers Information</h5>
                                     </CardHeader>
                                     <CardBody>
                                         <div className="chart-area">
-                                            <Line
-                                                data={chartExample2.data}
-                                                options={chartExample2.options}
-                                            />
+
+                                            <Button href="/LI/SellerInfo" className="btn-fill" color="primary">
+                                                Verify Sellers
+                </Button>
                                         </div>
                                     </CardBody>
                                 </Card>
                             </Col>
                             <Col lg="4">
-                                <Card className="card-chart">
+                                <Card>
                                     <CardHeader>
-                                        <h5 className="card-category">Daily Transactions</h5>
-                                        <CardTitle tag="h3">
-                                            <i className="tim-icons icon-delivery-fast text-primary" />{" "}
-                    3-5
-                  </CardTitle>
+                                        <h5 className="title">Buyers Information</h5>
                                     </CardHeader>
                                     <CardBody>
                                         <div className="chart-area">
-                                            <Bar
-                                                data={chartExample3.data}
-                                                options={chartExample3.options}
-                                            />
+
+                                            <Button href="/LI/BuyerInfo" className="btn-fill" color="primary">
+                                                Verify Buyers
+                </Button>
                                         </div>
                                     </CardBody>
                                 </Card>
                             </Col>
                             <Col lg="4">
-                                <Card className="card-chart">
+                                <Card>
                                     <CardHeader>
-                                        <h5 className="card-category">Successful Transactions</h5>
-                                        <CardTitle tag="h3">
-                                            <i className="tim-icons icon-send text-success" /> 120
-                  </CardTitle>
+                                        <h5 className="title">Land Transfer Requests</h5>
                                     </CardHeader>
                                     <CardBody>
                                         <div className="chart-area">
-                                            <Line
-                                                data={chartExample4.data}
-                                                options={chartExample4.options}
-                                            />
+
+                                            <Button href="/LI/TransactionInfo" className="btn-fill" color="primary">
+                                                Approve Land Transactions
+                        </Button>
                                         </div>
                                     </CardBody>
                                 </Card>
                             </Col>
                         </Row>
-
-                        <Row>
-            <Col lg="4">
-              <Card>
-                <CardHeader>
-                  <h5 className="title">Sellers Information</h5>
-                </CardHeader>
-                <CardBody>
-                  <div className="chart-area">
-
-                    <Button href="/LI/SellerInfo" className="btn-fill" color="primary">
-                      Verify Sellers
-                </Button>
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-            <Col lg="4">
-              <Card>
-                <CardHeader>
-                  <h5 className="title">Buyers Information</h5>
-                </CardHeader>
-                <CardBody>
-                  <div className="chart-area">
-
-                    <Button href="/LI/BuyerInfo" className="btn-fill" color="primary">
-                        Verify Buyers
-                </Button>
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-            <Col lg="4">
-              <Card>
-                <CardHeader>
-                  <h5 className="title">Land Transfer Requests</h5>
-                </CardHeader>
-                <CardBody>
-                  <div className="chart-area">
-
-                    <Button href="/LI/TransactionInfo"  className="btn-fill" color="primary">
-                      Approve Land Transactions
-                        </Button>
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
                     </div>
                 </LoadingContainer>
             </DrizzleProvider>

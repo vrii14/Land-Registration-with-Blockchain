@@ -1,19 +1,10 @@
 import React, { Component } from "react";
+import './help.css';
 import './index.css';
 import Faq from "react-faq-component";
-import {
-    Button,
-    ButtonGroup,
-    Card,
-    CardHeader,
-    CardBody,
-    CardTitle,
-    Input,
-    Table,
-    Row,
-    Col,
-    UncontrolledTooltip,
-  } from "reactstrap";
+import "../node_modules/video-react/dist/video-react.css";
+import ReactPlayer from 'react-player';
+// import video from "../src/assets/img/video.mkv";
   
 const data = {
     title: "FAQ (How the System works)",
@@ -57,8 +48,8 @@ const styles = {
     rowContentPaddingBottom: '10px',
     transitionDuration: "0.5s",
     timingFunc: "ease",
-    // rowContentColor: 'grey',
-    // arrowColor: "black",
+     //rowContentColor: 'grey',
+     //arrowColor: "black",
 };
 
 const config = {
@@ -69,13 +60,30 @@ const config = {
 
 export default function Help() {    
     return (
-        <div className="container mt-5" >
+        <>
+        <div id="container" >
+            <div id="topSection">
+                    <div id="searchSection">
+                    </div>
+            </div>
+            </div>
 
+        <div className="container">
+            <h1>Demo</h1>
+            <ReactPlayer
+            muted
+            playing
+            className='react-player'
+            url= {"https://youtu.be/_o0ML62hruA"}
+            />
+            <div style={{marginTop: "10px"}}>
             <Faq
                 data={data}
                 styles={styles}
                 config={config}
             />
+            </div>
         </div>
+        </>
     );
     }

@@ -1,0 +1,36 @@
+#container {
+    margin: 0 auto;
+    text-align: center;
+    min-height: auto;
+    margin-bottom: 10px;
+    -webkit-tap-highlight-color: transparent; }
+    #container #topSection {
+      background: url("https://www.aihp.in/wp-content/uploads/2017/06/faq-banner.png");
+      background-size: cover;
+      height: 50vh;
+      -webkit-transition: 0.3s;
+      transition: 0.3s; }
+    #container #searchSection {
+      position: relative;
+      top: 40%;
+      -webkit-transition: 0.3s;
+      transition: 0.3s; }
+      #container #searchSection h1 {
+        text-shadow: currentColor;
+        letter-spacing: 2px;
+        -webkit-transition: 0.3s;
+        transition: 0.3s; }
+    #container #searchBox {
+      width: 25em; }
+    #container ul {
+      background-color: white; }
+    #container .question {
+      border: 1px solid #CCC;
+      padding: 2em; }
+      #container .question span {
+        -webkit-transition: 0.3s;
+        transition: 0.3s; }
+      #container .question p {
+        color: #a3a3a3; }
+    #container .question:hover span {
+      color: #ff8422; }

@@ -121,10 +121,9 @@
   display: block;
   color: #666666;
   font-size: 14px;
-  line-height: 1.8em;
 }
 .post-module .post-content .post-meta {
-  margin: 30px 0 0;
+  margin: 20px 0 0;
   font-size: large;
   color: #333333;
 }
@@ -246,6 +245,11 @@ body, html, .App, #root, .auth-wrapper {
   text-overflow: ellipsis;
   white-space: nowrap;
 }*/
+.faq{
+  position: fixed;
+    top: 15px;
+    right: 15px;
+}
 .img-wrapper{
   color: gold;
   justify-content: center;
@@ -256,7 +260,7 @@ body, html, .App, #root, .auth-wrapper {
   flex-direction: row;
   padding: 10px 0;
   position: relative;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
   margin-top: 5%;
 }
 .navbar-light {
@@ -322,7 +326,6 @@ body, html, .App, #root, .auth-wrapper {
 .forgot-password a {
   color: #167bff;
 }
-
 #unknown{
   color:cornflowerblue;
 }

@@ -30,13 +30,7 @@ import {
   UncontrolledTooltip,
 } from "reactstrap";
 
-// core components
-import {
-  chartExample1,
-  chartExample2,
-  chartExample3,
-  chartExample4,
-} from "../variables/charts";
+import "../card.css";
 
 
 const drizzleOptions = {
@@ -46,7 +40,9 @@ const drizzleOptions = {
 
 var verified;
 var row = [];
-
+var countarr = [];
+var userarr = [];
+var reqsarr = [];
 
 class SDash extends Component {
   constructor(props) {
@@ -106,6 +102,10 @@ class SDash extends Component {
       console.log(typeof (count));
       console.log(count);
       //this.setState({count:count});
+
+      countarr.push(<ContractData contract="Land" method="getLandsCount" />);
+      userarr.push(<ContractData contract="Land" method="getBuyersCount" />);
+      reqsarr.push(<ContractData contract="Land" method="getRequestsCount" />);
 
       var rowsArea = [];
       var rowsCity = [];
@@ -180,63 +180,48 @@ class SDash extends Component {
     return (
       <>
         <div className="content">
-          <Row>
-            <Col lg="4">
-              <Card className="card-chart">
-                <CardHeader>
-                  <h5 className="card-category">Total Requests for land</h5>
-                  <CardTitle tag="h3">
-                    <i className="tim-icons icon-bell-55 text-info" /> 10
-                  </CardTitle>
-                </CardHeader>
-                <CardBody>
-                  <div className="chart-area">
-                    <Line
-                      data={chartExample2.data}
-                      options={chartExample2.options}
-                    />
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-            <Col lg="4">
-              <Card className="card-chart">
-                <CardHeader>
-                  <h5 className="card-category">Daily Transactions</h5>
-                  <CardTitle tag="h3">
-                    <i className="tim-icons icon-delivery-fast text-primary" />{" "}
-                    3-5
-                  </CardTitle>
-                </CardHeader>
-                <CardBody>
-                  <div className="chart-area">
-                    <Bar
-                      data={chartExample3.data}
-                      options={chartExample3.options}
-                    />
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-            <Col lg="4">
-              <Card className="card-chart">
-                <CardHeader>
-                  <h5 className="card-category">Successful Transactions</h5>
-                  <CardTitle tag="h3">
-                    <i className="tim-icons icon-send text-success" /> 120
-                  </CardTitle>
-                </CardHeader>
-                <CardBody>
-                  <div className="chart-area">
-                    <Line
-                      data={chartExample4.data}
-                      options={chartExample4.options}
-                    />
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
+        <DrizzleProvider options={drizzleOptions}>
+            <LoadingContainer>
+              <div className="main-section">
+                <Row>
+                  <Col lg="4">
+                    <div class="dashbord dashbord-skyblue">
+                      <div class="icon-section">
+                        <i class="fa fa-users" aria-hidden="true"></i><br />
+                        <medium>Total Buyers</medium><br />
+                       <p> {userarr} </p>
+                      </div>
+                      <div class="detail-section"><br />
+                      </div>
+                    </div>
+                  </Col>
+                  <Col lg="4">
+                    <div class="dashbord dashbord-orange">
+                      <div class="icon-section">
+                        <i class="fa fa-landmark" aria-hidden="true"></i><br />
+                        <medium>Registered Lands Count</medium><br />
+                        <p>{countarr}</p>
+                      </div>
+                      <div class="detail-section"><br />
+                      </div>
+                    </div>
+                  </Col>
+                  <Col lg="4">
+                    <div class="dashbord dashbord-blue">
+                      <div class="icon-section">
+                        <i class="fa fa-bell" aria-hidden="true"></i><br />
+                        <medium>Total Requests</medium><br />
+                        <p>{reqsarr}</p>
+                      </div>
+                      <div class="detail-section">
+                        <br />
+                      </div>
+                    </div>
+                  </Col>
+                </Row>
+              </div>
+            </LoadingContainer>
+          </DrizzleProvider>
           <Row>
             <Col lg="4">
               <Card>
