@@ -20,6 +20,7 @@ import AddLand from "./views/AddLand";
 import ApproveRequest from "./views/ApproveRequest";
 import sellerProfile from "./views/sellerProfile";
 import viewImage from "./views/viewImage";
+import updateSeller from "./views/updateSeller";
 
 
 var routes = [
@@ -61,6 +62,14 @@ var routes = [
     rtlName: "الرموز",
     icon: "tim-icons icon-image-02",
     component: viewImage,
+    layout: "/Seller",
+  },
+  {
+    path: "/updateSeller",
+    name: "",
+    rtlName: "الرموز",
+    icon: "tim-icons",
+    component: updateSeller,
     layout: "/Seller",
   },
 ];

@@ -47,7 +47,7 @@ class sellerProfile extends Component {
             web3: null,
             buyers: 0,
             sellers: 0,
-            verified: '',
+            verified: false,
         }
     }
 
@@ -77,7 +77,7 @@ class sellerProfile extends Component {
 
             var seller_verify = await this.state.LandInstance.methods.isVerified(currentAddress).call();
             console.log(seller_verify);
-                
+            this.setState({verified: seller_verify})    
             var not_verify = await this.state.LandInstance.methods.isRejected(currentAddress).call();
             console.log(not_verify);
             if(seller_verify){
@@ -222,10 +222,13 @@ class sellerProfile extends Component {
                                     <CardBody>
                                         <Form>
                                             {sellerTable}
+                                            <Button href="/Seller/updateSeller"  className="btn-fill" disabled={!this.state.verified} color="primary">
+                                            Edit Profile
+                                      </Button>
                                         </Form>
                                     </CardBody>
                                     <CardFooter>
-
+                                     
                                     </CardFooter>
                                 </Card>
                             </Col>

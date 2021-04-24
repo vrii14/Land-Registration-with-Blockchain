@@ -75,6 +75,7 @@ export default function Help() {
             playing
             className='react-player'
             url= {"https://youtu.be/_o0ML62hruA"}
+            controls={true}
             />
             <div style={{marginTop: "10px"}}>
             <Faq

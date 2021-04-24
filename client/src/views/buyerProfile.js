@@ -74,7 +74,7 @@ class buyerProfile extends Component {
             this.setState({ LandInstance: instance, web3: web3, account: accounts[0] });
             
             var buyer_verify = await this.state.LandInstance.methods.isVerified(currentAddress).call();
-                
+            this.setState({verified: buyer_verify});     
             var not_verify = await this.state.LandInstance.methods.isRejected(currentAddress).call();
             if(buyer_verify){
               verification.push(<p id = "verified">Verified <i class="fas fa-user-check"></i></p>);
@@ -117,7 +117,20 @@ class buyerProfile extends Component {
               <Row>
                 <Col md="12">
                   <FormGroup>
-                    <label>Email Address: </label>
+                    <label>Age</label>
+                    <Input
+                      disabled
+                      type="text"
+                      value={buyer[5]}
+                    />
+                  </FormGroup>
+                </Col>
+
+              </Row>
+              <Row>
+                <Col md="12">
+                  <FormGroup>
+                    <label>Email Address </label>
                     <Input
                       disabled
                       type="text"
@@ -138,7 +151,18 @@ class buyerProfile extends Component {
                   </FormGroup>
                 </Col>
               </Row>
-              
+              <Row>
+                <Col md="12">
+                  <FormGroup>
+                    <label>Aadhar Number</label>
+                    <Input
+                      disabled
+                      type="text"
+                      value={buyer[6]}
+                    />
+                  </FormGroup>
+                </Col>
+              </Row>
               <Row>
                 <Col md="12">
                   <FormGroup>
@@ -200,6 +224,9 @@ class buyerProfile extends Component {
                                         <Form>
                                             {buyerTable}
                                         </Form>
+                                        <Button href="/admin/updateBuyer"  className="btn-fill" disabled={!this.state.verified} color="primary">
+                                            Edit Profile
+                                      </Button>
                                     </CardBody>
                                     <CardFooter>
 

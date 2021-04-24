@@ -160,7 +160,7 @@ class BuyerInfo extends Component {
                 
                 var not_verify = await this.state.LandInstance.methods.isRejected(buyersMap[i]).call();
                 console.log(not_verify);
-                buyerTable.push(<tr><td>{i + 1}</td><td>{buyersMap[i]}</td><td>{buyer[0]}</td><td>{buyer[4]}</td><td>{buyer[1]}</td><td>{buyer[2]}</td><td><a href={`https://ipfs.io/ipfs/${buyer[3]}`} target="_blank">Click Here</a></td>
+                buyerTable.push(<tr><td>{i + 1}</td><td>{buyersMap[i]}</td><td>{buyer[0]}</td><td>{buyer[5]}</td><td>{buyer[4]}</td><td>{buyer[1]}</td><td>{buyer[6]}</td><td>{buyer[2]}</td><td><a href={`https://ipfs.io/ipfs/${buyer[3]}`} target="_blank">Click Here</a></td>
                     <td>{buyer.verified.toString()}</td>
                     <td>
                         <Button onClick={this.verifyBuyer(buyersMap[i])} disabled={buyer_verify || not_verify} className="button-vote">
@@ -239,8 +239,10 @@ class BuyerInfo extends Component {
                                                     <th>#</th>
                                                     <th>Account Address</th>
                                                     <th>Name</th>
+                                                    <th>Age</th>
                                                     <th>Email</th>
                                                     <th>City</th>
+                                                    <th>Aadhar Number</th>
                                                     <th>Pan Number</th>
                                                     <th>Aadhar Card Document</th>
                                                     <th>Verification Status</th>

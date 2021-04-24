@@ -275,12 +275,14 @@ contract Land {
         emit Registration(msg.sender);
     }
 
-    function updateBuyer(string memory _name, string memory _city, string memory _email, string memory _panNumber) public {
+    function updateBuyer(string memory _name,uint _age, string memory _city,string memory _aadharNumber, string memory _email, string memory _panNumber) public {
         //require that Buyer is already registered
         require(RegisteredAddressMapping[msg.sender] && (BuyerMapping[msg.sender].id == msg.sender));
 
         BuyerMapping[msg.sender].name = _name;
+        BuyerMapping[msg.sender].age = _age;
         BuyerMapping[msg.sender].city = _city;
+        BuyerMapping[msg.sender].aadharNumber = _aadharNumber;
         BuyerMapping[msg.sender].email = _email;
         BuyerMapping[msg.sender].panNumber = _panNumber;
         
@@ -290,8 +292,8 @@ contract Land {
         return(buyers);
     }
 
-    function getBuyerDetails(address i) public view returns ( string memory, string memory, string memory, string memory,string memory) {
-        return (BuyerMapping[i].name,BuyerMapping[i].city , BuyerMapping[i].panNumber, BuyerMapping[i].document, BuyerMapping[i].email);
+    function getBuyerDetails(address i) public view returns ( string memory,string memory, string memory, string memory, string memory, uint, string memory) {
+        return (BuyerMapping[i].name,BuyerMapping[i].city , BuyerMapping[i].panNumber, BuyerMapping[i].document, BuyerMapping[i].email, BuyerMapping[i].age, BuyerMapping[i].aadharNumber);
     }
 
 

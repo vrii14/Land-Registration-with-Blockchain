@@ -14,7 +14,7 @@ import {
   ContractData,
   ContractForm
 } from 'drizzle-react-components'
-
+import "../index.css";
 // reactstrap components
 import {
   Button,
@@ -195,7 +195,8 @@ class Dashboard extends Component {
                 <Col lg="12" md="12">
                   <Card>
                     <CardHeader>
-                      <CardTitle tag="h4">Payment for Lands</CardTitle>
+                      <CardTitle tag="h4">Payment for Lands<span className="duration">₹ 1 = 0.0000059 Ether</span></CardTitle>
+
                     </CardHeader>
                     <CardBody>
                       <Table className="tablesorter" responsive color="black">

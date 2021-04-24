@@ -28,6 +28,7 @@ import UserProfile from "./views/UserProfile";
 import viewImage from "./views/viewImage";
 import OwnedLands from "./views/OwnedLands";
 import MakePayment from "./views/MakePayment";
+import updateBuyer from "./views/updateBuyer";
 
 var routes = [
   {
@@ -58,7 +59,7 @@ var routes = [
     path: "/OwnedLands",
     name: "Owned Lands",
     rtlName: "الرموز",
-    icon: "tim-icons icon-chart-pie-36",
+    icon: "tim-icons icon-bank",
     component: OwnedLands,
     layout: "/admin",
   },
@@ -66,10 +67,17 @@ var routes = [
     path: "/MakePayment",
     name: "Make Payment",
     rtlName: "الرموز",
-    icon: "tim-icons icon-chart-pie-36",
+    icon: "tim-icons icon-money-coins",
     component: MakePayment,
     layout: "/admin",
   },
-  
+  {
+    path: "/updateBuyer",
+    name: "",
+    rtlName: "الرموز",
+    icon: "tim-icons",
+    component: updateBuyer,
+    layout: "/admin",
+  },
 ];
 export default routes;
