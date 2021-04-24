@@ -35,7 +35,7 @@ var buyer;
 var buyerTable = [];
 var verification = [];
 
-class buyerProfile extends Component {
+class updateBuyer extends Component {
     constructor(props) {
         super(props)
 
@@ -290,4 +290,4 @@ class buyerProfile extends Component {
     }
 }
 
-export default buyerProfile;
+export default updateBuyer;
