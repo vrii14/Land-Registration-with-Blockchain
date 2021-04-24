@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
-// react plugin used to create charts
-import { Line, Bar } from "react-chartjs-2";
 import Land from "../artifacts/Land.json";
 import getWeb3 from "../getWeb3";
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
@@ -29,13 +27,6 @@ import {
   UncontrolledTooltip,
 } from "reactstrap";
 
-// core components
-import {
-  chartExample1,
-  chartExample2,
-  chartExample3,
-  chartExample4,
-} from "../variables/charts";
 
 
 const drizzleOptions = {
@@ -63,7 +54,6 @@ class Dashboard extends Component {
   makePayment = (seller_address, amount, land_id) => async () => {
     // alert(amount);
 
-    // amount = 1000*0.0000057;
     amount = amount*0.0000057;
     alert(amount);
     await this.state.LandInstance.methods.payment(
@@ -195,7 +185,7 @@ class Dashboard extends Component {
                 <Col lg="12" md="12">
                   <Card>
                     <CardHeader>
-                      <CardTitle tag="h4">Payment for Lands<span className="duration">₹ 1 = 0.0000059 Ether</span></CardTitle>
+                      <CardTitle tag="h4">Payment for Lands<span className="duration">₹ 1 = 0.0000057 Ether</span></CardTitle>
 
                     </CardHeader>
                     <CardBody>
@@ -204,7 +194,7 @@ class Dashboard extends Component {
                           <tr>
                             <th>#</th>
                             <th>Land Owner</th>
-                            <th>Price</th>
+                            <th>Price ( in ₹ )</th>
                             <th>Make Payment</th>
                           </tr>
                         </thead>

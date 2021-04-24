@@ -119,7 +119,6 @@ class updateBuyer extends Component {
         }
     };
     updateBuyer = async () => {
-      await new Promise(resolve => setTimeout(resolve, 10000));
       if (this.state.name == '' || this.state.age == '' || this.state.city == '' || this.state.email == '' || this.state.aadharNumber == '' || this.state.panNumber == '') {
           alert("All the fields are compulsory!");
       } else if(this.state.aadharNumber.length != 12){

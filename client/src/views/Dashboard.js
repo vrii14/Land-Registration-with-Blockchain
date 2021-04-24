@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
-// react plugin used to create charts
-import { Line, Bar } from "react-chartjs-2";
 import Land from "../artifacts/Land.json";
 import getWeb3 from "../getWeb3";
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';

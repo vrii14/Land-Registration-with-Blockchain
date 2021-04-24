@@ -173,22 +173,7 @@ class LIDashboard extends Component {
                             </Row>
                         </div>
                         <Row>
-                            <Col lg="4">
-                                <Card>
-                                    <CardHeader>
-                                        <h5 className="title">Sellers Information</h5>
-                                    </CardHeader>
-                                    <CardBody>
-                                        <div className="chart-area">
-
-                                            <Button href="/LI/SellerInfo" className="btn-fill" color="primary">
-                                                Verify Sellers
-                </Button>
-                                        </div>
-                                    </CardBody>
-                                </Card>
-                            </Col>
-                            <Col lg="4">
+                        <Col lg="4">
                                 <Card>
                                     <CardHeader>
                                         <h5 className="title">Buyers Information</h5>
@@ -218,6 +203,23 @@ class LIDashboard extends Component {
                                     </CardBody>
                                 </Card>
                             </Col>
+                            <Col lg="4">
+                                <Card>
+                                    <CardHeader>
+                                        <h5 className="title">Sellers Information</h5>
+                                    </CardHeader>
+                                    <CardBody>
+                                        <div className="chart-area">
+
+                                            <Button href="/LI/SellerInfo" className="btn-fill" color="primary">
+                                                Verify Sellers
+                </Button>
+                                        </div>
+                                    </CardBody>
+                                </Card>
+                            </Col>
+                            
+                            
                         </Row>
                     </div>
                 </LoadingContainer>

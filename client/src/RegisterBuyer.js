@@ -68,7 +68,7 @@ class RegisterBuyer extends Component {
             return
           }
     
-          alert(result[0].hash)
+        //   alert(result[0].hash)
           this.setState({ document: result[0].hash });
           console.log('document:', this.state.document);
         })
@@ -78,7 +78,9 @@ class RegisterBuyer extends Component {
         this.addDoc();
         // alert('After add image')
         await new Promise(resolve => setTimeout(resolve, 10000));
-        if (this.state.name == '' || this.state.age == '' || this.state.city == '' || this.state.email == '' || this.state.aadharNumber == '' || this.state.panNumber == '') {
+        var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+
+        if (this.state.name == '' || this.state.age == '' || this.state.city == '' || this.state.aadharNumber == '' || this.state.panNumber == '') {
             alert("All the fields are compulsory!");
         } else if(this.state.aadharNumber.length != 12){
             alert("Aadhar Number should be 12 digits long!");
@@ -86,7 +88,9 @@ class RegisterBuyer extends Component {
             alert("Pan Number should be a 10 digit unique number!");
         } else if (!Number(this.state.age)) {
             alert("Your age must be a number");
-        } 
+        } else if(this.state.email == '' || !pattern.test(this.state.email)){
+            alert('Please enter a valid email address\n');
+        }
         else{
             await this.state.LandInstance.methods.registerBuyer(
                 this.state.name,

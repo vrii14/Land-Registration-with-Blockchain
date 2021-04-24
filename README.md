@@ -35,11 +35,13 @@ So the Land Registration system using blockchain is a distributed system that wi
 * **Registration Page**: Seller & Buyer can register for an account on the application. 
 * **Land Inspector Dashboard**: Land Inspector works as the admin and is already registered. He can then verify the Sellers, Buyers and approve Land Transfer Process.
 * **User Profile**: Seller & Buyer can view their profile via their respective Dashboards.
+* **Edit Profile**: Seller & Buyer can edit their profile.
 * **Seller Dashboard**: A Brief Description of Added Lands and features to Add a new Land and approve a Land request from a Buyer.
 * **Add Land**: Seller can add a land after he/she is verified by the Land Inspector.
 * **Approve Land Request**: Approve a Request by Buyer to Buy a Land.
 * **Buyer Dashboard**: A Brief Description of all Lands and features to Request a Land to Land Owner of the particular Land. 
 * **Owned Lands**: Details of Lands owned by the Buyer after Buying some lands.
+* **Make Payment**: Complete Payment transfer to Seller after Land Request is approved.
 * **View Lands**: Complete Information of Lands along with its Images and Required Documents.
 * **Land Ownership Transfer**: Transfer of Land Ownership from Seller to Buyer via Land Inspector.  
 
@@ -52,3 +54,36 @@ So the Land Registration system using blockchain is a distributed system that wi
 4. In the root directory run _truffle migrate --reset_.
 5. cd to the _client_ folder and run _npm install_.
 6. Run _npm start_.
+
+
+
+## Some features of the application:-
+
+
+Landing Page                   |                   Buyer Registration
+:---------------------------------:        |      :------------------------------:
+<img src="Screenshots/landing.png" height="200">  | <img src="Screenshots/registration.png" height="200">
+
+Buyer Dashboard                   |                   Seller Dashboard
+:---------------------------------:        |      :------------------------------:
+<img src="Screenshots/buyer dashboard.png" height="200">     |<img src="Screenshots/seller dashboard2.png" height="200">
+
+Add Land(by Seller)            |                   View all Lands Details
+:---------------------------------:        |      :------------------------------:
+<img src="Screenshots/add land.png" height="200">     |<img src="Screenshots/Land Gallery.png" height="200">
+
+Help & FAQ Page                |                   Verify Buyer(by Land Inspector)
+:---------------------------------:        |      :------------------------------:
+<img src="Screenshots/help.png" height="200" >     |<img src="Screenshots/verify buyer.png" height="200"  >
+
+Approve Land Request(by Seller)               |             Payment by Buyer 
+:---------------------------------:        |      :------------------------------:
+<img src="Screenshots/approve request.png" height="200">     |<img src="Screenshots/payment.png" height="200">
+
+Verify Land Transaction(by Land Inspector)    |                   Owned Lands(Buyer)
+:---------------------------------:        |      :------------------------------:
+<img src="Screenshots/verify transaction.png" height="200">     |<img src="Screenshots/owned lands.png" height="200">
+
+View Profile(Before Verification)                  |             Edit Profile(After Verification)
+:---------------------------------:        |      :------------------------------:
+<img src="Screenshots/profile.png" height="200" width="100%">     |<img src="Screenshots/edit profile.png" height="200" width="80%">

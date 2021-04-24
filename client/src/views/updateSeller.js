@@ -125,7 +125,6 @@ class updateSeller extends Component {
     };
 
     updateSeller = async () => {
-        await new Promise(resolve => setTimeout(resolve, 10000));
         if (this.state.name == '' || this.state.age == '' || this.state.aadharNumber == '' || this.state.panNumber == '' || this.state.landsOwned == '') {
             alert("All the fields are compulsory!");
         } else if (this.state.aadharNumber.length != 12) {

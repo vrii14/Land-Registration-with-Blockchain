@@ -34,13 +34,6 @@ import {
     UncontrolledTooltip,
 } from "reactstrap";
 
-// core components
-import {
-    chartExample1,
-    chartExample2,
-    chartExample3,
-    chartExample4,
-} from "../variables/charts";
 import { emailjs } from 'emailjs-com';
 const drizzleOptions = {
     contracts: [Land]
