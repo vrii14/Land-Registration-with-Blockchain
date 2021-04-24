@@ -27,6 +27,7 @@ import Typography from "./views/Typography";
 import UserProfile from "./views/UserProfile";
 import viewImage from "./views/viewImage";
 import OwnedLands from "./views/OwnedLands";
+import MakePayment from "./views/MakePayment";
 
 var routes = [
   {
@@ -59,6 +60,14 @@ var routes = [
     rtlName: "الرموز",
     icon: "tim-icons icon-chart-pie-36",
     component: OwnedLands,
+    layout: "/admin",
+  },
+  {
+    path: "/MakePayment",
+    name: "Make Payment",
+    rtlName: "الرموز",
+    icon: "tim-icons icon-chart-pie-36",
+    component: MakePayment,
     layout: "/admin",
   },
   

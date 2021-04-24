@@ -88,7 +88,20 @@ class buyerProfile extends Component {
             console.log(buyer);
             console.log(buyer[0]);
 
-            buyerTable.push(<><Row>
+            buyerTable.push(<>
+            <Row>
+                <Col md="12">
+                  <FormGroup>
+                    <label>Your Wallet Address: </label>
+                    <Input
+                      disabled
+                      type="text"
+                      value={currentAddress}
+                    />
+                  </FormGroup>
+                </Col>
+              </Row>
+              <Row>
                 <Col md="12">
                   <FormGroup>
                     <label>Name</label>
@@ -104,7 +117,19 @@ class buyerProfile extends Component {
               <Row>
                 <Col md="12">
                   <FormGroup>
-                    <label>Age</label>
+                    <label>Email Address: </label>
+                    <Input
+                      disabled
+                      type="text"
+                      value={buyer[4]}
+                    />
+                  </FormGroup>
+                </Col>
+              </Row>
+              <Row>
+                <Col md="12">
+                  <FormGroup>
+                    <label>City</label>
                     <Input
                       disabled
                       type="text"
@@ -114,44 +139,7 @@ class buyerProfile extends Component {
                 </Col>
                 
               </Row>
-              <Row>
-                <Col md="12">
-                  <FormGroup>
-                    <label>City</label>
-                    <Input
-                      disabled
-                      type="text"
-                      value={buyer[2]}
-                    />
-                  </FormGroup>
-                </Col>
-                
-              </Row>
-              <Row>
-                <Col md="12">
-                  <FormGroup>
-                    <label>State</label>
-                    <Input
-                      disabled
-                      type="text"
-                      value={buyer[3]}
-                    />
-                  </FormGroup>
-                </Col>
-                
-              </Row>
-              <Row>
-                <Col md="12">
-                  <FormGroup>
-                    <label>Aadhar Number</label>
-                    <Input
-                    disabled
-                    type="text"
-                    value={buyer[4]}  
-                    />
-                  </FormGroup>
-                </Col>
-              </Row>
+              
               <Row>
                 <Col md="12">
                   <FormGroup>
@@ -159,7 +147,7 @@ class buyerProfile extends Component {
                     <Input
                     disabled
                     type="text"
-                    value={buyer[5]}  
+                    value={buyer[2]}  
                     />
                   </FormGroup>
                 </Col>
@@ -168,7 +156,7 @@ class buyerProfile extends Component {
                 <Col md="12">
                   <FormGroup>
                     <label>Your Aadhar Document</label>
-                    <div class="post-meta"><span class="timestamp"> <a href={`https://ipfs.io/ipfs/${buyer[6]}`} target="_blank">Here</a></span></div>
+                    <div class="post-meta"><span class="timestamp"> <a href={`https://ipfs.io/ipfs/${buyer[3]}`} target="_blank">Here</a></span></div>
                   </FormGroup>
                 </Col>
               </Row>

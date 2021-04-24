@@ -18,7 +18,7 @@ class RegisterBuyer extends Component {
             name: '',
             age: '',
             city: '',
-            state: '',
+            email: '',
             aadharNumber: '',
             panNumber: '',
             isVerified: false,
@@ -78,7 +78,7 @@ class RegisterBuyer extends Component {
         this.addDoc();
         // alert('After add image')
         await new Promise(resolve => setTimeout(resolve, 10000));
-        if (this.state.name == '' || this.state.age == '' || this.state.city == '' || this.state.state == '' || this.state.aadharNumber == '' || this.state.panNumber == '') {
+        if (this.state.name == '' || this.state.age == '' || this.state.city == '' || this.state.email == '' || this.state.aadharNumber == '' || this.state.panNumber == '') {
             alert("All the fields are compulsory!");
         } else if(this.state.aadharNumber.length != 12){
             alert("Aadhar Number should be 12 digits long!");
@@ -92,10 +92,12 @@ class RegisterBuyer extends Component {
                 this.state.name,
                 this.state.age,
                 this.state.city,
-                this.state.state,
                 this.state.aadharNumber,
                 this.state.panNumber,
-                this.state.document)
+                this.state.document,
+                this.state.email,
+                )
+
                 .send({
                     from : this.state.account,
                     gas : 2100000
@@ -117,8 +119,8 @@ class RegisterBuyer extends Component {
     updateCity = event => (
         this.setState({ city: event.target.value })
     )
-    updateState = event => (
-        this.setState({ state: event.target.value })
+    updateEmail = event => (
+        this.setState({ email: event.target.value })
     )
     updateAadhar = event => (
         this.setState({ aadharNumber: event.target.value })
@@ -230,13 +232,13 @@ class RegisterBuyer extends Component {
 
                                 <FormGroup>
                                     <div className="form-label">
-                                        Enter State --
+                                        Enter Email Address --
                       </div>
                                     <div className="form-input">
                                         <FormControl
                                             input='text'
-                                            value={this.state.state}
-                                            onChange={this.updateState}
+                                            value={this.state.email}
+                                            onChange={this.updateEmail}
                                         />
                                     </div>
                                 </FormGroup>

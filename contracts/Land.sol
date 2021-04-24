@@ -1,12 +1,11 @@
 pragma solidity >= 0.5.2;
-
+pragma experimental ABIEncoderV2;
 contract Land {
     struct Landreg {
         uint id;
         uint area;
         string city;
         string state;
-        bool verificationStatus;
         uint landPrice;
         uint propertyPID;
         uint physicalSurveyNumber;
@@ -19,10 +18,10 @@ contract Land {
         string name;
         uint age;
         string city;
-        string state;
         string aadharNumber;
         string panNumber;
         string document;
+        string email;
     }
 
     struct Seller{
@@ -113,10 +112,6 @@ contract Land {
     function getRequestsCount() public view returns (uint) {
         return requestsCount;
     }
-    // function getRequestStatus(uint id) public payable returns (bool) {
-    //     return 
-    // }
-
     function getArea(uint i) public view returns (uint) {
         return lands[i].area;
     }
@@ -126,9 +121,9 @@ contract Land {
      function getState(uint i) public view returns (string memory) {
         return lands[i].state;
     }
-    function getStatus(uint i) public view returns (bool) {
-        return lands[i].verificationStatus;
-    }
+    // function getStatus(uint i) public view returns (bool) {
+    //     return lands[i].verificationStatus;
+    // }
     function getPrice(uint i) public view returns (uint) {
         return lands[i].landPrice;
     }
@@ -229,7 +224,7 @@ contract Land {
     function addLand(uint _area, string memory _city,string memory _state, uint landPrice, uint _propertyPID,uint _surveyNum,string memory _ipfsHash, string memory _document) public {
         require((isSeller(msg.sender)) && (isVerified(msg.sender)));
         landsCount++;
-        lands[landsCount] = Landreg(landsCount, _area, _city, _state, false, landPrice,_propertyPID, _surveyNum, _ipfsHash, _document);
+        lands[landsCount] = Landreg(landsCount, _area, _city, _state, landPrice,_propertyPID, _surveyNum, _ipfsHash, _document);
         LandOwner[landsCount] = msg.sender;
         // emit AddingLand(landsCount);
     }
@@ -267,28 +262,26 @@ contract Land {
         return (SellerMapping[i].name, SellerMapping[i].age, SellerMapping[i].aadharNumber, SellerMapping[i].panNumber, SellerMapping[i].landsOwned, SellerMapping[i].document);
     }
 
-    function registerBuyer(string memory _name, uint _age, string memory _city, string memory _state, string memory _aadharNumber, string memory _panNumber, string memory _document) public {
+    function registerBuyer(string memory _name, uint _age, string memory _city, string memory _aadharNumber, string memory _panNumber, string memory _document, string memory _email) public {
         //require that Buyer is not already registered
         require(!RegisteredAddressMapping[msg.sender]);
 
         RegisteredAddressMapping[msg.sender] = true;
         RegisteredBuyerMapping[msg.sender] = true ;
         buyersCount++;
-        BuyerMapping[msg.sender] = Buyer(msg.sender, _name, _age, _city, _state, _aadharNumber, _panNumber, _document);
+        BuyerMapping[msg.sender] = Buyer(msg.sender, _name, _age, _city, _aadharNumber, _panNumber, _document, _email);
         buyers.push(msg.sender);
 
         emit Registration(msg.sender);
     }
 
-    function updateBuyer(string memory _name, uint _age, string memory _city, string memory _state, string memory _aadharNumber, string memory _panNumber) public {
+    function updateBuyer(string memory _name, string memory _city, string memory _email, string memory _panNumber) public {
         //require that Buyer is already registered
         require(RegisteredAddressMapping[msg.sender] && (BuyerMapping[msg.sender].id == msg.sender));
 
         BuyerMapping[msg.sender].name = _name;
-        BuyerMapping[msg.sender].age = _age;
         BuyerMapping[msg.sender].city = _city;
-        BuyerMapping[msg.sender].state = _state;
-        BuyerMapping[msg.sender].aadharNumber = _aadharNumber;
+        BuyerMapping[msg.sender].email = _email;
         BuyerMapping[msg.sender].panNumber = _panNumber;
         
     }
@@ -297,8 +290,8 @@ contract Land {
         return(buyers);
     }
 
-    function getBuyerDetails(address i) public view returns (string memory, uint, string memory, string memory, string memory, string memory, string memory) {
-        return (BuyerMapping[i].name, BuyerMapping[i].age,BuyerMapping[i].city,BuyerMapping[i].state,  BuyerMapping[i].aadharNumber, BuyerMapping[i].panNumber, BuyerMapping[i].document);
+    function getBuyerDetails(address i) public view returns ( string memory, string memory, string memory, string memory,string memory) {
+        return (BuyerMapping[i].name,BuyerMapping[i].city , BuyerMapping[i].panNumber, BuyerMapping[i].document, BuyerMapping[i].email);
     }
 
 

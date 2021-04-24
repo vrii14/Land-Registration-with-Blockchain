@@ -115,7 +115,6 @@ class TransactionInfo extends Component {
             var rowsArea = [];
             var rowsCity = [];
             var rowsState = [];
-            var rowsSt = [];
             var rowsPrice = [];
             var rowsPID = [];
             var rowsSurvey = [];
@@ -125,7 +124,6 @@ class TransactionInfo extends Component {
                 rowsArea.push(<ContractData contract="Land" method="getArea" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
                 rowsCity.push(<ContractData contract="Land" method="getCity" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
                 rowsState.push(<ContractData contract="Land" method="getState" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
-                rowsSt.push(<ContractData contract="Land" method="getStatus" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
                 rowsPrice.push(<ContractData contract="Land" method="getPrice" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
                 rowsPID.push(<ContractData contract="Land" method="getPID" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
                 rowsSurvey.push(<ContractData contract="Land" method="getSurveyNumber" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
@@ -141,7 +139,7 @@ class TransactionInfo extends Component {
                 console.log("completed: ", completed);
 
                 var owner = await this.state.LandInstance.methods.getLandOwner(i+1).call();
-                landTable.push(<tr><td>{i+1}</td><td>{owner}</td><td>{rowsArea[i]}</td><td>{rowsCity[i]}</td><td>{rowsState[i]}</td><td>{rowsPrice[i]}</td><td>{rowsPID[i]}</td><td>{rowsSurvey[i]}</td><td>{rowsSt[i]}</td>
+                landTable.push(<tr><td>{i+1}</td><td>{owner}</td><td>{rowsArea[i]}</td><td>{rowsCity[i]}</td><td>{rowsState[i]}</td><td>{rowsPrice[i]}</td><td>{rowsPID[i]}</td><td>{rowsSurvey[i]}</td>
                 <td>
                      <Button onClick={this.landTransfer(i+1, request[1])} disabled={!disabled} className="button-vote">
                           Verify Transaction
@@ -280,8 +278,7 @@ class TransactionInfo extends Component {
                                                 <th>Price</th>
                                                 <th>Property PID</th>
                                                 <th>Survey Number</th>
-                                                <th>Status</th>
-                                                    <th>Verify Land</th>
+                                                <th>Verify Land Transfer</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
