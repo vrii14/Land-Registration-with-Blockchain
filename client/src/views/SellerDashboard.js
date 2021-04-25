@@ -31,7 +31,7 @@ import {
 } from "reactstrap";
 
 import "../card.css";
-
+import "../index.css";
 
 const drizzleOptions = {
   contracts: [Land]

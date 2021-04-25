@@ -45,7 +45,7 @@ var buyerTable = [];
 var completed = true;
 
 function sendMail(email, name){
-    alert(typeof(name));
+    // alert(typeof(name));
 
     var tempParams = {
         from_name: email,
@@ -90,9 +90,9 @@ class BuyerInfo extends Component {
     }
     
     NotverifyBuyer = (item, email, name) => async() => {
-        alert('Before mail');
+        // alert('Before mail');
         sendMail(email, name);
-        alert('After mail');
+        // alert('After mail');
 
         await new Promise(resolve => setTimeout(resolve, 10000));
 

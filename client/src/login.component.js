@@ -12,8 +12,9 @@ export default class Login extends Component {
         this.state = {
             role: null,
             redirect: null,
-            registered: '',
-            verified: '',
+            landInspector: '',
+            seller: '',
+            buyer: '',
         }
         this.handleInputChange = this.handleInputChange.bind(this);
     }
@@ -39,14 +40,15 @@ export default class Login extends Component {
 
             const currentAddress = await web3.currentProvider.selectedAddress;
             this.setState({ LandInstance: instance, web3: web3, account: accounts[0] });
-            var registered = await this.state.LandInstance.methods.isRegistered(currentAddress).call();
-            console.log(registered);
-            this.setState({ registered: registered });
-            var verified = await this.state.LandInstance.methods.isLandInspector(currentAddress).call();
-            console.log(verified);
-            this.setState({ verified: verified });
-            // verified = verified.toString();
-            // console.log(verified);
+            var seller = await this.state.LandInstance.methods.isSeller(currentAddress).call();
+            console.log(seller);
+            this.setState({ seller: seller });
+            var buyer = await this.state.LandInstance.methods.isBuyer(currentAddress).call();
+            console.log(buyer);
+            this.setState({ buyer: buyer });
+            var landInspector = await this.state.LandInstance.methods.isLandInspector(currentAddress).call();
+            console.log(landInspector);
+            this.setState({ landInspector: landInspector });
 
         } catch (error) {
             alert(
@@ -69,7 +71,7 @@ export default class Login extends Component {
     }
 
     render() {
-        if (this.state.registered || this.state.verified) {
+        if (this.state.seller || this.state.buyer || this.state.landInspector) {
             return (
 
                 <div className="bodyC">
@@ -81,13 +83,10 @@ export default class Login extends Component {
                     </div>
                     <div className="auth-wrapper">
                         <div className="auth-inner">
-                            <div>
-                                <div>
-                                    <h1>
-                                        You have already registered.
-                                        </h1>
-                                </div>
-                            </div>
+                            <h1>You are already registered.</h1>
+                            <Button href="/Seller/SellerDashboard" disabled={!this.state.seller} className="btn-block" style={{margin: "2px", backgroundColor: "peru"}} >Seller Dashboard</Button>
+                            <br/><Button href="/admin/dashboard" disabled={!this.state.buyer} className="btn-block" style={{margin: "2px", backgroundColor: "peru"}}>Buyer Dashboard</Button>
+                            <br/><Button href="/LI/LIdashboard" disabled={!this.state.landInspector} className="btn-block" style={{margin: "2px", backgroundColor: "peru"}}>Land Inspector Dashboard</Button>
                         </div>
                     </div>
                 </div>
