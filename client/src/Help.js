@@ -5,7 +5,7 @@ import Faq from "react-faq-component";
 import "../node_modules/video-react/dist/video-react.css";
 import ReactPlayer from 'react-player';
 // import video from "../src/assets/img/video.mkv";
-  
+
 const data = {
     title: "FAQ (How the System works)",
     rows: [
@@ -24,19 +24,19 @@ const data = {
         },
         {
             title: "What do I register for?",
-            content:"If you own a land and want to sell it, Register as a Buyer and if you want to buy a land, Register as a Buyer.",
+            content: "If you own a land and want to sell it, Register as a Buyer and if you want to buy a land, Register as a Buyer.",
         },
         {
             title: "Why can't I request for a Land Property after registering as Buyer?",
-            content:"Your account profile and documents will first be verified by the Land Inspector and then you can request a Land.",
+            content: "Your account profile and documents will first be verified by the Land Inspector and then you can request a Land.",
         },
         {
             title: "Why can't I add a Land Property after registering as Seller?",
-            content:"Same answer as above!",
+            content: "Same answer as above!",
         },
         {
             title: "Who has created this project?",
-            content:"This is a team project built by Mrunal Kotkar, Divya Kharode and Vrinda Ahuja. You can reach out to us in case of any queries!",
+            content: "This is a team project built by Mrunal Kotkar, Divya Kharode and Vrinda Ahuja. You can reach out to us in case of any queries!",
         },
     ],
 };
@@ -48,8 +48,8 @@ const styles = {
     rowContentPaddingBottom: '10px',
     transitionDuration: "0.5s",
     timingFunc: "ease",
-     //rowContentColor: 'grey',
-     //arrowColor: "black",
+    //rowContentColor: 'grey',
+    //arrowColor: "black",
 };
 
 const config = {
@@ -58,33 +58,30 @@ const config = {
     // tabFocus: true
 };
 
-export default function Help() {    
+export default function Help() {
     return (
         <>
-        <div id="container" >
-            <div id="topSection">
+            <div id="container" >
+                <div id="topSection">
                     <div id="searchSection">
                     </div>
-            </div>
+                </div>
             </div>
 
-        <div className="container">
-            <h1>Demo</h1>
-            <ReactPlayer
-            muted
-            playing
-            className='react-player'
-            url= {"https://youtu.be/_o0ML62hruA"}
-            controls={true}
-            />
-            <div style={{marginTop: "10px"}}>
-            <Faq
-                data={data}
-                styles={styles}
-                config={config}
-            />
+            <div className="container">
+                <h1>Demo</h1>
+                <div className="embed-responsive embed-responsive-16by9">
+                    <iframe className="embed-responsive-item" src="https://www.youtube.com/embed/6VLaAa8GNDc" allowfullscreen="true"></iframe>
+                </div>
+
+                <div style={{ marginTop: "10px" }}>
+                    <Faq
+                        data={data}
+                        styles={styles}
+                        config={config}
+                    />
+                </div>
             </div>
-        </div>
         </>
     );
-    }
+}
