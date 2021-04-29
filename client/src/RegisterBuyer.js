@@ -82,11 +82,11 @@ class RegisterBuyer extends Component {
 
         if (this.state.name == '' || this.state.age == '' || this.state.city == '' || this.state.aadharNumber == '' || this.state.panNumber == '') {
             alert("All the fields are compulsory!");
-        } else if(this.state.aadharNumber.length != 12){
+        } else if(!Number(this.state.aadharNumber) || this.state.aadharNumber.length != 12 ){
             alert("Aadhar Number should be 12 digits long!");
         } else if(this.state.panNumber.length != 10){
             alert("Pan Number should be a 10 digit unique number!");
-        } else if (!Number(this.state.age)) {
+        } else if (!Number(this.state.age) || this.state.age < 18) {
             alert("Your age must be a number");
         } else if(this.state.email == '' || !pattern.test(this.state.email)){
             alert('Please enter a valid email address\n');
