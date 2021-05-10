@@ -1,4 +1,9 @@
-# Land Registration System with Blockchain
+# Land Registration System with Blockchain  
+
+<a href="https://img.shields.io/static/v1?label=LandRegistration&message=TruffleSuite&color=orange"><img src="https://img.shields.io/static/v1?label=LandRegistration&message=TruffleSuite&color=orange"></a>
+<img src="https://img.shields.io/badge/Ethereum-20232A?style=for-the-badge&logo=ethereum&logoColor=white">
+<img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB">
+<a href="LICENSE"><img src="https://img.shields.io/static/v1?label=license&message=MIT&color=green"></a>
 
 ## Team Members:
 
@@ -87,3 +92,5 @@ Verify Land Transaction(by Land Inspector)    |                   Owned Lands(Bu
 View Profile(Before Verification)                  |             Edit Profile(After Verification)
 :---------------------------------:        |      :------------------------------:
 <img src="Screenshots/profile.png" height="200" width="100%">     |<img src="Screenshots/edit profile.png" height="200" width="80%">
+
+### Make sure to star the repository if you find it helpful!
