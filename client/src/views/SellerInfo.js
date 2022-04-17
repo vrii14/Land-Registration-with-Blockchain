@@ -1,33 +1,18 @@
-import React, { Component } from 'react';
-import Land from "../artifacts/Land.json";
-import getWeb3 from "../getWeb3";
-import { Line, Bar } from "react-chartjs-2";
-import '../index.css';
-import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import { DrizzleProvider } from 'drizzle-react';
-import { Spinner } from 'react-bootstrap'
 import {
-    LoadingContainer,
-    AccountData,
-    ContractData,
-    ContractForm
-} from 'drizzle-react-components'
-
+    LoadingContainer
+} from '@drizzle/react-components';
+import { DrizzleProvider } from '@drizzle/react-plugin';
+import React, { Component } from 'react';
+import { Spinner } from 'react-bootstrap';
 // reactstrap components
 import {
-    Button,
-    ButtonGroup,
-    Card,
-    CardHeader,
-    CardBody,
-    CardTitle,
-    FormGroup,
-    Input,
-    Table,
-    Row,
-    Col,
-    UncontrolledTooltip,
+    Button, Card, CardBody, CardHeader, CardTitle, Col, Row, Table
 } from "reactstrap";
+import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import Land from "../artifacts/Land.json";
+import getWeb3 from "../getWeb3";
+import '../index.css';
+
 
 const drizzleOptions = {
     contracts: [Land]
@@ -68,7 +53,7 @@ class SellerInfo extends Component {
 
     }
 
-    NotverifySeller = (item) => async() => {
+    NotverifySeller = (item) => async () => {
 
         await this.state.LandInstance.methods.rejectSeller(
             item
@@ -108,10 +93,10 @@ class SellerInfo extends Component {
             sellersCount = await this.state.LandInstance.methods.getSellersCount().call();
             console.log(sellersCount);
 
-            
-            
+
+
             sellersMap = await this.state.LandInstance.methods.getSeller().call();
-            
+
             var verified = await this.state.LandInstance.methods.isLandInspector(currentAddress).call();
             //console.log(verified);
             this.setState({ verified: verified });
@@ -123,7 +108,7 @@ class SellerInfo extends Component {
                 var seller_verify = await this.state.LandInstance.methods.isVerified(sellersMap[i]).call();
                 console.log(seller_verify);
                 seller.verified = seller_verify;
-                
+
                 //seller.push(seller_verify);
                 var not_verify = await this.state.LandInstance.methods.isRejected(sellersMap[i]).call();
                 console.log(not_verify);
@@ -135,14 +120,14 @@ class SellerInfo extends Component {
                     <td>
                         <Button onClick={this.verifySeller(sellersMap[i])} disabled={seller_verify || not_verify} className="button-vote">
                             Verify
-                    </Button>
+                        </Button>
                     </td>
                     <td>
                         <Button onClick={this.NotverifySeller(sellersMap[i])} disabled={seller_verify || not_verify} className="btn btn-danger">
-                        Reject
-                    </Button>
+                            Reject
+                        </Button>
                     </td></tr>)
-            console.log(seller[5]);
+                console.log(seller[5]);
 
 
             }

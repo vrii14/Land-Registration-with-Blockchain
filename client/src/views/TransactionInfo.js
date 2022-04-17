@@ -1,38 +1,18 @@
-import React, { Component } from 'react';
-import Land from "../artifacts/Land.json";
-import getWeb3 from "../getWeb3";
-import { Line, Bar } from "react-chartjs-2";
-import '../index.css';
-import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import { DrizzleProvider } from 'drizzle-react';
-import { Spinner } from 'react-bootstrap'
 import {
-    LoadingContainer,
-    AccountData,
-    ContractData,
-    ContractForm
-} from 'drizzle-react-components'
-
+    ContractData, LoadingContainer
+} from '@drizzle/react-components';
+import { DrizzleProvider } from '@drizzle/react-plugin';
+import React, { Component } from 'react';
+import { Spinner } from 'react-bootstrap';
 // reactstrap components
 import {
-    Button,
-    ButtonGroup,
-    Card,
-    CardHeader,
-    CardBody,
-    CardTitle,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
-    UncontrolledDropdown,
-    Label,
-    FormGroup,
-    Input,
-    Table,
-    Row,
-    Col,
-    UncontrolledTooltip,
+    Button, Card, CardBody, CardHeader, CardTitle, Col, Row, Table
 } from "reactstrap";
+import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import Land from "../artifacts/Land.json";
+import getWeb3 from "../getWeb3";
+import '../index.css';
+
 
 
 const drizzleOptions = {
@@ -56,12 +36,12 @@ class TransactionInfo extends Component {
     }
 
     landTransfer = (landId, newOwner) => async () => {
-        
+
         await this.state.LandInstance.methods.LandOwnershipTransfer(
             landId, newOwner
         ).send({
-            from : this.state.account,
-            gas : 2100000
+            from: this.state.account,
+            gas: 2100000
         });
         //Reload
         console.log(newOwner);
@@ -98,11 +78,11 @@ class TransactionInfo extends Component {
             );
 
             this.setState({ LandInstance: instance, web3: web3, account: accounts[0] });
-            
+
             var verified = await this.state.LandInstance.methods.isLandInspector(currentAddress).call();
             //console.log(verified);
             this.setState({ verified: verified });
-            
+
             var count = await this.state.LandInstance.methods.getLandsCount().call();
             count = parseInt(count);
             var rowsArea = [];
@@ -120,24 +100,24 @@ class TransactionInfo extends Component {
                 rowsPrice.push(<ContractData contract="Land" method="getPrice" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
                 rowsPID.push(<ContractData contract="Land" method="getPID" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
                 rowsSurvey.push(<ContractData contract="Land" method="getSurveyNumber" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
-              }
+            }
             for (var i = 0; i < count; i++) {
-                var request = await this.state.LandInstance.methods.getRequestDetails(i+1).call();
-                var approved = await this.state.LandInstance.methods.isApproved(i+1).call();
+                var request = await this.state.LandInstance.methods.getRequestDetails(i + 1).call();
+                var approved = await this.state.LandInstance.methods.isApproved(i + 1).call();
                 // console.log(approved);
                 // console.log(request[3]);
-                var disabled = request[3]&&completed;
+                var disabled = request[3] && completed;
                 console.log("Disabled: ", disabled);
                 console.log("request[3]: ", request[3]);
                 console.log("completed: ", completed);
 
-                var owner = await this.state.LandInstance.methods.getLandOwner(i+1).call();
-                landTable.push(<tr><td>{i+1}</td><td>{owner}</td><td>{rowsArea[i]}</td><td>{rowsCity[i]}</td><td>{rowsState[i]}</td><td>{rowsPrice[i]}</td><td>{rowsPID[i]}</td><td>{rowsSurvey[i]}</td>
-                <td>
-                     <Button onClick={this.landTransfer(i+1, request[1])} disabled={!disabled} className="button-vote">
-                          Verify Transaction
-                    </Button>
-                </td>
+                var owner = await this.state.LandInstance.methods.getLandOwner(i + 1).call();
+                landTable.push(<tr><td>{i + 1}</td><td>{owner}</td><td>{rowsArea[i]}</td><td>{rowsCity[i]}</td><td>{rowsState[i]}</td><td>{rowsPrice[i]}</td><td>{rowsPID[i]}</td><td>{rowsSurvey[i]}</td>
+                    <td>
+                        <Button onClick={this.landTransfer(i + 1, request[1])} disabled={!disabled} className="button-vote">
+                            Verify Transaction
+                        </Button>
+                    </td>
                 </tr>)
 
 
@@ -204,15 +184,15 @@ class TransactionInfo extends Component {
                                         <Table className="tablesorter" responsive color="black">
                                             <thead className="text-primary">
                                                 <tr>
-                                                <th>#</th>
-                                                <th>Owner ID</th>
-                                                <th>Area</th>
-                                                <th>City</th>
-                                                <th>State</th>
-                                                <th>Price</th>
-                                                <th>Property PID</th>
-                                                <th>Survey Number</th>
-                                                <th>Verify Land Transfer</th>
+                                                    <th>#</th>
+                                                    <th>Owner ID</th>
+                                                    <th>Area</th>
+                                                    <th>City</th>
+                                                    <th>State</th>
+                                                    <th>Price</th>
+                                                    <th>Property PID</th>
+                                                    <th>Survey Number</th>
+                                                    <th>Verify Land Transfer</th>
                                                 </tr>
                                             </thead>
                                             <tbody>

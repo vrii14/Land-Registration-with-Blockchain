@@ -1,37 +1,24 @@
-import React, { Component } from 'react';
-import Land from "../artifacts/Land.json";
-import getWeb3 from "../getWeb3";
-import { Line, Bar } from "react-chartjs-2";
-import '../index.css';
-import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import { DrizzleProvider } from 'drizzle-react';
-import { Spinner } from 'react-bootstrap'
 import {
-    LoadingContainer,
-    AccountData,
-    ContractData,
-    ContractForm
-} from 'drizzle-react-components'
-
+    ContractData, LoadingContainer
+} from '@drizzle/react-components';
+import { DrizzleProvider } from '@drizzle/react-plugin';
+import React, { Component } from 'react';
+import { Spinner } from 'react-bootstrap';
 // reactstrap components
 import {
-    Button,
-    ButtonGroup,
-    Card,
-    CardHeader,
-    CardBody,
-    CardTitle,
-    Table,
-    Row,
-    Col,
-    UncontrolledTooltip,
+    Button, Card, CardBody, CardHeader, Col, Row
 } from "reactstrap";
-
+import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import Land from "../artifacts/Land.json";
 import "../card.css";
+import getWeb3 from "../getWeb3";
+import '../index.css';
+
+
 
 
 const drizzleOptions = {
-  contracts: [Land]
+    contracts: [Land]
 }
 
 
@@ -173,7 +160,7 @@ class LIDashboard extends Component {
                             </Row>
                         </div>
                         <Row>
-                        <Col lg="4">
+                            <Col lg="4">
                                 <Card>
                                     <CardHeader>
                                         <h5 className="title">Buyers Information</h5>
@@ -183,7 +170,7 @@ class LIDashboard extends Component {
 
                                             <Button href="/LI/BuyerInfo" className="btn-fill" color="primary">
                                                 Verify Buyers
-                </Button>
+                                            </Button>
                                         </div>
                                     </CardBody>
                                 </Card>
@@ -198,7 +185,7 @@ class LIDashboard extends Component {
 
                                             <Button href="/LI/TransactionInfo" className="btn-fill" color="primary">
                                                 Approve Land Transactions
-                        </Button>
+                                            </Button>
                                         </div>
                                     </CardBody>
                                 </Card>
@@ -213,13 +200,13 @@ class LIDashboard extends Component {
 
                                             <Button href="/LI/SellerInfo" className="btn-fill" color="primary">
                                                 Verify Sellers
-                </Button>
+                                            </Button>
                                         </div>
                                     </CardBody>
                                 </Card>
                             </Col>
-                            
-                            
+
+
                         </Row>
                     </div>
                 </LoadingContainer>
