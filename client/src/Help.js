@@ -1,9 +1,8 @@
-import React, { Component } from "react";
-import './help.css';
-import './index.css';
+import React from "react";
 import Faq from "react-faq-component";
 import "../node_modules/video-react/dist/video-react.css";
-import ReactPlayer from 'react-player';
+import './help.css';
+import './index.css';
 // import video from "../src/assets/img/video.mkv";
 
 const data = {
