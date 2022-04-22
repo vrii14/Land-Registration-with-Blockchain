@@ -1,10 +1,8 @@
 import React, { Component } from "react";
-import './index.css';
-import history from './history';
-import { Redirect } from 'react-router-dom';
-import getWeb3 from "./getWeb3"
-import LandContract from "./artifacts/Land.json"
 import { Button } from "reactstrap";
+import LandContract from "./artifacts/Land.json";
+import getWeb3 from "./getWeb3";
+import './index.css';
 
 export default class Login extends Component {
     constructor() {
@@ -32,13 +30,18 @@ export default class Login extends Component {
             const accounts = await web3.eth.getAccounts();
 
             const networkId = await web3.eth.net.getId();
+            console.log("Network ID ", networkId)
             const deployedNetwork = LandContract.networks[networkId];
+
+            console.log("Deployed network address ", deployedNetwork)
+
             const instance = new web3.eth.Contract(
                 LandContract.abi,
                 deployedNetwork && deployedNetwork.address,
             );
 
             const currentAddress = await web3.currentProvider.selectedAddress;
+            console.log("Current address :- ", currentAddress);
             this.setState({ LandInstance: instance, web3: web3, account: accounts[0] });
             var seller = await this.state.LandInstance.methods.isSeller(currentAddress).call();
             console.log(seller);
@@ -52,7 +55,7 @@ export default class Login extends Component {
 
         } catch (error) {
             alert(
-                `Failed to load web3, accounts, or contract. Check console for details.`,
+                error,
             );
             console.error(error);
         }
@@ -84,9 +87,9 @@ export default class Login extends Component {
                     <div className="auth-wrapper">
                         <div className="auth-inner">
                             <h1>You are already registered.</h1>
-                            <Button href="/Seller/SellerDashboard" disabled={!this.state.seller} className="btn-block" style={{margin: "2px", backgroundColor: "peru"}} >Seller Dashboard</Button>
-                            <br/><Button href="/admin/dashboard" disabled={!this.state.buyer} className="btn-block" style={{margin: "2px", backgroundColor: "peru"}}>Buyer Dashboard</Button>
-                            <br/><Button href="/LI/LIdashboard" disabled={!this.state.landInspector} className="btn-block" style={{margin: "2px", backgroundColor: "peru"}}>Land Inspector Dashboard</Button>
+                            <Button href="/Seller/SellerDashboard" disabled={!this.state.seller} className="btn-block" style={{ margin: "2px", backgroundColor: "peru" }} >Seller Dashboard</Button>
+                            <br /><Button href="/admin/dashboard" disabled={!this.state.buyer} className="btn-block" style={{ margin: "2px", backgroundColor: "peru" }}>Buyer Dashboard</Button>
+                            <br /><Button href="/LI/LIdashboard" disabled={!this.state.landInspector} className="btn-block" style={{ margin: "2px", backgroundColor: "peru" }}>Land Inspector Dashboard</Button>
                         </div>
                     </div>
                 </div>
@@ -95,9 +98,9 @@ export default class Login extends Component {
 
         return (
             <div className="bodyC">
-                 <a href ="/Help" className="faq" style={{borderRadius: "10%", textDecoration: "none", fontWeight: "bolder"}} >
-                 <h3 style={{color: "wheat"}}>Help?</h3>
-                                    </a>
+                <a href="/Help" className="faq" style={{ borderRadius: "10%", textDecoration: "none", fontWeight: "bolder" }} >
+                    <h3 style={{ color: "wheat" }}>Help?</h3>
+                </a>
                 <div className="img-wrapper">
                     <img src="https://i.pinimg.com/originals/71/6e/00/716e00537e8526347390d64ec900107d.png" className="logo" />
                     <div className="wine-text-container">
