@@ -1,36 +1,17 @@
-import React, { Component } from 'react';
-import Land from "../artifacts/Land.json";
-import getWeb3 from "../getWeb3";
-import { DrizzleProvider } from 'drizzle-react';
-import { Spinner  } from 'react-bootstrap';
 import {
-  LoadingContainer,
-  AccountData,
-  ContractData,
-  ContractForm
-} from 'drizzle-react-components';
-import "../index.css";
-
+  ContractData, LoadingContainer
+} from '@drizzle/react-components';
+import { DrizzleProvider } from '@drizzle/react-plugin';
+import React, { Component } from 'react';
+import { Spinner } from 'react-bootstrap';
 // reactstrap components
 import {
-  Button,
-  ButtonGroup,
-  Card,
-  CardHeader,
-  CardBody,
-  CardTitle,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  Label,
-  FormGroup,
-  Input,
-  Table,
-  Row,
-  Col,
-  UncontrolledTooltip,
+  Card, CardBody, Col, Row
 } from "reactstrap";
+import Land from "../artifacts/Land.json";
+import getWeb3 from "../getWeb3";
+import "../index.css";
+
 
 
 const drizzleOptions = {
@@ -60,9 +41,9 @@ class viewImage extends Component {
   viewImage = (landId) => {
     alert(landId);
     this.props.history.push({
-        pathname: '/viewImage',
-      })
-}
+      pathname: '/viewImage',
+    })
+  }
 
   componentDidMount = async () => {
     //For refreshing page only once
@@ -117,9 +98,9 @@ class viewImage extends Component {
         rowsPrice.push(<ContractData contract="Land" method="getPrice" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
         rowsPID.push(<ContractData contract="Land" method="getPID" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
         rowsSurvey.push(<ContractData contract="Land" method="getSurveyNumber" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
-      // rowsIpfs.push((<ContractData contract="Land" method="getImage"  methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />));
+        // rowsIpfs.push((<ContractData contract="Land" method="getImage"  methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />));
       }
-      
+
 
       for (var i = 1; i < count + 1; i++) {
         var landImg = await this.state.LandInstance.methods.getImage(i).call();
@@ -131,29 +112,29 @@ class viewImage extends Component {
         // <CardBody><div><img src={`https://ipfs.io/ipfs/${landImg}`} alt="" width="90%" height="90%" style={{marginBottom:"10px"}}/><p>Area: {rowsArea[i-1]}</p><p>City: {rowsCity[i-1]}</p><p>State: {rowsState[i-1]}</p><p>PID: {rowsPID[i-1]}</p><p>Price: {rowsPrice[i-1]}</p> 
         // </div></CardBody></Card></Col></>)
         row.push(<Col xs="6">
-     
-        <div class="post-module">
-          
-          <div class="thumbnail">
-            <div class="date">
-            <div class="day">{i}</div>
-            </div><img src={`https://ipfs.io/ipfs/${landImg}`}/>
+
+          <div class="post-module">
+
+            <div class="thumbnail">
+              <div class="date">
+                <div class="day">{i}</div>
+              </div><img src={`https://ipfs.io/ipfs/${landImg}`} />
+            </div>
+
+            <div class="post-content">
+              <div class="category">Photos</div>
+              <h1 class="title">{rowsArea[i - 1]} Sq. m.</h1>
+              <h2 class="sub_title">{rowsCity[i - 1]}, {rowsState[i - 1]}</h2>
+              <p class="description">PID: {rowsPID[i - 1]}<br /> Survey No.: {rowsSurvey[i - 1]}</p>
+              <div class="post-meta"><span class="timestamp">Price: ₹ {rowsPrice[i - 1]}</span></div>
+              <div class="post-meta"><span class="timestamp">View Verified Land  <a href={`https://ipfs.io/ipfs/${document}`} target="_blank">Document</a></span></div>
+            </div>
           </div>
-          
-          <div class="post-content">
-            <div class="category">Photos</div>
-            <h1 class="title">{rowsArea[i-1]} Sq. m.</h1>
-            <h2 class="sub_title">{rowsCity[i-1]}, {rowsState[i-1]}</h2>
-            <p class="description">PID: {rowsPID[i-1]}<br/> Survey No.: {rowsSurvey[i-1]}</p>
-      <div class="post-meta"><span class="timestamp">Price: ₹ {rowsPrice[i-1]}</span></div>
-      <div class="post-meta"><span class="timestamp">View Verified Land  <a href={`https://ipfs.io/ipfs/${document}`} target="_blank">Document</a></span></div>
-          </div>
-        </div>
-      </Col>)
+        </Col>)
       }
       console.log(row)
 
-      
+
 
     } catch (error) {
       // Catch any errors for any of the above operations.
@@ -188,7 +169,7 @@ class viewImage extends Component {
                   <CardBody>
                     <h1>
                       You are not verified to view this page
-                                        </h1>
+                    </h1>
                   </CardBody>
                 </Card>
               </Col>
@@ -213,7 +194,7 @@ class viewImage extends Component {
               </Row>
             </LoadingContainer>
           </DrizzleProvider>
-          
+
         </div>
       </>
 

@@ -1,38 +1,17 @@
-import React, { Component } from "react";
-// nodejs library that concatenates classes
-import classNames from "classnames";
-import Land from "../artifacts/Land.json";
-import getWeb3 from "../getWeb3";
-import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import { DrizzleProvider } from 'drizzle-react';
-import { Spinner } from 'react-bootstrap'
 import {
-  LoadingContainer,
-  AccountData,
-  ContractData,
-  ContractForm
-} from 'drizzle-react-components'
+  ContractData, LoadingContainer
+} from '@drizzle/react-components';
+import { DrizzleProvider } from '@drizzle/react-plugin';
+import React, { Component } from "react";
+import { Spinner } from 'react-bootstrap';
 // reactstrap components
 import {
-  Button,
-  ButtonGroup,
-  Card,
-  CardHeader,
-  CardBody,
-  CardTitle,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  Label,
-  FormGroup,
-  Input,
-  Table,
-  Row,
-  Col,
-  UncontrolledTooltip,
+  Button, Card, CardBody, CardHeader, CardTitle, Col, Row, Table
 } from "reactstrap";
+import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import Land from "../artifacts/Land.json";
 import "../card.css";
+import getWeb3 from "../getWeb3";
 
 
 const drizzleOptions = {
@@ -202,7 +181,7 @@ class Dashboard extends Component {
                   <CardBody>
                     <h1>
                       You are not verified to view this page
-                                        </h1>
+                    </h1>
                   </CardBody>
                 </Card>
               </Col>
@@ -216,7 +195,7 @@ class Dashboard extends Component {
     return (
       <>
         <div className="content">
-        <DrizzleProvider options={drizzleOptions}>
+          <DrizzleProvider options={drizzleOptions}>
             <LoadingContainer>
               <div className="main-section">
                 <Row>
@@ -225,7 +204,7 @@ class Dashboard extends Component {
                       <div class="icon-section">
                         <i class="fa fa-users" aria-hidden="true"></i><br />
                         <medium>Total Sellers</medium><br />
-                       <p> {userarr} </p>
+                        <p> {userarr} </p>
                       </div>
                       <div class="detail-section"><br />
                       </div>
@@ -258,7 +237,7 @@ class Dashboard extends Component {
               </div>
             </LoadingContainer>
           </DrizzleProvider>
-                    <Row>
+          <Row>
             <Col lg="4">
               <Card>
                 <CardHeader>
@@ -269,7 +248,7 @@ class Dashboard extends Component {
 
                     <Button href="/admin/buyerProfile" className="btn-fill" color="primary">
                       View Profile
-                </Button>
+                    </Button>
                   </div>
                 </CardBody>
               </Card>
@@ -284,7 +263,7 @@ class Dashboard extends Component {
 
                     <Button href="/admin/OwnedLands" className="btn-fill" color="primary">
                       View Your Lands
-                </Button>
+                    </Button>
                   </div>
                 </CardBody>
               </Card>
@@ -299,7 +278,7 @@ class Dashboard extends Component {
 
                     <Button href="/admin/MakePayment" className="btn-fill" color="primary">
                       Make Payment
-                </Button>
+                    </Button>
                   </div>
                 </CardBody>
               </Card>

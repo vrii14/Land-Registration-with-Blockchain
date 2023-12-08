@@ -1,36 +1,17 @@
-import React, { Component } from 'react'
-import Land from "../artifacts/Land.json"
-import getWeb3 from "../getWeb3"
-import '../index.css';
-import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import { DrizzleProvider } from 'drizzle-react';
-import {  Spinner } from 'react-bootstrap'
+import {
+    LoadingContainer
+} from '@drizzle/react-components';
+import { DrizzleProvider } from '@drizzle/react-plugin';
+import React, { Component } from 'react';
+import { Spinner } from 'react-bootstrap';
 // reactstrap components
 import {
-    Button,
-    ButtonGroup,
-    Card,
-    CardHeader,
-    CardBody,
-    CardTitle,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
-    UncontrolledDropdown,
-    Label,
-    FormGroup,
-    Input,
-    Table,
-    Row,
-    Col,
-    UncontrolledTooltip,
-  } from "reactstrap";
-import {
-    LoadingContainer,
-    AccountData,
-    ContractData,
-    ContractForm
-} from 'drizzle-react-components'
+    Button, Card, CardBody, CardHeader, CardTitle, Table
+} from "reactstrap";
+import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import Land from "../artifacts/Land.json";
+import getWeb3 from "../getWeb3";
+import '../index.css';
 
 const drizzleOptions = {
     contracts: [Land]
@@ -92,7 +73,7 @@ class ApproveRequest extends Component {
             this.setState({ registered: registered });
             var requestsCount = await this.state.LandInstance.methods.getRequestsCount().call();
             console.log(requestsCount);
-            
+
             for (let i = 1; i < requestsCount + 1; i++) {
                 var request = await this.state.LandInstance.methods.getRequestDetails(i).call();
                 var approved = await this.state.LandInstance.methods.isApproved(i).call();
@@ -102,7 +83,7 @@ class ApproveRequest extends Component {
                         <td>
                             <Button onClick={this.approveRequest(i)} disabled={approved} className="button-vote">
                                 Approve Request
-                    </Button>
+                            </Button>
                         </td></tr>)
                 }
                 // console.log(request[1]);
@@ -138,7 +119,7 @@ class ApproveRequest extends Component {
                     <div>
                         <h1>
                             You are not authorized to view this page.
-                  </h1>
+                        </h1>
                     </div>
 
                 </div>
