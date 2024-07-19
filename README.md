@@ -1,5 +1,5 @@
 # Land Registration System with Blockchain  
-## This work has been presented at IEEE ICAECC'23
+## This work was presented at IEEE ICAECC'23 - <a href="https://ieeexplore.ieee.org/document/10560138">Checkout</a>
 <img src="https://img.shields.io/badge/Ethereum-20232A?style=for-the-badge&logo=ethereum&logoColor=white"> <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB">
 
 
