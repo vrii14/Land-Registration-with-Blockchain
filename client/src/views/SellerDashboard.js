@@ -1,37 +1,20 @@
-import React, { Component } from 'react';
-import { Line, Bar } from "react-chartjs-2";
-import LandContract from "../artifacts/Land.json";
-import Land from "../artifacts/Land.json";
-import getWeb3 from "../getWeb3";
-import { DrizzleProvider } from 'drizzle-react';
-import { Spinner  } from 'react-bootstrap';
-import {  Link} from 'react-router-dom';
 import {
-  LoadingContainer,
-  AccountData,
-  ContractData,
-  ContractForm
-} from 'drizzle-react-components';
-
-import viewImage from './viewImage';
-
+  ContractData, LoadingContainer
+} from '@drizzle/react-components';
+import { DrizzleProvider } from '@drizzle/react-plugin';
+import React, { Component } from 'react';
+import { Spinner } from 'react-bootstrap';
 // reactstrap components
 import {
-  Button,
-  ButtonGroup,
-  Card,
-  CardHeader,
-  CardBody,
-  CardTitle,
-  Input,
-  Table,
-  Row,
-  Col,
-  UncontrolledTooltip,
+  Button, Card, CardBody, CardHeader, CardTitle, Col, Row, Table
 } from "reactstrap";
-
+import Land from "../artifacts/Land.json";
 import "../card.css";
+import getWeb3 from "../getWeb3";
 import "../index.css";
+
+
+
 
 const drizzleOptions = {
   contracts: [Land]
@@ -63,9 +46,9 @@ class SDash extends Component {
   viewImage = (landId) => {
     alert(landId);
     this.props.history.push({
-        pathname: '/viewImage',
-      })
-}
+      pathname: '/viewImage',
+    })
+  }
 
   componentDidMount = async () => {
     //For refreshing page only once
@@ -113,7 +96,7 @@ class SDash extends Component {
       var rowsPrice = [];
       var rowsPID = [];
       var rowsSurvey = [];
-      
+
 
       for (var i = 1; i < count + 1; i++) {
         rowsArea.push(<ContractData contract="Land" method="getArea" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
@@ -123,7 +106,7 @@ class SDash extends Component {
         rowsPID.push(<ContractData contract="Land" method="getPID" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
         rowsSurvey.push(<ContractData contract="Land" method="getSurveyNumber" methodArgs={[i, { from: "0xa42A8B478E5e010609725C2d5A8fe6c0C4A939cB" }]} />);
       }
-    
+
 
       for (var i = 0; i < count; i++) {
         row.push(<tr><td>{i + 1}</td><td>{rowsArea[i]}</td><td>{rowsCity[i]}</td><td>{rowsState[i]}</td><td>{rowsPrice[i]}</td><td>{rowsPID[i]}</td><td>{rowsSurvey[i]}</td>
@@ -165,7 +148,7 @@ class SDash extends Component {
                   <CardBody>
                     <h1>
                       You are not verified to view this page
-                                        </h1>
+                    </h1>
                   </CardBody>
                 </Card>
               </Col>
@@ -180,7 +163,7 @@ class SDash extends Component {
     return (
       <>
         <div className="content">
-        <DrizzleProvider options={drizzleOptions}>
+          <DrizzleProvider options={drizzleOptions}>
             <LoadingContainer>
               <div className="main-section">
                 <Row>
@@ -189,7 +172,7 @@ class SDash extends Component {
                       <div class="icon-section">
                         <i class="fa fa-users" aria-hidden="true"></i><br />
                         <medium>Total Buyers</medium><br />
-                       <p> {userarr} </p>
+                        <p> {userarr} </p>
                       </div>
                       <div class="detail-section"><br />
                       </div>
@@ -233,7 +216,7 @@ class SDash extends Component {
 
                     <Button href="/Seller/AddLand" disabled={!this.state.verified} className="btn-fill" color="primary">
                       Add Land
-                </Button>
+                    </Button>
                   </div>
                 </CardBody>
               </Card>
@@ -248,7 +231,7 @@ class SDash extends Component {
 
                     <Button href="/seller/sellerProfile" className="btn-fill" color="primary">
                       View Profile
-                </Button>
+                    </Button>
                   </div>
                 </CardBody>
               </Card>
@@ -263,13 +246,13 @@ class SDash extends Component {
 
                     <Button href="/Seller/ApproveRequest" disabled={!this.state.verified} className="btn-fill" color="primary">
                       View all Land Requests
-                        </Button>
+                    </Button>
                   </div>
                 </CardBody>
               </Card>
             </Col>
           </Row>
-         
+
           <DrizzleProvider options={drizzleOptions}>
             <LoadingContainer>
               <Row>
@@ -283,7 +266,7 @@ class SDash extends Component {
                       <Table className="tablesorter" responsive color="black">
                         <thead className="text-primary">
                           <tr>
-                          <th>#</th>
+                            <th>#</th>
                             <th>Area</th>
                             <th>City</th>
                             <th>State</th>
@@ -309,13 +292,13 @@ class SDash extends Component {
                   <CardTitle>View Images of all Lands!</CardTitle>
                 </CardHeader>
                 <CardBody>
-                    <Button href="/Seller/viewImage" className="btn-fill" color="primary">
-                      View Images
-                </Button>
+                  <Button href="/Seller/viewImage" className="btn-fill" color="primary">
+                    View Images
+                  </Button>
                 </CardBody>
               </Card>
             </Col>
-            </Row>
+          </Row>
         </div>
       </>
 

@@ -1,31 +1,17 @@
-import React, { Component } from "react";
-// nodejs library that concatenates classes
-import classNames from "classnames";
-import Land from "../artifacts/Land.json";
-import getWeb3 from "../getWeb3";
-import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import { DrizzleProvider } from 'drizzle-react';
-import { Spinner } from 'react-bootstrap'
 import {
-  LoadingContainer,
-  AccountData,
-  ContractData,
-  ContractForm
-} from 'drizzle-react-components'
-import "../index.css";
+  LoadingContainer
+} from '@drizzle/react-components';
+import { DrizzleProvider } from '@drizzle/react-plugin';
+import React, { Component } from "react";
+import { Spinner } from 'react-bootstrap';
 // reactstrap components
 import {
-  Button,
-  ButtonGroup,
-  Card,
-  CardHeader,
-  CardBody,
-  CardTitle,
-  Table,
-  Row,
-  Col,
-  UncontrolledTooltip,
+  Button, Card, CardBody, CardHeader, CardTitle, Col, Row, Table
 } from "reactstrap";
+import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import Land from "../artifacts/Land.json";
+import getWeb3 from "../getWeb3";
+import "../index.css";
 
 
 
@@ -54,7 +40,7 @@ class Dashboard extends Component {
   makePayment = (seller_address, amount, land_id) => async () => {
     // alert(amount);
 
-    amount = amount*0.0000057;
+    amount = amount * 0.0000057;
     alert(amount);
     await this.state.LandInstance.methods.payment(
       seller_address,
@@ -117,8 +103,8 @@ class Dashboard extends Component {
         var price = await this.state.LandInstance.methods.getPrice(i + 1).call();
         row.push(<tr><td>{i + 1}</td><td>{dict[i + 1]}</td><td>{price}</td>
           <td>
-            <Button onClick={this.makePayment(dict[i + 1], price, i+1)} 
-            disabled={paid} className="btn btn-success">
+            <Button onClick={this.makePayment(dict[i + 1], price, i + 1)}
+              disabled={paid} className="btn btn-success">
               Make Payment
             </Button>
           </td>
@@ -165,7 +151,7 @@ class Dashboard extends Component {
                   <CardBody>
                     <h1>
                       You are not verified to view this page
-                                        </h1>
+                    </h1>
                   </CardBody>
                 </Card>
               </Col>
