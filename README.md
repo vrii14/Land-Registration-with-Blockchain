@@ -47,8 +47,8 @@ So the Land Registration system using blockchain is a distributed system that wi
 2. Open _Ganache_ and keep it running in the Background.
 3. Make sure you have Metamask Extension in your browser.
 4. In the root directory run _truffle migrate --reset_.
-5. cd to the _client_ folder and run _npm install_.
-6. Run _npm start_.
+5. cd to the _client_ folder and run _pnpm install_.
+6. Run _pnpm run start_.
 
 ## [Project Demo Link](https://youtu.be/6VLaAa8GNDc)
 
